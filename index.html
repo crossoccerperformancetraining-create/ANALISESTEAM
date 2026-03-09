@@ -18,7 +18,6 @@
         .hidden { display: none !important; }
         .net-status { position: absolute; top: 10px; right: 10px; display: flex; align-items: center; gap: 5px; font-size: 9px; font-weight: 900; padding: 5px 10px; border-radius: 10px; background: #0f172a; border: 1px solid #1e293b; z-index: 100; }
         
-        /* Regras de Impressão Aprimoradas para manter as cores de fundo */
         @media print { 
             * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             .no-print { display: none !important; } 
@@ -47,7 +46,7 @@
                 <div><label class="label-sm">Senha</label><input type="password" id="auth-pass" class="input-dark" placeholder="******"></div>
                 <div class="flex gap-2 pt-4">
                     <button id="btn-login" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-black py-3 rounded-xl transition uppercase text-sm">Entrar</button>
-                    <button id="btn-signup" class="w-full border border-purple-600 text-purple-400 font-black py-3 rounded-xl transition uppercase text-sm">Trial 7 Dias</button>
+                    <button id="btn-signup" class="w-full border border-purple-600 text-purple-400 font-black py-3 rounded-xl transition uppercase text-sm">Criar Conta</button>
                 </div>
                 <p id="auth-error" class="text-red-500 text-[10px] text-center font-bold uppercase mt-2"></p>
             </div>
@@ -59,7 +58,7 @@
             <header class="mb-6 flex justify-between items-start">
                 <div>
                     <h1 class="font-header text-2xl font-black text-purple-500 italic uppercase leading-none">Scout Master</h1>
-                    <p class="text-[10px] text-slate-500 font-bold uppercase mt-1" id="user-display">Adriano Cabeça - Intel</p>
+                    <p class="text-[10px] text-slate-500 font-bold uppercase mt-1" id="user-display">Adriano Cabeça</p>
                 </div>
                 <button id="btn-logout" class="text-[9px] bg-red-900/30 text-red-500 px-3 py-1 rounded-lg font-black hover:bg-red-500 hover:text-white transition">SAIR</button>
             </header>
@@ -184,85 +183,33 @@
         <main class="w-full lg:w-3/5 bg-white text-slate-900 rounded-2xl p-6 shadow-2xl h-full overflow-y-auto" id="print-area">
             <div class="bg-[#f2fdf7] rounded-xl p-5 mb-6">
                 <h3 class="text-[#059669] font-black italic uppercase text-[14px] border-b border-[#a7f3d0] pb-2 mb-4 font-header">Fase Ofensiva & Construção</h3>
-                
                 <div class="grid grid-cols-2 gap-x-12 gap-y-3 mb-5 text-[10px] font-bold text-slate-600 uppercase">
-                    <div class="flex">
-                        <span class="w-24 text-slate-400">PÉ ZAGS:</span> 
-                        <span id="r_zags_foot" class="text-slate-700">---</span>
-                    </div>
-                    <div class="flex">
-                        <span class="w-24 text-slate-400">LADO ATK:</span> 
-                        <span id="r_atk_side" class="text-slate-700">---</span>
-                    </div>
-                    <div class="flex">
-                        <span class="w-24 text-slate-400">GOLEIRO:</span> 
-                        <span id="r_gk" class="text-slate-700">---</span>
-                    </div>
-                    <div class="flex">
-                        <span class="w-24 text-slate-400">SAÍDA:</span> 
-                        <span id="r_meta" class="text-slate-700">---</span>
-                    </div>
-                    <div class="flex">
-                        <span class="w-24 text-slate-400">SISTEMA:</span> 
-                        <span id="r_f2" class="text-slate-700">---</span>
-                    </div>
-                    <div class="flex">
-                        <span class="w-24 text-slate-400">TRANSIÇÃO:</span> 
-                        <span id="r_tof" class="text-slate-700">---</span>
-                    </div>
+                    <div class="flex"><span class="w-24 text-slate-400">PÉ ZAGS:</span> <span id="r_zags_foot" class="text-slate-700">---</span></div>
+                    <div class="flex"><span class="w-24 text-slate-400">LADO ATK:</span> <span id="r_atk_side" class="text-slate-700">---</span></div>
+                    <div class="flex"><span class="w-24 text-slate-400">GOLEIRO:</span> <span id="r_gk" class="text-slate-700">---</span></div>
+                    <div class="flex"><span class="w-24 text-slate-400">SAÍDA:</span> <span id="r_meta" class="text-slate-700">---</span></div>
+                    <div class="flex"><span class="w-24 text-slate-400">SISTEMA:</span> <span id="r_f2" class="text-slate-700">---</span></div>
+                    <div class="flex"><span class="w-24 text-slate-400">TRANSIÇÃO:</span> <span id="r_tof" class="text-slate-700">---</span></div>
                 </div>
-
                 <div class="grid grid-cols-4 gap-3">
-                    <div>
-                        <img id="r_img_o_saida" class="img-slot">
-                        <p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">Saída do Tiro de Meta</p>
-                    </div>
-                    <div>
-                        <img id="r_img_o_f2" class="img-slot">
-                        <p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">2ª Fase Construção</p>
-                    </div>
-                    <div>
-                        <img id="r_img_o_f3" class="img-slot">
-                        <p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">Último Terço</p>
-                    </div>
-                    <div>
-                        <img id="r_img_o_trans" class="img-slot">
-                        <p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">Transição OF</p>
-                    </div>
+                    <div><img id="r_img_o_saida" class="img-slot"><p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">Saída do Tiro de Meta</p></div>
+                    <div><img id="r_img_o_f2" class="img-slot"><p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">2ª Fase Construção</p></div>
+                    <div><img id="r_img_o_f3" class="img-slot"><p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">Último Terço</p></div>
+                    <div><img id="r_img_o_trans" class="img-slot"><p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">Transição OF</p></div>
                 </div>
             </div>
 
             <div class="bg-[#fef2f2] rounded-xl p-5 mb-6">
                 <h3 class="text-[#dc2626] font-black italic uppercase text-[14px] border-b border-[#fecaca] pb-2 mb-4 font-header">Fase Defensiva & Organização</h3>
-                
                 <div class="grid grid-cols-2 gap-x-12 gap-y-3 mb-5 text-[10px] font-bold text-slate-600 uppercase">
-                    <div class="flex">
-                        <span class="w-28 text-slate-400">BLOCOS (A/M/B):</span> 
-                        <span id="r_blocos" class="text-slate-700">---</span>
-                    </div>
-                    <div class="flex">
-                        <span class="w-24 text-slate-400">POSTURA:</span> 
-                        <span id="r_postura" class="text-slate-700">---</span>
-                    </div>
-                    <div class="flex">
-                        <span class="w-28 text-slate-400">GATILHO:</span> 
-                        <span id="r_gatilho" class="text-slate-700">---</span>
-                    </div>
-                    <div class="flex">
-                        <span class="w-24 text-slate-400">ALVO:</span> 
-                        <span id="r_target" class="text-slate-700">---</span>
-                    </div>
+                    <div class="flex"><span class="w-28 text-slate-400">BLOCOS (A/M/B):</span> <span id="r_blocos" class="text-slate-700">---</span></div>
+                    <div class="flex"><span class="w-24 text-slate-400">POSTURA:</span> <span id="r_postura" class="text-slate-700">---</span></div>
+                    <div class="flex"><span class="w-28 text-slate-400">GATILHO:</span> <span id="r_gatilho" class="text-slate-700">---</span></div>
+                    <div class="flex"><span class="w-24 text-slate-400">ALVO:</span> <span id="r_target" class="text-slate-700">---</span></div>
                 </div>
-
                 <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <img id="r_img_d_org" class="img-slot" style="height: 160px;">
-                        <p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">Organização Defensiva</p>
-                    </div>
-                    <div>
-                        <img id="r_img_d_trans" class="img-slot" style="height: 160px;">
-                        <p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">Transição Defensiva</p>
-                    </div>
+                    <div><img id="r_img_d_org" class="img-slot" style="height: 160px;"><p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">Organização Defensiva</p></div>
+                    <div><img id="r_img_d_trans" class="img-slot" style="height: 160px;"><p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">Transição Defensiva</p></div>
                 </div>
             </div>
 
@@ -297,16 +244,14 @@
                 <div class="text-[10px] font-black text-slate-300 uppercase italic font-header">Powered by Playtatic</div>
                 <div id="qrcode" class="w-16 h-16 bg-white p-1 border"></div>
             </footer>
-
         </main>
     </div>
 
     <script type="module">
-        // [Toda a lógica do Firebase se mantém idêntica ao seu original]
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+        // Aqui vai a configuração do SEU Firebase (não mudei as chaves)
         const firebaseConfig = {
             apiKey: "AIzaSyASBeLhess4TaQ53JmtS2RJUbIYav9q3Eg",
             authDomain: "analisesteam-8cdce.firebaseapp.com",
@@ -318,11 +263,44 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const db = getFirestore(app);
 
-        // Funções de Auth omitidas aqui por brevidade, mas elas ficam iguais...
+        // --- SISTEMA DE LOGIN DIRETO (SEM FIRESTORE) ---
+        document.getElementById('btn-login').onclick = async () => {
+            const email = document.getElementById('auth-email').value;
+            const pass = document.getElementById('auth-pass').value;
+            try { 
+                await signInWithEmailAndPassword(auth, email, pass); 
+            } catch (e) { 
+                document.getElementById('auth-error').innerText = "ACESSO NEGADO OU CONTA BLOQUEADA."; 
+            }
+        };
+
+        document.getElementById('btn-signup').onclick = async () => {
+            const email = document.getElementById('auth-email').value;
+            const pass = document.getElementById('auth-pass').value;
+            try { 
+                await createUserWithEmailAndPassword(auth, email, pass); 
+                alert("CONTA CRIADA COM SUCESSO! AGORA PODE ENTRAR."); 
+            } catch (e) { 
+                document.getElementById('auth-error').innerText = "ERRO AO CADASTRAR OU E-MAIL JÁ EXISTE."; 
+            }
+        };
+
         document.getElementById('btn-logout').onclick = () => signOut(auth);
 
+        // O SEGREDO ESTÁ AQUI: Se a pessoa existir no Auth, o painel abre na hora!
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('auth-screen').classList.add('hidden');
+                document.getElementById('main-panel').classList.remove('hidden');
+                document.getElementById('user-display').innerText = `USUÁRIO: ${user.email}`;
+            } else {
+                document.getElementById('auth-screen').classList.remove('hidden');
+                document.getElementById('main-panel').classList.add('hidden');
+            }
+        });
+
+        // --- RESTANTE DA LÓGICA DO SCOUT MASTER ---
         window.checkNet = () => {
             const dot = document.getElementById('net-dot'); const txt = document.getElementById('net-txt');
             if(navigator.onLine) { dot.className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"; txt.innerText="ONLINE"; }
@@ -360,9 +338,7 @@
             document.querySelectorAll('.library-item').forEach(el => { el.style.display = el.innerText.toLowerCase().includes(term) ? "block" : "none"; });
         };
 
-        // ====== FUNÇÃO PRINCIPAL DE MAPEAMENTO ======
         window.gerarPlano = () => {
-            
             // Textos Fase Ofensiva
             document.getElementById('r_zags_foot').innerText = document.getElementById('op_zags_foot').value || "---";
             document.getElementById('r_atk_side').innerText = document.getElementById('op_atk_side').value || "---";
@@ -398,7 +374,7 @@
                 if(val) { img.src = val; img.style.display = 'block'; } else { img.style.display = 'none'; }
             });
             
-            // Labels das imagens ABP (só mostram se tiver imagem)
+            // Labels
             document.getElementById('r_lbl_abpo').style.display = document.getElementById('img_abpo_main').value ? 'block' : 'none';
             document.getElementById('r_lbl_abpd').style.display = document.getElementById('img_abpd_main').value ? 'block' : 'none';
 
@@ -410,10 +386,10 @@
 
         window.onload = () => { checkNet(); renderizarBiblioteca(); };
         
-        // Ativar a impressão ao clicar no botão exportar
+        // Ativar Impressão
         document.querySelector('button[onclick="window.print()"]') ? null : 
         document.querySelector('button.bg-\\[\\#111827\\]').onclick = () => {
-            gerarPlano(); // Atualiza tudo antes de gerar o PDF
+            gerarPlano();
             window.print();
         };
     </script>
