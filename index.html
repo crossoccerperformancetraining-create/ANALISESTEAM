@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scout Master Platinum - Playtatic (Cloud)</title>
+    <title>Scout Master Platinum - Playtatic (Cloud Pro)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
@@ -89,7 +89,8 @@
                 <div id="lista_analises" class="max-h-40 overflow-y-auto pr-2 mb-3 border border-slate-700 rounded-lg p-2 bg-[#0d1117]">
                     <p class="text-[10px] text-slate-500 text-center italic mt-2">Carregando da nuvem...</p>
                 </div>
-                <button onclick="salvarAnalise()" id="btn_salvar_analise" class="w-full bg-yellow-600 text-white font-bold py-2 rounded-lg uppercase text-xs">Sincronizar Análise</button>
+                <button onclick="salvarAnalise()" id="btn_salvar_analise" class="w-full bg-yellow-600 text-white font-black py-3 rounded-lg uppercase text-[11px] mb-2 shadow-lg">Sincronizar Análise Atual ☁️</button>
+                <button onclick="migrarLocalNuvem()" class="w-full bg-slate-800 border border-slate-600 text-slate-300 font-bold py-2 rounded-lg uppercase text-[10px] hover:bg-slate-700 transition">Importar Antigos do PC para a Nuvem</button>
             </div>
 
             <div class="section-card border-l-4 border-l-purple-600">
@@ -228,6 +229,7 @@
                         </select>
                     </div>
                 </div>
+                
                 <div class="grid grid-cols-2 gap-4 mb-4">
                     <div><label class="label-sm text-red-300">Encaixe de Área</label>
                         <select id="op_encaixe" class="input-dark text-[11px]">
@@ -423,7 +425,7 @@
             <footer class="mt-8 flex justify-between items-end border-t border-slate-200 pt-4 break-inside-avoid">
                 <div>
                     <div class="text-[10px] font-black text-slate-300 uppercase italic font-header">Powered by Playtatic Scout Platinum</div>
-                    <p class="text-[7px] text-slate-300 mt-1 uppercase">Relatório gerado automaticamente.</p>
+                    <p class="text-[7px] text-slate-300 mt-1 uppercase">Relatório sincronizado via Firebase Cloud.</p>
                 </div>
                 <div class="flex flex-col items-center">
                     <div id="qrcode" class="w-16 h-16 bg-white p-1 border border-slate-200 shadow-sm"></div>
@@ -436,7 +438,6 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        // --- ADICIONADO FIRESTORE PARA SINCRONIZAÇÃO EM NUVEM ---
         import { getFirestore, doc, setDoc, getDoc, collection, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -459,7 +460,7 @@
         };
         document.getElementById('btn-signup').onclick = async () => {
             const email = document.getElementById('auth-email').value; const pass = document.getElementById('auth-pass').value;
-            try { await createUserWithEmailAndPassword(auth, email, pass); alert("CONTA CRIADA!"); } catch (e) { document.getElementById('auth-error').innerText = "ERRO."; }
+            try { await createUserWithEmailAndPassword(auth, email, pass); alert("CONTA CRIADA!"); } catch (e) { document.getElementById('auth-error').innerText = "ERRO AO CRIAR CONTA."; }
         };
         document.getElementById('btn-logout').onclick = () => signOut(auth);
 
@@ -467,15 +468,15 @@
             if (user) {
                 document.getElementById('auth-screen').classList.add('hidden');
                 document.getElementById('main-panel').classList.remove('hidden');
-                carregarConfigServer(); // Puxa config da nuvem
-                carregarBibliotecaNuvem(); // Puxa análises da nuvem
+                carregarConfigServer(); 
+                carregarBibliotecaNuvem(); 
             } else {
                 document.getElementById('auth-screen').classList.remove('hidden');
                 document.getElementById('main-panel').classList.add('hidden');
             }
         });
 
-        // -- Configurações do Analista (Sincronizado na Nuvem) --
+        // -- Configurações do Analista --
         window.abrirConfig = () => document.getElementById('config-modal').classList.remove('hidden');
         window.fecharConfig = () => document.getElementById('config-modal').classList.add('hidden');
         
@@ -491,7 +492,6 @@
                 logo: document.getElementById('cfg_logo').value || ""
             };
             
-            // Salva no banco de dados
             await setDoc(doc(db, "usuarios", user.uid, "config", "perfil"), cfg);
             aplicarConfigUI(cfg);
             fecharConfig();
@@ -501,56 +501,98 @@
         window.carregarConfigServer = async () => {
             const user = auth.currentUser;
             if(!user) return;
-            const docSnap = await getDoc(doc(db, "usuarios", user.uid, "config", "perfil"));
-            if (docSnap.exists()) {
-                const cfg = docSnap.data();
-                document.getElementById('cfg_analista').value = cfg.nome;
-                document.getElementById('cfg_equipe').value = cfg.equipe;
-                document.getElementById('cfg_logo').value = cfg.logo;
-                aplicarConfigUI(cfg);
-            } else {
-                aplicarConfigUI({nome:"Seu Nome", equipe:"Sua Equipe", logo:""});
-            }
+            try {
+                const docSnap = await getDoc(doc(db, "usuarios", user.uid, "config", "perfil"));
+                if (docSnap.exists()) {
+                    const cfg = docSnap.data();
+                    document.getElementById('cfg_analista').value = cfg.nome;
+                    document.getElementById('cfg_equipe').value = cfg.equipe;
+                    document.getElementById('cfg_logo').value = cfg.logo;
+                    aplicarConfigUI(cfg);
+                }
+            } catch(e) {}
         };
 
         const aplicarConfigUI = (cfg) => {
-            document.getElementById('side_nome_analista').innerText = cfg.nome;
-            document.getElementById('side_equipe_analista').innerText = cfg.equipe;
+            document.getElementById('side_nome_analista').innerText = cfg.nome || "Adriano Cabeça";
+            document.getElementById('side_equipe_analista').innerText = cfg.equipe || "Tactical Intel";
             if(cfg.logo) { document.getElementById('side_logo_analista').src = cfg.logo; document.getElementById('side_logo_analista').style.display = 'block'; }
             
-            document.getElementById('print_nome_analista').innerText = cfg.nome;
-            document.getElementById('print_equipe_analista').innerText = cfg.equipe;
+            document.getElementById('print_nome_analista').innerText = cfg.nome || "Analista";
+            document.getElementById('print_equipe_analista').innerText = cfg.equipe || "Equipe";
             if(cfg.logo) { document.getElementById('print_logo_analista').src = cfg.logo; document.getElementById('print_logo_analista').style.display = 'block'; }
         };
 
+        // -- MIGRAR PC PARA NUVEM --
+        window.migrarLocalNuvem = async () => {
+            const user = auth.currentUser;
+            if(!user) return;
+            let ldb = JSON.parse(localStorage.getItem('scout_v14_db') || '{}');
+            const chaves = Object.keys(ldb);
+            
+            if(chaves.length === 0) {
+                alert("Nenhum relatório antigo encontrado no PC.");
+                return;
+            }
+
+            if(confirm(`Foram encontrados ${chaves.length} relatórios antigos salvos neste computador. Deseja enviá-los para a Nuvem?`)) {
+                for(let id of chaves) {
+                    const idSeguro = id.replace(/\//g, '-').replace(/\\/g, '-');
+                    try {
+                        await setDoc(doc(db, "usuarios", user.uid, "analises", idSeguro), ldb[id]);
+                    } catch(e) {
+                        console.error("Erro ao migrar", id, e);
+                    }
+                }
+                alert("✅ Migração concluída com sucesso! Os relatórios antigos já estão na Nuvem.");
+                carregarBibliotecaNuvem();
+            }
+        };
+
         // -- Biblioteca e Histórico (Sincronizado na Nuvem) --
-        let bibliotecaCache = {}; // Guarda na memória do app
+        let bibliotecaCache = {}; 
 
         window.salvarAnalise = async () => {
             const user = auth.currentUser;
-            if(!user) return alert("Precisa estar logado!");
+            if(!user) { alert("Você precisa estar logado para salvar na nuvem."); return; }
+            
             const btn = document.getElementById('btn_salvar_analise');
-            btn.innerText = "Sincronizando...";
+            btn.innerText = "Enviando... ⏳";
 
-            const id = document.getElementById('op_name').value || "NOVA_EQUIPE_" + Math.floor(Math.random() * 1000);
-            let data = {}; 
-            document.querySelectorAll('input, select, textarea').forEach(el => { 
-                if(el.id && !el.id.startsWith('auth-') && !el.id.startsWith('cfg_') && el.id !== 'search_db') data[el.id] = el.value; 
-            });
-            
-            // Salva no Firestore!
-            await setDoc(doc(db, "usuarios", user.uid, "analises", id), data);
-            
-            btn.innerText = "Sincronizar Análise";
-            carregarBibliotecaNuvem(); // Atualiza a lista lateral
+            try {
+                let nomeEquipe = document.getElementById('op_name').value.trim();
+                if(!nomeEquipe) { nomeEquipe = "NOVA_EQUIPE_" + Math.floor(Math.random() * 1000); }
+                const idSeguro = nomeEquipe.replace(/\//g, '-').replace(/\\/g, '-'); 
+
+                let data = {}; 
+                document.querySelectorAll('input, select, textarea').forEach(el => { 
+                    if(el.id && !el.id.startsWith('auth-') && !el.id.startsWith('cfg_') && el.id !== 'search_db') {
+                        data[el.id] = el.value; 
+                    }
+                });
+                
+                await setDoc(doc(db, "usuarios", user.uid, "analises", idSeguro), data);
+                
+                alert(`✅ Relatório de ${nomeEquipe} salvo na Nuvem com sucesso!`);
+                carregarBibliotecaNuvem(); 
+            } catch(e) {
+                console.error(e);
+                alert("❌ ERRO AO SALVAR: O arquivo ficou pesado demais (limite do banco de dados excedido). Tente usar as imagens com tamanho menor.");
+            } finally {
+                btn.innerText = "Sincronizar Análise Atual ☁️";
+            }
         };
 
         window.deletarAnalise = async (id) => {
             const user = auth.currentUser;
             if(!user) return;
-            if(confirm(`Tem certeza que deseja apagar o relatório de ${id} da NUVEM?`)) {
-                await deleteDoc(doc(db, "usuarios", user.uid, "analises", id));
-                carregarBibliotecaNuvem();
+            if(confirm(`Tem certeza que deseja APAGAR o relatório de ${id} da NUVEM permanentemente?`)) {
+                try {
+                    await deleteDoc(doc(db, "usuarios", user.uid, "analises", id));
+                    carregarBibliotecaNuvem();
+                } catch(e) {
+                    alert("Erro ao excluir.");
+                }
             }
         };
 
@@ -559,30 +601,35 @@
             if(!user) return;
             const lista = document.getElementById('lista_analises');
             
-            const querySnapshot = await getDocs(collection(db, "usuarios", user.uid, "analises"));
-            bibliotecaCache = {};
-            lista.innerHTML = "";
-            
-            if(querySnapshot.empty) {
-                lista.innerHTML = '<p class="text-[10px] text-slate-500 text-center italic mt-2">Nenhuma análise salva ainda.</p>';
-                return;
-            }
-
-            querySnapshot.forEach((docSnap) => {
-                const id = docSnap.id;
-                bibliotecaCache[id] = docSnap.data(); // Guarda na memória pra carregar rápido
+            try {
+                const querySnapshot = await getDocs(collection(db, "usuarios", user.uid, "analises"));
+                bibliotecaCache = {};
+                lista.innerHTML = "";
                 
-                let div = document.createElement('div');
-                div.className = "library-item flex justify-between items-center text-[10px] uppercase font-bold text-slate-300 p-1 mb-1 border-b border-slate-700/50 hover:bg-slate-800 rounded transition"; 
-                div.innerHTML = `
-                    <span class="truncate w-3/4 cursor-pointer" onclick="carregarDaBiblioteca('${id}')">${id}</span>
-                    <div class="flex gap-2">
-                        <button onclick="carregarDaBiblioteca('${id}')" title="Editar / Carregar" class="hover:text-emerald-400">✏️</button>
-                        <button onclick="deletarAnalise('${id}')" title="Excluir" class="hover:text-red-500">🗑️</button>
-                    </div>
-                `;
-                lista.appendChild(div);
-            });
+                if(querySnapshot.empty) {
+                    lista.innerHTML = '<p class="text-[10px] text-slate-500 text-center italic mt-2">Nenhuma análise na Nuvem.</p>';
+                    return;
+                }
+
+                querySnapshot.forEach((docSnap) => {
+                    const id = docSnap.id;
+                    bibliotecaCache[id] = docSnap.data(); 
+                    
+                    let div = document.createElement('div');
+                    div.className = "library-item flex justify-between items-center text-[10px] uppercase font-bold text-slate-300 p-1 mb-1 border-b border-slate-700/50 hover:bg-slate-800 rounded transition"; 
+                    div.innerHTML = `
+                        <span class="truncate w-3/4 cursor-pointer" onclick="carregarDaBiblioteca('${id}')">📂 ${id}</span>
+                        <div class="flex gap-2">
+                            <button onclick="carregarDaBiblioteca('${id}')" title="Carregar Análise" class="hover:text-emerald-400">✏️</button>
+                            <button onclick="deletarAnalise('${id}')" title="Excluir da Nuvem" class="hover:text-red-500">🗑️</button>
+                        </div>
+                    `;
+                    lista.appendChild(div);
+                });
+            } catch(e) {
+                console.error(e);
+                lista.innerHTML = '<p class="text-[10px] text-red-500 text-center italic mt-2">Erro de conexão.</p>';
+            }
         };
 
         window.carregarDaBiblioteca = (id) => {
@@ -599,19 +646,45 @@
             document.querySelectorAll('.library-item').forEach(el => { el.style.display = el.innerText.toLowerCase().includes(term) ? "flex" : "none"; });
         };
 
-        // -- Outros --
+        // COMPRESSOR DE IMAGEM AUTOMÁTICO (Impede o erro de arquivo muito grande)
+        window.imgLocal = (event, id) => {
+            const file = event.target.files[0];
+            if(!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 800; // Limita a resolução para salvar na nuvem sem travar
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > MAX_WIDTH) {
+                        height = Math.floor(height * (MAX_WIDTH / width));
+                        width = MAX_WIDTH;
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.6); // Comprime em JPEG
+                    document.getElementById(id).value = compressedBase64;
+                    gerarPlano();
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        };
+
         window.checkNet = () => {
             const dot = document.getElementById('net-dot'); const txt = document.getElementById('net-txt');
             if(navigator.onLine) { dot.className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"; txt.innerText="ONLINE"; }
             else { dot.className="w-2 h-2 rounded-full bg-red-500"; txt.innerText="OFFLINE"; }
         };
         window.addEventListener('online', checkNet); window.addEventListener('offline', checkNet);
-
-        window.imgLocal = (event, id) => {
-            const reader = new FileReader();
-            reader.onload = (e) => { document.getElementById(id).value = e.target.result; gerarPlano(); };
-            reader.readAsDataURL(event.target.files[0]);
-        };
 
         window.gerarPlano = () => {
             // Textos Fixos
