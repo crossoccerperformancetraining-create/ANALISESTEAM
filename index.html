@@ -880,6 +880,7 @@
             Crie um texto curto e direto (no máximo 2 parágrafos) focado exclusivamente em "Onde Explorar e Nossa Vantagem". Como podemos vencê-los taticamente usando as fraquezas dessas características mapeadas? Não use saudações, vá direto para a sugestão tática.`;
 
             try {
+                // Usando o modelo gemini-1.5-flash
                 const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
                 const resposta = await fetch(url, {
                     method: 'POST',
@@ -895,17 +896,19 @@
                 if(dados.candidates && dados.candidates.length > 0) {
                     campoExplorar.value = dados.candidates[0].content.parts[0].text.trim();
                     window.gerarPlano(); 
+                } else if (dados.error) {
+                    // SE O GOOGLE BARRAR, ELE VAI DIZER O MOTIVO AQUI:
+                    campoExplorar.value = "ERRO DO GOOGLE: " + dados.error.message;
                 } else {
-                    campoExplorar.value = "Erro: A IA não enviou uma resposta válida.";
+                    campoExplorar.value = "Retorno inesperado: " + JSON.stringify(dados);
                 }
 
             } catch (erro) {
                 console.error("Deu ruim na requisição:", erro);
-                campoExplorar.value = "Erro de conexão com o servidor da IA. Verifique sua chave ou internet.";
+                campoExplorar.value = "Erro de conexão com o servidor da IA: " + erro.message;
             }
         });
         // ==============================================================
-
 
         window.gerarPlano = () => {
             // Textos Fixos
