@@ -880,8 +880,9 @@
             Crie um texto curto e direto (no máximo 2 parágrafos) focado exclusivamente em "Onde Explorar e Nossa Vantagem". Como podemos vencê-los taticamente usando as fraquezas dessas características mapeadas? Não use saudações, vá direto para a sugestão tática.`;
 
             try {
-                // Usando o modelo gemini-1.5-flash
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+                // CORREÇÃO AQUI: Usando o modelo gemini-1.5-flash-latest
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
+                
                 const resposta = await fetch(url, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
