@@ -10,11 +10,11 @@
     <style>
         body { background-color: #0d1117; color: #f8fafc; font-family: 'Inter', sans-serif; overflow: hidden; }
         .font-header { font-family: 'Orbitron', sans-serif; }
-        .input-dark { background: #1e293b; border: 1px solid #334155; color: #f8fafc; padding: 12px; border-radius: 12px; width: 100%; font-size: 0.85rem; }
+        .input-dark { background: #1e293b; border: 1px solid #334155; color: #f8fafc; padding: 12px; border-radius: 12px; width: 100%; font-size: 0.9rem; }
         .section-card { background: #0f172a; border: 1px solid #1e293b; border-radius: 18px; padding: 20px; margin-bottom: 18px; }
         .label-sm { font-size: 0.75rem; color: #94a3b8; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; display: block; }
         .badge-title { font-size: 0.9rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 18px; display: block; text-decoration: underline; font-style: italic; }
-        .img-slot { width: 100%; height: 110px; object-fit: cover; border-radius: 12px; display: none; border: 1px solid #e2e8f0; }
+        .img-slot { width: 100%; height: 120px; object-fit: cover; border-radius: 12px; display: none; border: 1px solid #e2e8f0; }
         .hidden { display: none !important; }
         .net-status { position: absolute; top: 10px; right: 10px; display: flex; align-items: center; gap: 5px; font-size: 9px; font-weight: 900; padding: 5px 10px; border-radius: 10px; background: #0f172a; border: 1px solid #1e293b; z-index: 100; }
         
@@ -54,7 +54,6 @@
     </div>
 
     <div id="main-panel" class="hidden h-screen p-2 md:p-6 lg:flex gap-6 overflow-hidden">
-        
         <aside class="w-full lg:w-2/5 no-print h-full overflow-y-auto pb-10 pr-2 custom-scrollbar">
             <header class="mb-6 flex justify-between items-start">
                 <div>
@@ -78,23 +77,12 @@
 
             <div class="section-card border-l-4 border-l-purple-600">
                 <span class="badge-title text-purple-400">Identificação & Placar</span>
-                <div class="grid grid-cols-2 gap-4 mb-4">
-                    <div><label class="label-sm">Competição</label><input type="text" id="op_comp" class="input-dark uppercase" placeholder="Ex: Série B"></div>
-                    <div><label class="label-sm">Local</label>
-                        <select id="op_local" class="input-dark">
-                            <option value="CASA">Casa</option>
-                            <option value="VISITANTE">Visitante</option>
-                            <option value="NEUTRO">Neutro</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="grid grid-cols-3 gap-2 mb-4">
-                    <div><label class="label-sm text-[10px]">Logo Mandante</label><input type="text" id="op_logo_home" class="input-dark px-2 text-center" placeholder="URL"></div>
-                    <div><label class="label-sm text-[10px] text-center">Placar</label><input type="text" id="op_score" class="input-dark text-center font-bold" value="0 x 0"></div>
-                    <div><label class="label-sm text-[10px]">Logo Visitante</label><input type="text" id="op_logo_away" class="input-dark px-2 text-center" placeholder="URL"></div>
-                </div>
                 <div class="grid grid-cols-2 gap-4">
-                    <div><label class="label-sm">Nome do Rival</label><input type="text" id="op_name" class="input-dark uppercase font-bold"></div>
+                    <div><label class="label-sm">Logo Rival (URL)</label><input type="text" id="op_logo" class="input-dark"></div>
+                    <div><label class="label-sm">Placar</label><input type="text" id="op_score" class="input-dark text-center font-bold" value="0x0"></div>
+                </div>
+                <div class="grid grid-cols-2 gap-4 mt-4">
+                    <div><label class="label-sm">Rival</label><input type="text" id="op_name" class="input-dark uppercase font-bold"></div>
                     <div><label class="label-sm">Treinador</label><input type="text" id="op_coach" class="input-dark uppercase"></div>
                 </div>
             </div>
@@ -130,10 +118,9 @@
                         </div>
                         <div><label class="label-sm">Saída/Meta</label>
                             <select id="op_meta" class="input-dark">
-                                <option value="CURTA (3+1) VOLANTE">Curta (3+1) Volante</option>
-                                <option value="LONGA (3+1) VOLANTE">Longa (3+1) Volante</option>
+                                <option value="CURTA (3+1)">Curta (3+1)</option>
+                                <option value="LONGA">Longa</option>
                                 <option value="GOLEIRO CURTA">Goleiro Curta</option>
-                                <option value="GOLEIRO LONGA">Goleiro Longa</option>
                             </select>
                         </div>
                     </div>
@@ -141,12 +128,8 @@
                         <div><label class="label-sm">2ª Fase</label>
                             <select id="op_f2" class="input-dark">
                                 <option value="SISTEMA 4-3-3">Sistema 4-3-3</option>
+                                <option value="3x1 LAVOLPIANA">3x1 Lavolpiana</option>
                                 <option value="2x2 QUADRADO">2x2 Quadrado</option>
-                                <option value="2x1 QUADRADO">2x1 Quadrado</option>
-                                <option value="3x1 VOLANTE">3x1 Volante</option>
-                                <option value="3x1 LATERAL">3x1 Lateral</option>
-                                <option value="3x2 LATERAL">3x2 Lateral</option>
-                                <option value="3x2 VOLANTE">3x2 Volante</option>
                             </select>
                         </div>
                         <div><label class="label-sm">Transição OF</label>
@@ -163,47 +146,13 @@
             <div class="section-card border-l-4 border-l-red-500">
                 <span class="badge-title text-red-400">Fase Defensiva & Transição</span>
                 <div class="grid grid-cols-3 gap-2 mb-4">
-                    <div><label class="label-sm text-[9px]">Bloco Alto</label>
-                        <select id="op_def_h" class="input-dark text-[10px] px-1">
-                            <option value="4-4-2">4-4-2</option>
-                            <option value="4-3-3">4-3-3</option>
-                            <option value="4-1-4-1">4-1-4-1</option>
-                            <option value="4-1-3-2">4-1-3-2</option>
-                            <option value="3-4-3">3-4-3</option>
-                        </select>
-                    </div>
-                    <div><label class="label-sm text-[9px]">Bloco Médio</label>
-                        <select id="op_def_m" class="input-dark text-[10px] px-1">
-                            <option value="4-4-2">4-4-2</option>
-                            <option value="4-2-3-1">4-2-3-1</option>
-                            <option value="4-1-4-1">4-1-4-1</option>
-                            <option value="3-5-2">3-5-2</option>
-                        </select>
-                    </div>
-                    <div><label class="label-sm text-[9px]">Bloco Baixo</label>
-                        <select id="op_def_l" class="input-dark text-[10px] px-1">
-                            <option value="4-4-2">4-4-2</option>
-                            <option value="5-4-1">5-4-1</option>
-                            <option value="5-3-2">5-3-2</option>
-                            <option value="4-5-1">4-5-1</option>
-                        </select>
-                    </div>
+                    <div><label class="label-sm text-[9px]">Alto</label><input type="text" id="op_def_h" class="input-dark text-center" value="4-3-3"></div>
+                    <div><label class="label-sm text-[9px]">Médio</label><input type="text" id="op_def_m" class="input-dark text-center" value="4-4-2"></div>
+                    <div><label class="label-sm text-[9px]">Baixo</label><input type="text" id="op_def_l" class="input-dark text-center" value="5-4-1"></div>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
-                    <div><label class="label-sm">Postura</label>
-                        <select id="op_postura" class="input-dark">
-                            <option value="PRESSIONA">Pressiona</option>
-                            <option value="BAIXA AS LINHAS">Baixa as Linhas</option>
-                            <option value="ESPERA">Espera</option>
-                        </select>
-                    </div>
-                    <div><label class="label-sm">Gatilho</label>
-                        <select id="op_gatilho" class="input-dark">
-                            <option value="PASSE LATERAL">Passe Lateral</option>
-                            <option value="PASSE PARA TRÁS">Passe para Trás</option>
-                            <option value="RECUO GOLEIRO">Recuo Goleiro</option>
-                        </select>
-                    </div>
+                    <div><label class="label-sm">Postura</label><select id="op_postura" class="input-dark"><option value="PRESSIONA">Pressiona</option><option value="ESPERA">Espera</option></select></div>
+                    <div><label class="label-sm">Gatilho</label><select id="op_gatilho" class="input-dark"><option value="PASSE LATERAL">Passe Lateral</option><option value="RECUO GOLEIRO">Recuo Goleiro</option></select></div>
                 </div>
                 <div class="mt-4"><label class="label-sm">Alvo Marcação</label><input type="text" id="op_target" class="input-dark" placeholder="Camisa/Nome" value="NENHUM"></div>
             </div>
@@ -213,11 +162,10 @@
                 <div class="grid grid-cols-2 gap-4 mb-4">
                     <div><label class="label-sm text-orange-400">Batida (Ofensiva)</label>
                         <select id="op_abpo_batida" class="input-dark">
-                            <option value="CURTO 2 NA BOLA">Curto 2 na Bola</option>
+                            <option value="CURTO">Curto</option>
                             <option value="ABERTO (2º PAU)">Aberto (2º Pau)</option>
                             <option value="FECHADO">Fechado</option>
-                            <option value="DIRETA 1 NA BOLA">Direta 1 na Bola</option>
-                            <option value="DIRETA 2 NA BOLA">Direta 2 na Bola</option>
+                            <option value="DIRETA">Direta</option>
                         </select>
                     </div>
                     <div><label class="label-sm text-orange-400">Atletas na Bola</label>
@@ -236,10 +184,9 @@
                         </select>
                     </div>
                     <div><label class="label-sm text-sky-400">Sobra/Rebote</label>
-                        <select id="op_abpd_rebote" class="input-dark text-[10px]">
-                            <option value="REBOTE 2 - SOBRA 1">Rebote 2 - Sobra 1</option>
-                            <option value="REBOTE 1 - SOBRA 2">Rebote 1 - Sobra 2</option>
-                            <option value="LIVRE - SOBRA 2">Livre - Sobra 2</option>
+                        <select id="op_abpd_rebote" class="input-dark">
+                            <option value="2 ATLETAS">2 Atletas</option>
+                            <option value="1 ATLETA">1 Atleta</option>
                         </select>
                     </div>
                 </div>
@@ -250,7 +197,7 @@
                 
                 <p class="text-[10px] text-emerald-400 font-bold mb-2 uppercase">Fase Ofensiva</p>
                 <div class="grid grid-cols-2 gap-4 mb-4 border-b border-slate-700 pb-4">
-                    <div><label class="label-sm flex justify-between items-center">Saída (Meta) <label class="cursor-pointer text-blue-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_o_saida')"></label></label><input type="text" id="img_o_saida" class="input-dark" placeholder="URL ou 📸"></div>
+                    <div><label class="label-sm flex justify-between items-center">Saída <label class="cursor-pointer text-blue-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_o_saida')"></label></label><input type="text" id="img_o_saida" class="input-dark" placeholder="URL ou 📸"></div>
                     <div><label class="label-sm flex justify-between items-center">2ª Fase <label class="cursor-pointer text-blue-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_o_f2')"></label></label><input type="text" id="img_o_f2" class="input-dark" placeholder="URL ou 📸"></div>
                     <div><label class="label-sm flex justify-between items-center">1/3 Final <label class="cursor-pointer text-blue-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_o_f3')"></label></label><input type="text" id="img_o_f3" class="input-dark" placeholder="URL ou 📸"></div>
                     <div><label class="label-sm flex justify-between items-center">Trans. OF <label class="cursor-pointer text-blue-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_o_trans')"></label></label><input type="text" id="img_o_trans" class="input-dark" placeholder="URL ou 📸"></div>
@@ -258,21 +205,16 @@
 
                 <p class="text-[10px] text-red-400 font-bold mb-2 uppercase">Fase Defensiva</p>
                 <div class="grid grid-cols-2 gap-4 mb-4 border-b border-slate-700 pb-4">
-                    <div><label class="label-sm flex justify-between items-center">Bloco Alto <label class="cursor-pointer text-red-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_d_alto')"></label></label><input type="text" id="img_d_alto" class="input-dark" placeholder="URL ou 📸"></div>
-                    <div><label class="label-sm flex justify-between items-center">Bloco Médio <label class="cursor-pointer text-red-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_d_medio')"></label></label><input type="text" id="img_d_medio" class="input-dark" placeholder="URL ou 📸"></div>
-                    <div><label class="label-sm flex justify-between items-center">Bloco Baixo <label class="cursor-pointer text-red-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_d_baixo')"></label></label><input type="text" id="img_d_baixo" class="input-dark" placeholder="URL ou 📸"></div>
+                    <div><label class="label-sm flex justify-between items-center">B. Alto <label class="cursor-pointer text-red-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_d_alto')"></label></label><input type="text" id="img_d_alto" class="input-dark" placeholder="URL ou 📸"></div>
                     <div><label class="label-sm flex justify-between items-center">Trans. DEF <label class="cursor-pointer text-red-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_d_trans')"></label></label><input type="text" id="img_d_trans" class="input-dark" placeholder="URL ou 📸"></div>
                 </div>
 
                 <p class="text-[10px] font-bold mb-2 uppercase"><span class="text-orange-400">ABP OF</span> & <span class="text-sky-400">ABP DEF</span></p>
-                <div class="grid grid-cols-2 gap-4 mb-4 border-b border-slate-700 pb-4">
-                    <div><label class="label-sm flex justify-between items-center text-orange-400">Escanteio OF <label class="cursor-pointer">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_abpo_esc')"></label></label><input type="text" id="img_abpo_esc" class="input-dark" placeholder="URL"></div>
-                    <div><label class="label-sm flex justify-between items-center text-orange-400">Falta Lat. OF <label class="cursor-pointer">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_abpo_fal')"></label></label><input type="text" id="img_abpo_fal" class="input-dark" placeholder="URL"></div>
-                    <div><label class="label-sm flex justify-between items-center text-sky-400">Escanteio DEF <label class="cursor-pointer">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_abpd_esc')"></label></label><input type="text" id="img_abpd_esc" class="input-dark" placeholder="URL"></div>
-                    <div><label class="label-sm flex justify-between items-center text-sky-400">Falta Lat. DEF <label class="cursor-pointer">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_abpd_fal')"></label></label><input type="text" id="img_abpd_fal" class="input-dark" placeholder="URL"></div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div><label class="label-sm flex justify-between items-center text-orange-400">Imagem OF <label class="cursor-pointer">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_abpo_main')"></label></label><input type="text" id="img_abpo_main" class="input-dark" placeholder="URL ou 📸"></div>
+                    <div><label class="label-sm flex justify-between items-center text-sky-400">Imagem DEF <label class="cursor-pointer">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_abpd_main')"></label></label><input type="text" id="img_abpd_main" class="input-dark" placeholder="URL ou 📸"></div>
                 </div>
-                
-                <div class="mt-4"><label class="label-sm">Vídeo (QR CODE)</label><input type="text" id="op_vid" class="input-dark" placeholder="YouTube/Drive"></div>
+                <div class="mt-6"><label class="label-sm">Vídeo (QR CODE)</label><input type="text" id="op_vid" class="input-dark" placeholder="YouTube/Drive"></div>
             </div>
 
             <div class="section-card border-l-4 border-l-slate-400">
@@ -284,23 +226,6 @@
         </aside>
 
         <main class="w-full lg:w-3/5 bg-white text-slate-900 rounded-2xl p-6 shadow-2xl h-full overflow-y-auto" id="print-area">
-            
-            <header class="mb-6 border-b-4 border-slate-900 pb-4">
-                <div class="text-center mb-4">
-                    <span id="r_comp" class="text-[10px] font-black text-white bg-slate-900 px-3 py-1 rounded-full uppercase tracking-widest">---</span>
-                    <span id="r_local" class="text-[10px] font-bold text-slate-500 uppercase ml-2 border border-slate-300 px-2 py-1 rounded-full">---</span>
-                </div>
-                <div class="flex justify-center items-center gap-8">
-                    <img id="r_logo_home" src="" class="w-16 h-16 object-contain hidden" alt="Mandante">
-                    <div id="r_score" class="text-4xl font-black font-header text-slate-900 italic">0 x 0</div>
-                    <img id="r_logo_away" src="" class="w-16 h-16 object-contain hidden" alt="Visitante">
-                </div>
-                <div class="text-center mt-3">
-                    <h2 id="r_name" class="font-header text-xl font-black italic uppercase text-slate-800">---</h2>
-                    <p id="r_coach" class="text-[10px] font-black text-slate-500 uppercase mt-1">TREINADOR: ---</p>
-                </div>
-            </header>
-
             <div class="bg-[#f2fdf7] rounded-xl p-5 mb-6">
                 <h3 class="text-[#059669] font-black italic uppercase text-[14px] border-b border-[#a7f3d0] pb-2 mb-4 font-header">Fase Ofensiva & Construção</h3>
                 <div class="grid grid-cols-2 gap-x-12 gap-y-3 mb-5 text-[10px] font-bold text-slate-600 uppercase">
@@ -312,10 +237,10 @@
                     <div class="flex"><span class="w-24 text-slate-400">TRANSIÇÃO:</span> <span id="r_tof" class="text-slate-700">---</span></div>
                 </div>
                 <div class="grid grid-cols-4 gap-3">
-                    <div><img id="r_img_o_saida" class="img-slot"><p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">Saída/Meta</p></div>
-                    <div><img id="r_img_o_f2" class="img-slot"><p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">2ª Fase</p></div>
-                    <div><img id="r_img_o_f3" class="img-slot"><p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">1/3 Final</p></div>
-                    <div><img id="r_img_o_trans" class="img-slot"><p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">Trans. OF</p></div>
+                    <div><img id="r_img_o_saida" class="img-slot"><p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">Saída do Tiro de Meta</p></div>
+                    <div><img id="r_img_o_f2" class="img-slot"><p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">2ª Fase Construção</p></div>
+                    <div><img id="r_img_o_f3" class="img-slot"><p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">Último Terço</p></div>
+                    <div><img id="r_img_o_trans" class="img-slot"><p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">Transição OF</p></div>
                 </div>
             </div>
 
@@ -327,11 +252,9 @@
                     <div class="flex"><span class="w-28 text-slate-400">GATILHO:</span> <span id="r_gatilho" class="text-slate-700">---</span></div>
                     <div class="flex"><span class="w-24 text-slate-400">ALVO:</span> <span id="r_target" class="text-slate-700">---</span></div>
                 </div>
-                <div class="grid grid-cols-4 gap-3">
-                    <div><img id="r_img_d_alto" class="img-slot"><p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">Bloco Alto</p></div>
-                    <div><img id="r_img_d_medio" class="img-slot"><p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">Bloco Médio</p></div>
-                    <div><img id="r_img_d_baixo" class="img-slot"><p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">Bloco Baixo</p></div>
-                    <div><img id="r_img_d_trans" class="img-slot"><p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">Trans. DEF</p></div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div><img id="r_img_d_alto" class="img-slot" style="height: 160px;"><p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">Organização Defensiva (B. Alto)</p></div>
+                    <div><img id="r_img_d_trans" class="img-slot" style="height: 160px;"><p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">Transição Defensiva</p></div>
                 </div>
             </div>
 
@@ -342,10 +265,8 @@
                         <div class="flex"><span class="w-20 text-slate-400">BATIDA:</span> <span id="r_abpo_batida">---</span></div>
                         <div class="flex"><span class="w-20 text-slate-400">ATLETAS:</span> <span id="r_abpo_atletas">---</span></div>
                     </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div><img id="r_img_abpo_esc" class="img-slot" style="height: 80px;"><p id="l_abpo_esc" class="text-[7px] text-center mt-1 font-bold text-slate-500 uppercase hidden">Escanteio</p></div>
-                        <div><img id="r_img_abpo_fal" class="img-slot" style="height: 80px;"><p id="l_abpo_fal" class="text-[7px] text-center mt-1 font-bold text-slate-500 uppercase hidden">Falta Lat.</p></div>
-                    </div>
+                    <img id="r_img_abpo_main" class="img-slot" style="height: 110px;">
+                    <p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase hidden" id="r_lbl_abpo">Bola Parada Ofensiva</p>
                 </div>
                 
                 <div class="bg-[#f0f9ff] border-l-4 border-[#0284c7] rounded-xl p-4 shadow-sm">
@@ -354,19 +275,17 @@
                         <div class="flex"><span class="w-20 text-slate-400">MARCAÇÃO:</span> <span id="r_abpd_marcacao">---</span></div>
                         <div class="flex"><span class="w-20 text-slate-400">REBOTE:</span> <span id="r_abpd_rebote">---</span></div>
                     </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div><img id="r_img_abpd_esc" class="img-slot" style="height: 80px;"><p id="l_abpd_esc" class="text-[7px] text-center mt-1 font-bold text-slate-500 uppercase hidden">Escanteio</p></div>
-                        <div><img id="r_img_abpd_fal" class="img-slot" style="height: 80px;"><p id="l_abpd_fal" class="text-[7px] text-center mt-1 font-bold text-slate-500 uppercase hidden">Falta Lat.</p></div>
-                    </div>
+                    <img id="r_img_abpd_main" class="img-slot" style="height: 110px;">
+                    <p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase hidden" id="r_lbl_abpd">Bola Parada Defensiva</p>
                 </div>
             </div>
 
             <div class="p-6 border-2 border-dashed border-slate-300 rounded-2xl bg-slate-50 text-center relative">
-                <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest bg-slate-50 px-3 absolute -top-2 left-1/2 transform -translate-x-1/2">Notas Estratégicas</span>
+                <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest bg-slate-50 px-3 absolute -top-2 left-1/2 transform -translate-x-1/2">Observações Estratégicas</span>
                 <p id="r_notes" class="text-[12px] font-bold text-slate-600 uppercase whitespace-pre-wrap pt-2">---</p>
             </div>
 
-            <footer class="mt-8 flex justify-between items-end border-t border-slate-200 pt-4">
+            <footer class="mt-10 flex justify-between items-end border-t border-slate-200 pt-4">
                 <div class="text-[10px] font-black text-slate-300 uppercase italic font-header">Powered by Playtatic</div>
                 <div id="qrcode" class="w-16 h-16 bg-white p-1 border"></div>
             </footer>
@@ -377,6 +296,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
+        // Configuração do Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyASBeLhess4TaQ53JmtS2RJUbIYav9q3Eg",
             authDomain: "analisesteam-8cdce.firebaseapp.com",
@@ -392,15 +312,22 @@
         document.getElementById('btn-login').onclick = async () => {
             const email = document.getElementById('auth-email').value;
             const pass = document.getElementById('auth-pass').value;
-            try { await signInWithEmailAndPassword(auth, email, pass); } 
-            catch (e) { document.getElementById('auth-error').innerText = "ACESSO NEGADO OU CONTA BLOQUEADA."; }
+            try { 
+                await signInWithEmailAndPassword(auth, email, pass); 
+            } catch (e) { 
+                document.getElementById('auth-error').innerText = "ACESSO NEGADO OU CONTA BLOQUEADA."; 
+            }
         };
 
         document.getElementById('btn-signup').onclick = async () => {
             const email = document.getElementById('auth-email').value;
             const pass = document.getElementById('auth-pass').value;
-            try { await createUserWithEmailAndPassword(auth, email, pass); alert("CONTA CRIADA COM SUCESSO!"); } 
-            catch (e) { document.getElementById('auth-error').innerText = "ERRO AO CADASTRAR OU E-MAIL EXISTENTE."; }
+            try { 
+                await createUserWithEmailAndPassword(auth, email, pass); 
+                alert("CONTA CRIADA COM SUCESSO! AGORA PODE ENTRAR."); 
+            } catch (e) { 
+                document.getElementById('auth-error').innerText = "ERRO AO CADASTRAR OU E-MAIL JÁ EXISTE."; 
+            }
         };
 
         document.getElementById('btn-logout').onclick = () => signOut(auth);
@@ -441,8 +368,7 @@
             lista.innerHTML = "";
             Object.keys(ldb).forEach(id => {
                 let item = document.createElement('div');
-                item.className = "library-item text-[11px] uppercase font-bold text-slate-300 cursor-pointer hover:text-white p-1 border-b border-slate-700/50"; 
-                item.innerText = id;
+                item.className = "library-item text-[11px] uppercase font-bold text-slate-300 cursor-pointer hover:text-white p-1"; item.innerText = id;
                 item.onclick = () => { Object.keys(ldb[id]).forEach(k => { if(document.getElementById(k)) document.getElementById(k).value = ldb[id][k]; }); gerarPlano(); };
                 lista.appendChild(item);
             });
@@ -454,23 +380,6 @@
         };
 
         window.gerarPlano = () => {
-            // Textos Fixos
-            document.getElementById('r_comp').innerText = document.getElementById('op_comp').value || "---";
-            document.getElementById('r_local').innerText = document.getElementById('op_local').value || "---";
-            document.getElementById('r_score').innerText = document.getElementById('op_score').value || "0 x 0";
-            document.getElementById('r_name').innerText = document.getElementById('op_name').value || "---";
-            document.getElementById('r_coach').innerText = "TREINADOR: " + (document.getElementById('op_coach').value || "---");
-
-            // Logos
-            const l_home = document.getElementById('op_logo_home').value;
-            const r_l_home = document.getElementById('r_logo_home');
-            if(l_home) { r_l_home.src = l_home; r_l_home.style.display = 'block'; } else { r_l_home.style.display = 'none'; }
-            
-            const l_away = document.getElementById('op_logo_away').value;
-            const r_l_away = document.getElementById('r_logo_away');
-            if(l_away) { r_l_away.src = l_away; r_l_away.style.display = 'block'; } else { r_l_away.style.display = 'none'; }
-
-            // Tática Ofensiva
             document.getElementById('r_zags_foot').innerText = document.getElementById('op_zags_foot').value || "---";
             document.getElementById('r_atk_side').innerText = document.getElementById('op_atk_side').value || "---";
             document.getElementById('r_gk').innerText = document.getElementById('op_gk').value || "---";
@@ -478,7 +387,6 @@
             document.getElementById('r_f2').innerText = document.getElementById('op_f2').value || "---";
             document.getElementById('r_tof').innerText = document.getElementById('op_tof').value || "---";
 
-            // Tática Defensiva
             const def_h = document.getElementById('op_def_h').value;
             const def_m = document.getElementById('op_def_m').value;
             const def_l = document.getElementById('op_def_l').value;
@@ -488,30 +396,23 @@
             document.getElementById('r_gatilho').innerText = document.getElementById('op_gatilho').value || "---";
             document.getElementById('r_target').innerText = document.getElementById('op_target').value || "---";
 
-            // ABP
             document.getElementById('r_abpo_batida').innerText = document.getElementById('op_abpo_batida').value || "---";
             document.getElementById('r_abpo_atletas').innerText = document.getElementById('op_abpo_atletas').value || "---";
             document.getElementById('r_abpd_marcacao').innerText = document.getElementById('op_abpd_marcacao').value || "---";
             document.getElementById('r_abpd_rebote').innerText = document.getElementById('op_abpd_rebote').value || "---";
 
-            // Notas
             document.getElementById('r_notes').innerText = document.getElementById('op_notes').value || "---";
 
-            // Imagens
-            const imgIds = ['img_o_saida', 'img_o_f2', 'img_o_f3', 'img_o_trans', 'img_d_alto', 'img_d_medio', 'img_d_baixo', 'img_d_trans', 'img_abpo_esc', 'img_abpo_fal', 'img_abpd_esc', 'img_abpd_fal'];
+            const imgIds = ['img_o_saida', 'img_o_f2', 'img_o_f3', 'img_o_trans', 'img_d_alto', 'img_d_trans', 'img_abpo_main', 'img_abpd_main'];
             imgIds.forEach(id => {
                 const val = document.getElementById(id).value; 
                 const img = document.getElementById('r_' + id);
                 if(val) { img.src = val; img.style.display = 'block'; } else { img.style.display = 'none'; }
             });
+            
+            document.getElementById('r_lbl_abpo').style.display = document.getElementById('img_abpo_main').value ? 'block' : 'none';
+            document.getElementById('r_lbl_abpd').style.display = document.getElementById('img_abpd_main').value ? 'block' : 'none';
 
-            // Labels das Imagens de Bola Parada
-            document.getElementById('l_abpo_esc').style.display = document.getElementById('img_abpo_esc').value ? 'block' : 'none';
-            document.getElementById('l_abpo_fal').style.display = document.getElementById('img_abpo_fal').value ? 'block' : 'none';
-            document.getElementById('l_abpd_esc').style.display = document.getElementById('img_abpd_esc').value ? 'block' : 'none';
-            document.getElementById('l_abpd_fal').style.display = document.getElementById('img_abpd_fal').value ? 'block' : 'none';
-
-            // QR Code
             document.getElementById('qrcode').innerHTML = "";
             const vid = document.getElementById('op_vid').value;
             if(vid) new QRCode(document.getElementById("qrcode"), { text: vid, width: 64, height: 64 });
@@ -519,6 +420,7 @@
 
         window.onload = () => { checkNet(); renderizarBiblioteca(); };
         
+        document.querySelector('button[onclick="window.print()"]') ? null : 
         document.querySelector('button.bg-\\[\\#111827\\]').onclick = () => {
             gerarPlano();
             window.print();
