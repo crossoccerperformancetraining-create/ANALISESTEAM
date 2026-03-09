@@ -374,18 +374,20 @@
                 <div class="mt-4"><label class="label-sm">Vídeo (URL do QR CODE)</label><input type="text" id="op_vid" class="input-dark" placeholder="YouTube/Drive/LongoMatch"></div>
             </div>
 
-            <div class="section-card border-l-4 border-l-yellow-400">
+            <div class="section-card border-l-4 border-l-yellow-400 relative">
                 <span class="badge-title text-yellow-400">Mapa da Mina (Estratégia)</span>
                 <div class="mb-4">
                     <label class="label-sm text-yellow-500">⚠️ Ponto Forte (Onde ter Cuidado)</label>
                     <textarea id="op_ponto_forte" class="input-dark h-20" placeholder="Ex: Lado direito muito forte com apoio do lateral."></textarea>
                 </div>
                 <div>
-                    <label class="label-sm text-emerald-400">🎯 Onde Explorar (Nossa Vantagem)</label>
-                    <textarea id="op_explorar" class="input-dark h-20" placeholder="Ex: Lançamentos nas costas do volante 5."></textarea>
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="label-sm text-emerald-400 mb-0">🎯 Onde Explorar (Nossa Vantagem)</label>
+                        <button id="btnGerarIA" type="button" class="bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-bold px-3 py-1 rounded-lg flex items-center gap-1 transition shadow-lg" title="Gerar com IA">🧠 IA: Sugerir Estratégia</button>
+                    </div>
+                    <textarea id="op_explorar" class="input-dark h-32" placeholder="Ex: Lançamentos nas costas do volante 5."></textarea>
                 </div>
             </div>
-
             <div class="section-card border-l-4 border-l-slate-400">
                 <div class="flex justify-between items-center mb-4">
                     <span class="badge-title text-slate-400 mb-0">Notas Estratégicas Finais</span>
@@ -803,7 +805,7 @@
         };
         window.addEventListener('online', checkNet); window.addEventListener('offline', checkNet);
 
-        // --- NOVO: RECONHECIMENTO DE VOZ (MICROFONE) ---
+        // --- RECONHECIMENTO DE VOZ (MICROFONE) ---
         let recognition;
         if ('webkitSpeechRecognition' in window) {
             recognition = new webkitSpeechRecognition();
@@ -827,7 +829,7 @@
             }
         };
 
-        // --- NOVO: COMPARTILHAR WHATSAPP ---
+        // --- COMPARTILHAR WHATSAPP ---
         window.compartilharZap = () => {
             const rival = document.getElementById('op_name').value || "Adversário";
             const competicao = document.getElementById('op_comp').value || "Jogo";
@@ -835,6 +837,75 @@
             const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(texto)}`;
             window.open(url, '_blank');
         };
+
+        // ==============================================================
+        // --- NOVO: INTEGRAÇÃO DA INTELIGÊNCIA ARTIFICIAL (GEMINI API) -
+        // ==============================================================
+        document.getElementById('btnGerarIA').addEventListener('click', async () => {
+            const campoExplorar = document.getElementById('op_explorar');
+            campoExplorar.value = "🧠 Analisando padrões do adversário... Aguarde ⏳";
+
+            // Sua chave de API do Google AI Studio
+            const GEMINI_API_KEY = 'AIzaSyBANcvNSu7iEgp_H_ECx-0K3aPqE0ZRCyQ'; 
+            
+            // Lendo os dados que o analista preencheu no aplicativo
+            const postura = document.getElementById('op_postura').value || 'Não informado';
+            const blocoBaixo = document.getElementById('op_def_l').value || 'Não informado';
+            const blocoMedio = document.getElementById('op_def_m').value || 'Não informado';
+            const gatilho = document.getElementById('op_gatilho').value || 'Não informado';
+            const saida = document.getElementById('op_meta').value || 'Não informado';
+            const transicao = document.getElementById('op_tof').value || 'Não informado';
+            const desgaste = document.getElementById('op_desgaste').value || 'Não informado';
+            const pontoForte = document.getElementById('op_ponto_forte').value || 'Não informado';
+
+            // O comando mágico (Prompt)
+            const prompt = `Atue como um Analista de Desempenho de Futebol de elite. 
+            Estou montando o scout do nosso próximo adversário. Aqui estão os dados deles:
+            
+            Fase Defensiva:
+            - Postura: ${postura}
+            - Formação Bloco Médio: ${blocoMedio}
+            - Formação Bloco Baixo: ${blocoBaixo}
+            - Gatilho de Pressão: ${gatilho}
+            
+            Fase Ofensiva:
+            - Saída de bola: ${saida}
+            - Transição Ofensiva: ${transicao}
+            
+            Físico:
+            - Desgaste: ${desgaste}
+
+            Observação nossa (Ponto Forte deles): ${pontoForte}
+            
+            Crie um texto curto e direto (no máximo 2 parágrafos) focado exclusivamente em "Onde Explorar e Nossa Vantagem". Como podemos vencê-los taticamente usando as fraquezas dessas características mapeadas? Não use saudações, vá direto para a sugestão tática.`;
+
+            try {
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+                const resposta = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: prompt }] }]
+                    })
+                });
+
+                const dados = await resposta.json();
+                
+                // Coloca a resposta na tela e já desenha no PDF automático
+                if(dados.candidates && dados.candidates.length > 0) {
+                    campoExplorar.value = dados.candidates[0].content.parts[0].text.trim();
+                    window.gerarPlano(); 
+                } else {
+                    campoExplorar.value = "Erro: A IA não enviou uma resposta válida.";
+                }
+
+            } catch (erro) {
+                console.error("Deu ruim na requisição:", erro);
+                campoExplorar.value = "Erro de conexão com o servidor da IA. Verifique sua chave ou internet.";
+            }
+        });
+        // ==============================================================
+
 
         window.gerarPlano = () => {
             // Textos Fixos
@@ -947,7 +1018,6 @@
 
         window.onload = () => { checkNet(); };
         
-        // Mantive a função igual, apenas o layout HTML do botão mudou
         document.querySelector('button.bg-gradient-to-r').onclick = () => {
             gerarPlano();
             setTimeout(() => { window.print(); }, 300);
