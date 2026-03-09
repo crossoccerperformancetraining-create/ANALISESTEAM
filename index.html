@@ -849,7 +849,7 @@
             const chaveMascarada = 'QUl6YVN5Q2xBa3phS1g0ZUszQlBYNGdyM2JIZkNoYjJjYUtlVkhN';
             const GEMINI_API_KEY = atob(chaveMascarada);
             
-            // Lendo os dados que o analista preencheu no aplicativo
+            // 1. Lendo os dados antigos
             const postura = document.getElementById('op_postura').value || 'Não informado';
             const blocoBaixo = document.getElementById('op_def_l').value || 'Não informado';
             const blocoMedio = document.getElementById('op_def_m').value || 'Não informado';
@@ -859,7 +859,26 @@
             const desgaste = document.getElementById('op_desgaste').value || 'Não informado';
             const pontoForte = document.getElementById('op_ponto_forte').value || 'Não informado';
 
-            // O comando mágico (Prompt)
+            // 2. NOVO: Lendo os dados de Bolas Paradas (ABP)
+            const abpdMarcacao = document.getElementById('op_abpd_marcacao').value || 'Não informado';
+            const abpdRebote = document.getElementById('op_abpd_rebote').value || 'Não informado';
+            const abpoBatida = document.getElementById('op_abpo_batida').value || 'Não informado';
+
+            // 3. NOVO: Lendo os Destaques Individuais
+            const destNome1 = document.getElementById('op_dest_nome_1').value || '';
+            const destNota1 = document.getElementById('op_dest_nota_1').value || '';
+            const destNome2 = document.getElementById('op_dest_nome_2').value || '';
+            const destNota2 = document.getElementById('op_dest_nota_2').value || '';
+            const destNome3 = document.getElementById('op_dest_nome_3').value || '';
+            const destNota3 = document.getElementById('op_dest_nota_3').value || '';
+
+            let destaquesTexto = "";
+            if (destNome1) destaquesTexto += `- ${destNome1}: ${destNota1}\n            `;
+            if (destNome2) destaquesTexto += `- ${destNome2}: ${destNota2}\n            `;
+            if (destNome3) destaquesTexto += `- ${destNome3}: ${destNota3}\n            `;
+            if (!destaquesTexto) destaquesTexto = "Nenhum destaque específico mapeado.";
+
+            // O comando mágico (Prompt) ATUALIZADO E TURBINADO
             const prompt = `Atue como um Analista de Desempenho de Futebol de elite. 
             Estou montando o scout do nosso próximo adversário. Aqui estão os dados deles:
             
@@ -872,16 +891,24 @@
             Fase Ofensiva:
             - Saída de bola: ${saida}
             - Transição Ofensiva: ${transicao}
+
+            Bolas Paradas (ABP):
+            - Defesa: Marcação ${abpdMarcacao}, ${abpdRebote}
+            - Ataque: Batida ${abpoBatida}
             
             Físico:
             - Desgaste: ${desgaste}
 
-            Observação nossa (Ponto Forte deles): ${pontoForte}
+            Destaques Individuais deles:
+            ${destaquesTexto}
+
+            Ponto Forte deles (Atenção): ${pontoForte}
             
-            Crie um texto curto e direto (no máximo 2 parágrafos) focado exclusivamente em "Onde Explorar e Nossa Vantagem". Como podemos vencê-los taticamente usando as fraquezas dessas características mapeadas? Não use saudações, vá direto para a sugestão tática.`;
+            Crie um texto direto (máximo de 2 parágrafos) focado em "Onde Explorar e Nossa Vantagem". 
+            Entregue soluções táticas de alto nível: Como furar esse bloqueio usando as fraquezas mapeadas? Como tirar proveito do sistema de bola parada defensiva deles? Se houver destaques individuais cite como anulá-los. 
+            Vá direto ao ponto, sem saudações.`;
 
             try {
-                // Modelo atualizado para a versão mais recente
                 const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
                 
                 const resposta = await fetch(url, {
@@ -894,12 +921,10 @@
 
                 const dados = await resposta.json();
                 
-                // Coloca a resposta na tela e já desenha no PDF automático
                 if(dados.candidates && dados.candidates.length > 0) {
                     campoExplorar.value = dados.candidates[0].content.parts[0].text.trim();
                     window.gerarPlano(); 
                 } else if (dados.error) {
-                    // SE O GOOGLE BARRAR, ELE VAI DIZER O MOTIVO AQUI:
                     campoExplorar.value = "ERRO DO GOOGLE: " + dados.error.message;
                 } else {
                     campoExplorar.value = "Retorno inesperado: " + JSON.stringify(dados);
