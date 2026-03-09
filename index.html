@@ -45,6 +45,7 @@
                 <div><label class="label-sm">Nome do Analista</label><input type="text" id="cfg_analista" class="input-dark uppercase" value="Adriano Cabeça"></div>
                 <div><label class="label-sm">Equipe / Função</label><input type="text" id="cfg_equipe" class="input-dark uppercase" value="Tactical Intel"></div>
                 <div><label class="label-sm">Sua Logo (URL)</label><input type="text" id="cfg_logo" class="input-dark" placeholder="URL da logo do analista"></div>
+                <div><label class="label-sm text-purple-400">Instagram / Contato Comercial</label><input type="text" id="cfg_contato" class="input-dark" placeholder="@suamarca ou Telefone"></div>
             </div>
             <div class="flex gap-2 mt-6">
                 <button onclick="salvarConfig()" id="btn_salvar_config" class="w-full bg-emerald-600 text-white font-bold py-2 rounded-lg uppercase">Salvar na Nuvem</button>
@@ -119,7 +120,13 @@
                     <div><label class="label-sm">Equipe Adversária</label><input type="text" id="op_name" class="input-dark uppercase font-bold" placeholder="Nome do Rival"></div>
                     <div><label class="label-sm">Treinador Rival</label><input type="text" id="op_coach" class="input-dark uppercase" placeholder="Nome do Técnico"></div>
                 </div>
-                <div class="pt-2 border-t border-slate-700">
+                
+                <div class="pt-4 border-t border-slate-700 mb-4">
+                    <label class="label-sm text-yellow-400">🔥 A Palavra de Ordem (Mindset)</label>
+                    <input type="text" id="op_mantra" class="input-dark font-bold text-yellow-400" placeholder="Ex: Trabalho, Sacrifício, Renúncia!">
+                </div>
+
+                <div class="pt-4 border-t border-slate-700">
                     <label class="label-sm text-red-400">⚠️ Desfalques / Suspensos</label>
                     <input type="text" id="op_desfalques" class="input-dark" placeholder="Ex: Camisa 5 (Suspenso), Camisa 9 (Lesão)">
                 </div>
@@ -258,6 +265,23 @@
                 <div><label class="label-sm text-orange-400">Alvo Marcação (Destaques)</label><input type="text" id="op_target" class="input-dark" placeholder="Ex: Camisa 10, Ponta Direita" value="NENHUM"></div>
             </div>
 
+            <div class="section-card border-l-4 border-l-red-600">
+                <span class="badge-title text-red-500">Termômetro Físico ⏱️</span>
+                <div class="grid grid-cols-2 gap-4">
+                    <div><label class="label-sm">Nível de Desgaste</label>
+                        <select id="op_desgaste" class="input-dark">
+                            <option value="INTENSO (90 MIN)">Intenso (90 Min)</option>
+                            <option value="QUEDA NO 2º TEMPO">Queda no 2º Tempo</option>
+                            <option value="LENTO / DESGASTADO">Lento / Desgastado</option>
+                            <option value="MUITO FORTE NO INÍCIO">Muito Forte no Início</option>
+                        </select>
+                    </div>
+                    <div><label class="label-sm text-red-400">Minutos de Perigo</label>
+                        <input type="text" id="op_perigo" class="input-dark" placeholder="Ex: 70' aos 90'">
+                    </div>
+                </div>
+            </div>
+
             <div class="section-card border-l-4 border-l-orange-500">
                 <span class="badge-title text-orange-400">Dados Técnicos ABP</span>
                 <div class="grid grid-cols-2 gap-4 mb-4">
@@ -363,15 +387,27 @@
             </div>
 
             <div class="section-card border-l-4 border-l-slate-400">
-                <span class="badge-title text-slate-400">Notas Estratégicas Finais</span>
-                <textarea id="op_notes" class="input-dark h-32 w-full" placeholder="Detalhes adicionais gerais...">SEM OBSERVAÇÕES ADICIONAIS</textarea>
+                <div class="flex justify-between items-center mb-4">
+                    <span class="badge-title text-slate-400 mb-0">Notas Estratégicas Finais</span>
+                    <button onclick="iniciarDitado()" class="bg-slate-700 hover:bg-slate-600 text-white text-[10px] font-bold px-3 py-1 rounded-lg flex items-center gap-1 transition" title="Falar">🎙️ Áudio p/ Texto</button>
+                </div>
+                <textarea id="op_notes" class="input-dark h-32 w-full" placeholder="Aperte o botão de áudio e fale os detalhes adicionais...">SEM OBSERVAÇÕES ADICIONAIS</textarea>
             </div>
 
-            <button onclick="gerarPlano()" class="w-full bg-gradient-to-r from-slate-900 to-slate-800 text-white font-black py-5 rounded-xl uppercase shadow-2xl font-header italic mb-10 border border-slate-700 hover:from-slate-800 hover:to-slate-700 transition">Gerar Scout Platinum PDF</button>
+            <div class="flex gap-2 mb-10">
+                <button onclick="gerarPlano()" class="w-3/4 bg-gradient-to-r from-slate-900 to-slate-800 text-white font-black py-4 rounded-xl uppercase shadow-2xl font-header italic border border-slate-700 hover:from-slate-800 hover:to-slate-700 transition text-sm">Gerar Scout PDF</button>
+                <button onclick="compartilharZap()" class="w-1/4 bg-[#25D366] hover:bg-[#1ebd57] text-white font-black py-4 rounded-xl uppercase shadow-2xl flex items-center justify-center transition" title="Avisar no WhatsApp">
+                    <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.305-.88-.653-1.474-1.46-1.647-1.757-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.012c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                </button>
+            </div>
         </aside>
 
         <main class="w-full lg:w-3/5 bg-white text-slate-900 rounded-2xl p-6 shadow-2xl overflow-y-auto" id="print-area">
             
+            <div class="bg-slate-900 text-center py-2 mb-6 rounded-lg break-inside-avoid hidden shadow-lg border-b-4 border-yellow-400" id="box_mantra">
+                <span class="text-[14px] font-black text-yellow-400 uppercase tracking-widest font-header">MANTRA: <span id="r_mantra" class="text-white">---</span></span>
+            </div>
+
             <header class="mb-4 border-b-4 border-slate-900 pb-4 flex justify-between items-start break-inside-avoid">
                 <div class="flex flex-col gap-2">
                     <div class="flex items-center gap-2">
@@ -490,13 +526,23 @@
             </div>
 
             <div class="grid grid-cols-2 gap-4 mb-6 break-inside-avoid">
-                <div class="bg-yellow-50 border border-yellow-200 border-l-4 border-l-yellow-400 p-4 rounded-r-xl">
+                <div class="bg-yellow-50 border border-yellow-200 border-l-4 border-l-yellow-400 p-4 rounded-xl">
                     <h4 class="text-yellow-600 text-[11px] font-black uppercase mb-2 flex items-center gap-1">⚠️ Ponto Forte (Atenção)</h4>
                     <p id="r_ponto_forte" class="text-[10px] font-bold text-slate-700 uppercase whitespace-pre-wrap leading-relaxed">---</p>
                 </div>
-                <div class="bg-emerald-50 border border-emerald-200 border-l-4 border-l-emerald-500 p-4 rounded-r-xl">
+                <div class="bg-emerald-50 border border-emerald-200 border-l-4 border-l-emerald-500 p-4 rounded-xl">
                     <h4 class="text-emerald-700 text-[11px] font-black uppercase mb-2 flex items-center gap-1">🎯 Onde Explorar</h4>
                     <p id="r_explorar" class="text-[10px] font-bold text-slate-700 uppercase whitespace-pre-wrap leading-relaxed">---</p>
+                </div>
+                <div class="col-span-2 bg-red-50 border border-red-200 border-l-4 border-l-red-600 p-4 rounded-xl flex justify-between items-center" id="box_termometro">
+                    <div>
+                        <h4 class="text-red-700 text-[11px] font-black uppercase flex items-center gap-1">⏱️ Termômetro Físico</h4>
+                        <p class="text-[10px] font-bold text-slate-700 uppercase mt-1">DESGASTE: <span id="r_desgaste" class="text-red-600">---</span></p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-[10px] font-bold text-slate-700 uppercase">MINUTOS DE PERIGO</p>
+                        <p id="r_perigo" class="text-[14px] font-black text-red-600 uppercase">---</p>
+                    </div>
                 </div>
             </div>
 
@@ -507,8 +553,9 @@
 
             <footer class="mt-8 flex justify-between items-end border-t border-slate-200 pt-4 break-inside-avoid">
                 <div>
-                    <div class="text-[10px] font-black text-slate-300 uppercase italic font-header">Powered by Playtatic Scout Platinum</div>
-                    <p class="text-[7px] text-slate-300 mt-1 uppercase">Relatório sincronizado via Firebase Cloud.</p>
+                    <div class="text-[10px] font-black text-slate-400 uppercase italic font-header text-slate-800">Powered by Playtatic Scout Platinum</div>
+                    <p class="text-[7px] text-slate-400 mt-1 uppercase">Relatório sincronizado via Firebase Cloud.</p>
+                    <p id="print_contato_analista" class="text-[8px] font-bold text-purple-600 mt-1 uppercase">---</p>
                 </div>
                 <div class="flex flex-col items-center">
                     <div id="qrcode" class="w-16 h-16 bg-white p-1 border border-slate-200 shadow-sm"></div>
@@ -572,7 +619,8 @@
             const cfg = {
                 nome: document.getElementById('cfg_analista').value || "Analista",
                 equipe: document.getElementById('cfg_equipe').value || "Equipe",
-                logo: document.getElementById('cfg_logo').value || ""
+                logo: document.getElementById('cfg_logo').value || "",
+                contato: document.getElementById('cfg_contato').value || ""
             };
             
             await setDoc(doc(db, "usuarios", user.uid, "config", "perfil"), cfg);
@@ -588,9 +636,10 @@
                 const docSnap = await getDoc(doc(db, "usuarios", user.uid, "config", "perfil"));
                 if (docSnap.exists()) {
                     const cfg = docSnap.data();
-                    document.getElementById('cfg_analista').value = cfg.nome;
-                    document.getElementById('cfg_equipe').value = cfg.equipe;
-                    document.getElementById('cfg_logo').value = cfg.logo;
+                    document.getElementById('cfg_analista').value = cfg.nome || "";
+                    document.getElementById('cfg_equipe').value = cfg.equipe || "";
+                    document.getElementById('cfg_logo').value = cfg.logo || "";
+                    document.getElementById('cfg_contato').value = cfg.contato || "";
                     aplicarConfigUI(cfg);
                 }
             } catch(e) {}
@@ -604,6 +653,7 @@
             document.getElementById('print_nome_analista').innerText = cfg.nome || "Analista";
             document.getElementById('print_equipe_analista').innerText = cfg.equipe || "Equipe";
             if(cfg.logo) { document.getElementById('print_logo_analista').src = cfg.logo; document.getElementById('print_logo_analista').style.display = 'block'; }
+            document.getElementById('print_contato_analista').innerText = cfg.contato || "";
         };
 
         // -- MIGRAR PC PARA NUVEM --
@@ -753,6 +803,39 @@
         };
         window.addEventListener('online', checkNet); window.addEventListener('offline', checkNet);
 
+        // --- NOVO: RECONHECIMENTO DE VOZ (MICROFONE) ---
+        let recognition;
+        if ('webkitSpeechRecognition' in window) {
+            recognition = new webkitSpeechRecognition();
+            recognition.continuous = false;
+            recognition.lang = 'pt-BR';
+            recognition.interimResults = false;
+            recognition.onresult = function(event) {
+                const texto = event.results[0][0].transcript;
+                const textArea = document.getElementById('op_notes');
+                if(textArea.value === "SEM OBSERVAÇÕES ADICIONAIS") textArea.value = "";
+                textArea.value += (textArea.value ? " " : "") + texto + ".";
+                gerarPlano();
+            };
+        }
+        window.iniciarDitado = () => {
+            if(recognition) {
+                recognition.start();
+                alert("🎙️ Microfone ativado! Pode falar suas observações...");
+            } else {
+                alert("❌ Seu navegador não suporta digitação por voz. Tente usar o Google Chrome.");
+            }
+        };
+
+        // --- NOVO: COMPARTILHAR WHATSAPP ---
+        window.compartilharZap = () => {
+            const rival = document.getElementById('op_name').value || "Adversário";
+            const competicao = document.getElementById('op_comp').value || "Jogo";
+            const texto = `Fala, comissão! Mapeamento tático do ${rival} (${competicao}) finalizado na Playtatic. O relatório já está sincronizado na nuvem. Acesse o sistema para baixar o PDF completo!`;
+            const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(texto)}`;
+            window.open(url, '_blank');
+        };
+
         window.gerarPlano = () => {
             // Textos Fixos
             document.getElementById('r_comp').innerText = document.getElementById('op_comp').value || "---";
@@ -761,10 +844,19 @@
             document.getElementById('r_name').innerText = document.getElementById('op_name').value || "---";
             document.getElementById('r_coach').innerText = "TREINADOR: " + (document.getElementById('op_coach').value || "---");
 
+            // Mantra
+            const mantra = document.getElementById('op_mantra').value;
+            document.getElementById('r_mantra').innerText = mantra || "---";
+            document.getElementById('box_mantra').style.display = mantra ? 'block' : 'none';
+
             // Desfalques
             const desfalques = document.getElementById('op_desfalques').value;
             document.getElementById('r_desfalques').innerText = desfalques || "---";
             document.getElementById('box_desfalques').style.display = desfalques ? 'block' : 'none';
+
+            // Termômetro Físico
+            document.getElementById('r_desgaste').innerText = document.getElementById('op_desgaste').value || "---";
+            document.getElementById('r_perigo').innerText = document.getElementById('op_perigo').value || "---";
 
             // Mapa da Mina
             document.getElementById('r_ponto_forte').innerText = document.getElementById('op_ponto_forte').value || "---";
@@ -855,6 +947,7 @@
 
         window.onload = () => { checkNet(); };
         
+        // Mantive a função igual, apenas o layout HTML do botão mudou
         document.querySelector('button.bg-gradient-to-r').onclick = () => {
             gerarPlano();
             setTimeout(() => { window.print(); }, 300);
