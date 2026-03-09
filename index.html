@@ -15,7 +15,6 @@
         .label-sm { font-size: 0.75rem; color: #94a3b8; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; display: block; }
         .badge-title { font-size: 0.9rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 18px; display: block; text-decoration: underline; font-style: italic; }
         .img-slot { width: 100%; height: 110px; object-fit: cover; border-radius: 12px; display: none; border: 1px solid #e2e8f0; }
-        .hidden { display: none !important; }
         .net-status { position: absolute; top: 10px; right: 10px; display: flex; align-items: center; gap: 5px; font-size: 9px; font-weight: 900; padding: 5px 10px; border-radius: 10px; background: #0f172a; border: 1px solid #1e293b; z-index: 100; }
         
         @media print { 
@@ -291,9 +290,9 @@
                     <span id="r_local" class="text-[10px] font-bold text-slate-500 uppercase ml-2 border border-slate-300 px-2 py-1 rounded-full">---</span>
                 </div>
                 <div class="flex justify-center items-center gap-8">
-                    <img id="r_logo_home" src="" class="w-16 h-16 object-contain hidden" alt="Mandante">
+                    <img id="r_logo_home" src="" class="w-16 h-16 object-contain" style="display: none;" alt="Mandante">
                     <div id="r_score" class="text-4xl font-black font-header text-slate-900 italic">0 x 0</div>
-                    <img id="r_logo_away" src="" class="w-16 h-16 object-contain hidden" alt="Visitante">
+                    <img id="r_logo_away" src="" class="w-16 h-16 object-contain" style="display: none;" alt="Visitante">
                 </div>
                 <div class="text-center mt-3">
                     <h2 id="r_name" class="font-header text-xl font-black italic uppercase text-slate-800">---</h2>
@@ -322,16 +321,28 @@
             <div class="bg-[#fef2f2] rounded-xl p-5 mb-6">
                 <h3 class="text-[#dc2626] font-black italic uppercase text-[14px] border-b border-[#fecaca] pb-2 mb-4 font-header">Fase Defensiva & Organização</h3>
                 <div class="grid grid-cols-2 gap-x-12 gap-y-3 mb-5 text-[10px] font-bold text-slate-600 uppercase">
-                    <div class="flex"><span class="w-28 text-slate-400">BLOCOS (A/M/B):</span> <span id="r_blocos" class="text-slate-700">---</span></div>
                     <div class="flex"><span class="w-24 text-slate-400">POSTURA:</span> <span id="r_postura" class="text-slate-700">---</span></div>
                     <div class="flex"><span class="w-28 text-slate-400">GATILHO:</span> <span id="r_gatilho" class="text-slate-700">---</span></div>
                     <div class="flex"><span class="w-24 text-slate-400">ALVO:</span> <span id="r_target" class="text-slate-700">---</span></div>
                 </div>
+                
                 <div class="grid grid-cols-4 gap-3">
-                    <div><img id="r_img_d_alto" class="img-slot"><p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">Bloco Alto</p></div>
-                    <div><img id="r_img_d_medio" class="img-slot"><p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">Bloco Médio</p></div>
-                    <div><img id="r_img_d_baixo" class="img-slot"><p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">Bloco Baixo</p></div>
-                    <div><img id="r_img_d_trans" class="img-slot"><p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">Trans. DEF</p></div>
+                    <div>
+                        <img id="r_img_d_alto" class="img-slot">
+                        <p class="text-[9px] text-center mt-2 font-black text-slate-800 uppercase">BLOCO ALTO <span id="r_lbl_def_h" class="block text-red-600">---</span></p>
+                    </div>
+                    <div>
+                        <img id="r_img_d_medio" class="img-slot">
+                        <p class="text-[9px] text-center mt-2 font-black text-slate-800 uppercase">BLOCO MÉDIO <span id="r_lbl_def_m" class="block text-red-600">---</span></p>
+                    </div>
+                    <div>
+                        <img id="r_img_d_baixo" class="img-slot">
+                        <p class="text-[9px] text-center mt-2 font-black text-slate-800 uppercase">BLOCO BAIXO <span id="r_lbl_def_l" class="block text-red-600">---</span></p>
+                    </div>
+                    <div>
+                        <img id="r_img_d_trans" class="img-slot">
+                        <p class="text-[9px] text-center mt-2 font-black text-slate-800 uppercase">TRANS. DEF <span class="block text-slate-400">-</span></p>
+                    </div>
                 </div>
             </div>
 
@@ -343,8 +354,8 @@
                         <div class="flex"><span class="w-20 text-slate-400">ATLETAS:</span> <span id="r_abpo_atletas">---</span></div>
                     </div>
                     <div class="grid grid-cols-2 gap-2">
-                        <div><img id="r_img_abpo_esc" class="img-slot" style="height: 80px;"><p id="l_abpo_esc" class="text-[7px] text-center mt-1 font-bold text-slate-500 uppercase hidden">Escanteio</p></div>
-                        <div><img id="r_img_abpo_fal" class="img-slot" style="height: 80px;"><p id="l_abpo_fal" class="text-[7px] text-center mt-1 font-bold text-slate-500 uppercase hidden">Falta Lat.</p></div>
+                        <div><img id="r_img_abpo_esc" class="img-slot" style="height: 80px;"><p id="l_abpo_esc" class="text-[7px] text-center mt-1 font-bold text-slate-500 uppercase" style="display: none;">Escanteio</p></div>
+                        <div><img id="r_img_abpo_fal" class="img-slot" style="height: 80px;"><p id="l_abpo_fal" class="text-[7px] text-center mt-1 font-bold text-slate-500 uppercase" style="display: none;">Falta Lat.</p></div>
                     </div>
                 </div>
                 
@@ -355,8 +366,8 @@
                         <div class="flex"><span class="w-20 text-slate-400">REBOTE:</span> <span id="r_abpd_rebote">---</span></div>
                     </div>
                     <div class="grid grid-cols-2 gap-2">
-                        <div><img id="r_img_abpd_esc" class="img-slot" style="height: 80px;"><p id="l_abpd_esc" class="text-[7px] text-center mt-1 font-bold text-slate-500 uppercase hidden">Escanteio</p></div>
-                        <div><img id="r_img_abpd_fal" class="img-slot" style="height: 80px;"><p id="l_abpd_fal" class="text-[7px] text-center mt-1 font-bold text-slate-500 uppercase hidden">Falta Lat.</p></div>
+                        <div><img id="r_img_abpd_esc" class="img-slot" style="height: 80px;"><p id="l_abpd_esc" class="text-[7px] text-center mt-1 font-bold text-slate-500 uppercase" style="display: none;">Escanteio</p></div>
+                        <div><img id="r_img_abpd_fal" class="img-slot" style="height: 80px;"><p id="l_abpd_fal" class="text-[7px] text-center mt-1 font-bold text-slate-500 uppercase" style="display: none;">Falta Lat.</p></div>
                     </div>
                 </div>
             </div>
@@ -461,7 +472,7 @@
             document.getElementById('r_name').innerText = document.getElementById('op_name').value || "---";
             document.getElementById('r_coach').innerText = "TREINADOR: " + (document.getElementById('op_coach').value || "---");
 
-            // Logos
+            // Logos (Corrigido para remover display block nativo)
             const l_home = document.getElementById('op_logo_home').value;
             const r_l_home = document.getElementById('r_logo_home');
             if(l_home) { r_l_home.src = l_home; r_l_home.style.display = 'block'; } else { r_l_home.style.display = 'none'; }
@@ -478,11 +489,10 @@
             document.getElementById('r_f2').innerText = document.getElementById('op_f2').value || "---";
             document.getElementById('r_tof').innerText = document.getElementById('op_tof').value || "---";
 
-            // Tática Defensiva
-            const def_h = document.getElementById('op_def_h').value;
-            const def_m = document.getElementById('op_def_m').value;
-            const def_l = document.getElementById('op_def_l').value;
-            document.getElementById('r_blocos').innerText = `${def_h} / ${def_m} / ${def_l}`;
+            // Tática Defensiva (Mapeado para debaixo das fotos)
+            document.getElementById('r_lbl_def_h').innerText = document.getElementById('op_def_h').value || "---";
+            document.getElementById('r_lbl_def_m').innerText = document.getElementById('op_def_m').value || "---";
+            document.getElementById('r_lbl_def_l').innerText = document.getElementById('op_def_l').value || "---";
             
             document.getElementById('r_postura').innerText = document.getElementById('op_postura').value || "---";
             document.getElementById('r_gatilho').innerText = document.getElementById('op_gatilho').value || "---";
