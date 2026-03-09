@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scout Master Platinum - Playtatic</title>
+    <title>Scout Master Platinum - Playtatic (Cloud)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
@@ -16,7 +16,6 @@
         .badge-title { font-size: 0.9rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 18px; display: block; text-decoration: underline; font-style: italic; }
         .img-slot { width: 100%; height: 120px; object-fit: cover; border-radius: 12px; display: none; border: 1px solid #e2e8f0; }
         
-        /* Ajuste fino para a impressão multi-páginas */
         @media print { 
             * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             .no-print { display: none !important; } 
@@ -43,7 +42,7 @@
                 <div><label class="label-sm">Sua Logo (URL)</label><input type="text" id="cfg_logo" class="input-dark" placeholder="URL da logo do analista"></div>
             </div>
             <div class="flex gap-2 mt-6">
-                <button onclick="salvarConfig()" class="w-full bg-emerald-600 text-white font-bold py-2 rounded-lg uppercase">Salvar Config</button>
+                <button onclick="salvarConfig()" id="btn_salvar_config" class="w-full bg-emerald-600 text-white font-bold py-2 rounded-lg uppercase">Salvar na Nuvem</button>
                 <button onclick="fecharConfig()" class="w-full bg-slate-700 text-white font-bold py-2 rounded-lg uppercase">Cancelar</button>
             </div>
         </div>
@@ -53,7 +52,7 @@
         <div class="w-full max-w-md p-8 section-card border-t-4 border-t-purple-600 shadow-2xl">
             <header class="text-center mb-8">
                 <h1 class="font-header text-3xl font-black text-purple-500 italic uppercase">Scout Rival</h1>
-                <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Acesso Playtatic Platinum</p>
+                <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Acesso Playtatic Cloud</p>
             </header>
             <div class="space-y-4">
                 <div><label class="label-sm">E-mail</label><input type="email" id="auth-email" class="input-dark" placeholder="seu@email.com"></div>
@@ -84,16 +83,13 @@
                 </div>
             </header>
 
-            <div class="section-card border-l-4 border-l-yellow-500 bg-slate-900/50">
-                <span class="badge-title text-yellow-400">Biblioteca & Histórico</span>
+            <div class="section-card border-l-4 border-l-yellow-500 bg-slate-900/50 relative">
+                <span class="badge-title text-yellow-400">Nuvem Playtatic ☁️</span>
                 <input type="text" id="search_db" onkeyup="buscarAnalise()" placeholder="Pesquisar relatório..." class="input-dark mb-3 border-yellow-500/30">
-                <div id="lista_analises" class="max-h-40 overflow-y-auto pr-2 mb-3 border border-slate-700 rounded-lg p-2 bg-[#0d1117]"></div>
-                <button onclick="salvarAnalise()" class="w-full bg-yellow-600 text-white font-bold py-2 rounded-lg uppercase text-xs mb-2">Salvar Análise Atual</button>
-                <div class="flex gap-2">
-                    <button onclick="exportarDB()" class="w-1/2 bg-slate-700 text-white font-bold py-2 rounded-lg text-[10px] uppercase hover:bg-slate-600">Exportar BKP</button>
-                    <button onclick="document.getElementById('import_db').click()" class="w-1/2 bg-slate-700 text-white font-bold py-2 rounded-lg text-[10px] uppercase hover:bg-slate-600">Importar BKP</button>
-                    <input type="file" id="import_db" class="hidden" accept=".json" onchange="importarDB(event)">
+                <div id="lista_analises" class="max-h-40 overflow-y-auto pr-2 mb-3 border border-slate-700 rounded-lg p-2 bg-[#0d1117]">
+                    <p class="text-[10px] text-slate-500 text-center italic mt-2">Carregando da nuvem...</p>
                 </div>
+                <button onclick="salvarAnalise()" id="btn_salvar_analise" class="w-full bg-yellow-600 text-white font-bold py-2 rounded-lg uppercase text-xs">Sincronizar Análise</button>
             </div>
 
             <div class="section-card border-l-4 border-l-purple-600">
@@ -232,7 +228,6 @@
                         </select>
                     </div>
                 </div>
-                
                 <div class="grid grid-cols-2 gap-4 mb-4">
                     <div><label class="label-sm text-red-300">Encaixe de Área</label>
                         <select id="op_encaixe" class="input-dark text-[11px]">
@@ -441,6 +436,8 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        // --- ADICIONADO FIRESTORE PARA SINCRONIZAÇÃO EM NUVEM ---
+        import { getFirestore, doc, setDoc, getDoc, collection, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyASBeLhess4TaQ53JmtS2RJUbIYav9q3Eg",
@@ -453,15 +450,16 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const db = getFirestore(app);
 
         // -- Autenticação --
         document.getElementById('btn-login').onclick = async () => {
             const email = document.getElementById('auth-email').value; const pass = document.getElementById('auth-pass').value;
-            try { await signInWithEmailAndPassword(auth, email, pass); } catch (e) { document.getElementById('auth-error').innerText = "ACESSO NEGADO OU BLOQUEADO."; }
+            try { await signInWithEmailAndPassword(auth, email, pass); } catch (e) { document.getElementById('auth-error').innerText = "ACESSO NEGADO."; }
         };
         document.getElementById('btn-signup').onclick = async () => {
             const email = document.getElementById('auth-email').value; const pass = document.getElementById('auth-pass').value;
-            try { await createUserWithEmailAndPassword(auth, email, pass); alert("CONTA CRIADA!"); } catch (e) { document.getElementById('auth-error').innerText = "ERRO AO CRIAR CONTA."; }
+            try { await createUserWithEmailAndPassword(auth, email, pass); alert("CONTA CRIADA!"); } catch (e) { document.getElementById('auth-error').innerText = "ERRO."; }
         };
         document.getElementById('btn-logout').onclick = () => signOut(auth);
 
@@ -469,90 +467,111 @@
             if (user) {
                 document.getElementById('auth-screen').classList.add('hidden');
                 document.getElementById('main-panel').classList.remove('hidden');
-                carregarConfig(); // Carrega configs do analista ao logar
+                carregarConfigServer(); // Puxa config da nuvem
+                carregarBibliotecaNuvem(); // Puxa análises da nuvem
             } else {
                 document.getElementById('auth-screen').classList.remove('hidden');
                 document.getElementById('main-panel').classList.add('hidden');
             }
         });
 
-        // -- Configurações do Analista --
+        // -- Configurações do Analista (Sincronizado na Nuvem) --
         window.abrirConfig = () => document.getElementById('config-modal').classList.remove('hidden');
         window.fecharConfig = () => document.getElementById('config-modal').classList.add('hidden');
-        window.salvarConfig = () => {
+        
+        window.salvarConfig = async () => {
+            const user = auth.currentUser;
+            if(!user) return;
+            const btn = document.getElementById('btn_salvar_config');
+            btn.innerText = "Salvando...";
+
             const cfg = {
-                nome: document.getElementById('cfg_analista').value,
-                equipe: document.getElementById('cfg_equipe').value,
-                logo: document.getElementById('cfg_logo').value
+                nome: document.getElementById('cfg_analista').value || "Analista",
+                equipe: document.getElementById('cfg_equipe').value || "Equipe",
+                logo: document.getElementById('cfg_logo').value || ""
             };
-            localStorage.setItem('scout_analista', JSON.stringify(cfg));
-            carregarConfig();
-            fecharConfig();
-        };
-        window.carregarConfig = () => {
-            const cfg = JSON.parse(localStorage.getItem('scout_analista') || '{"nome":"Adriano Cabeça","equipe":"Tactical Intel","logo":""}');
-            document.getElementById('cfg_analista').value = cfg.nome;
-            document.getElementById('cfg_equipe').value = cfg.equipe;
-            document.getElementById('cfg_logo').value = cfg.logo;
             
-            // Aplica na UI (Sidebar)
+            // Salva no banco de dados
+            await setDoc(doc(db, "usuarios", user.uid, "config", "perfil"), cfg);
+            aplicarConfigUI(cfg);
+            fecharConfig();
+            btn.innerText = "Salvar na Nuvem";
+        };
+
+        window.carregarConfigServer = async () => {
+            const user = auth.currentUser;
+            if(!user) return;
+            const docSnap = await getDoc(doc(db, "usuarios", user.uid, "config", "perfil"));
+            if (docSnap.exists()) {
+                const cfg = docSnap.data();
+                document.getElementById('cfg_analista').value = cfg.nome;
+                document.getElementById('cfg_equipe').value = cfg.equipe;
+                document.getElementById('cfg_logo').value = cfg.logo;
+                aplicarConfigUI(cfg);
+            } else {
+                aplicarConfigUI({nome:"Seu Nome", equipe:"Sua Equipe", logo:""});
+            }
+        };
+
+        const aplicarConfigUI = (cfg) => {
             document.getElementById('side_nome_analista').innerText = cfg.nome;
             document.getElementById('side_equipe_analista').innerText = cfg.equipe;
             if(cfg.logo) { document.getElementById('side_logo_analista').src = cfg.logo; document.getElementById('side_logo_analista').style.display = 'block'; }
             
-            // Aplica na Impressão (Header)
             document.getElementById('print_nome_analista').innerText = cfg.nome;
             document.getElementById('print_equipe_analista').innerText = cfg.equipe;
             if(cfg.logo) { document.getElementById('print_logo_analista').src = cfg.logo; document.getElementById('print_logo_analista').style.display = 'block'; }
         };
 
-        // -- Funções base --
-        window.checkNet = () => {
-            const dot = document.getElementById('net-dot'); const txt = document.getElementById('net-txt');
-            if(navigator.onLine) { dot.className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"; txt.innerText="ONLINE"; }
-            else { dot.className="w-2 h-2 rounded-full bg-red-500"; txt.innerText="OFFLINE"; }
-        };
-        window.addEventListener('online', checkNet); window.addEventListener('offline', checkNet);
+        // -- Biblioteca e Histórico (Sincronizado na Nuvem) --
+        let bibliotecaCache = {}; // Guarda na memória do app
 
-        window.imgLocal = (event, id) => {
-            const reader = new FileReader();
-            reader.onload = (e) => { document.getElementById(id).value = e.target.result; gerarPlano(); };
-            reader.readAsDataURL(event.target.files[0]);
-        };
+        window.salvarAnalise = async () => {
+            const user = auth.currentUser;
+            if(!user) return alert("Precisa estar logado!");
+            const btn = document.getElementById('btn_salvar_analise');
+            btn.innerText = "Sincronizando...";
 
-        // -- Biblioteca e Histórico --
-        window.salvarAnalise = () => {
             const id = document.getElementById('op_name').value || "NOVA_EQUIPE_" + Math.floor(Math.random() * 1000);
-            let ldb = JSON.parse(localStorage.getItem('scout_v14_db') || '{}');
             let data = {}; 
             document.querySelectorAll('input, select, textarea').forEach(el => { 
                 if(el.id && !el.id.startsWith('auth-') && !el.id.startsWith('cfg_') && el.id !== 'search_db') data[el.id] = el.value; 
             });
-            ldb[id] = data; localStorage.setItem('scout_v14_db', JSON.stringify(ldb)); renderizarBiblioteca();
+            
+            // Salva no Firestore!
+            await setDoc(doc(db, "usuarios", user.uid, "analises", id), data);
+            
+            btn.innerText = "Sincronizar Análise";
+            carregarBibliotecaNuvem(); // Atualiza a lista lateral
         };
 
-        window.deletarAnalise = (id) => {
-            if(confirm(`Tem certeza que deseja apagar o relatório de ${id}?`)) {
-                let ldb = JSON.parse(localStorage.getItem('scout_v14_db') || '{}');
-                delete ldb[id];
-                localStorage.setItem('scout_v14_db', JSON.stringify(ldb));
-                renderizarBiblioteca();
+        window.deletarAnalise = async (id) => {
+            const user = auth.currentUser;
+            if(!user) return;
+            if(confirm(`Tem certeza que deseja apagar o relatório de ${id} da NUVEM?`)) {
+                await deleteDoc(doc(db, "usuarios", user.uid, "analises", id));
+                carregarBibliotecaNuvem();
             }
         };
 
-        window.carregarDaBiblioteca = (id) => {
-            let ldb = JSON.parse(localStorage.getItem('scout_v14_db') || '{}');
-            if(ldb[id]) {
-                Object.keys(ldb[id]).forEach(k => { if(document.getElementById(k)) document.getElementById(k).value = ldb[id][k]; }); 
-                gerarPlano();
-            }
-        };
-
-        window.renderizarBiblioteca = () => {
+        window.carregarBibliotecaNuvem = async () => {
+            const user = auth.currentUser;
+            if(!user) return;
             const lista = document.getElementById('lista_analises');
-            let ldb = JSON.parse(localStorage.getItem('scout_v14_db') || '{}');
+            
+            const querySnapshot = await getDocs(collection(db, "usuarios", user.uid, "analises"));
+            bibliotecaCache = {};
             lista.innerHTML = "";
-            Object.keys(ldb).forEach(id => {
+            
+            if(querySnapshot.empty) {
+                lista.innerHTML = '<p class="text-[10px] text-slate-500 text-center italic mt-2">Nenhuma análise salva ainda.</p>';
+                return;
+            }
+
+            querySnapshot.forEach((docSnap) => {
+                const id = docSnap.id;
+                bibliotecaCache[id] = docSnap.data(); // Guarda na memória pra carregar rápido
+                
                 let div = document.createElement('div');
                 div.className = "library-item flex justify-between items-center text-[10px] uppercase font-bold text-slate-300 p-1 mb-1 border-b border-slate-700/50 hover:bg-slate-800 rounded transition"; 
                 div.innerHTML = `
@@ -566,12 +585,34 @@
             });
         };
 
+        window.carregarDaBiblioteca = (id) => {
+            if(bibliotecaCache[id]) {
+                Object.keys(bibliotecaCache[id]).forEach(k => { 
+                    if(document.getElementById(k)) document.getElementById(k).value = bibliotecaCache[id][k]; 
+                }); 
+                gerarPlano();
+            }
+        };
+
         window.buscarAnalise = () => {
             let term = document.getElementById('search_db').value.toLowerCase();
             document.querySelectorAll('.library-item').forEach(el => { el.style.display = el.innerText.toLowerCase().includes(term) ? "flex" : "none"; });
         };
 
-        // -- Gerador do PDF --
+        // -- Outros --
+        window.checkNet = () => {
+            const dot = document.getElementById('net-dot'); const txt = document.getElementById('net-txt');
+            if(navigator.onLine) { dot.className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"; txt.innerText="ONLINE"; }
+            else { dot.className="w-2 h-2 rounded-full bg-red-500"; txt.innerText="OFFLINE"; }
+        };
+        window.addEventListener('online', checkNet); window.addEventListener('offline', checkNet);
+
+        window.imgLocal = (event, id) => {
+            const reader = new FileReader();
+            reader.onload = (e) => { document.getElementById(id).value = e.target.result; gerarPlano(); };
+            reader.readAsDataURL(event.target.files[0]);
+        };
+
         window.gerarPlano = () => {
             // Textos Fixos
             document.getElementById('r_comp').innerText = document.getElementById('op_comp').value || "---";
@@ -580,7 +621,7 @@
             document.getElementById('r_name').innerText = document.getElementById('op_name').value || "---";
             document.getElementById('r_coach').innerText = "TREINADOR: " + (document.getElementById('op_coach').value || "---");
 
-            // Logos Mandante/Visitante
+            // Logos
             const l_home = document.getElementById('op_logo_home').value;
             const r_l_home = document.getElementById('r_logo_home');
             if(l_home) { r_l_home.src = l_home; r_l_home.style.display = 'block'; } else { r_l_home.style.display = 'none'; }
@@ -617,7 +658,7 @@
             // Notas
             document.getElementById('r_notes').innerText = document.getElementById('op_notes').value || "---";
 
-            // Imagens Map
+            // Imagens
             const imgIds = ['img_o_saida', 'img_o_f2', 'img_o_f3', 'img_o_trans', 'img_d_alto', 'img_d_medio', 'img_d_baixo', 'img_d_trans', 'img_abpo_esc', 'img_abpo_fal', 'img_abpd_esc', 'img_abpd_fal'];
             imgIds.forEach(id => {
                 const val = document.getElementById(id).value; 
@@ -625,7 +666,7 @@
                 if(val) { img.src = val; img.style.display = 'block'; } else { img.style.display = 'none'; }
             });
 
-            // Labels ABP condicionais
+            // Labels ABP
             document.getElementById('l_abpo_esc').style.display = document.getElementById('img_abpo_esc').value ? 'block' : 'none';
             document.getElementById('l_abpo_fal').style.display = document.getElementById('img_abpo_fal').value ? 'block' : 'none';
             document.getElementById('l_abpd_esc').style.display = document.getElementById('img_abpd_esc').value ? 'block' : 'none';
@@ -642,11 +683,10 @@
             }
         };
 
-        window.onload = () => { checkNet(); renderizarBiblioteca(); };
+        window.onload = () => { checkNet(); };
         
         document.querySelector('button.bg-gradient-to-r').onclick = () => {
             gerarPlano();
-            // Um leve delay para garantir que imagens foram carregadas antes do print ser engatilhado
             setTimeout(() => { window.print(); }, 300);
         };
     </script>
