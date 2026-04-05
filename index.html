@@ -21,7 +21,6 @@
         .badge-title { font-size: 0.9rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 18px; display: block; text-decoration: underline; font-style: italic; }
         .img-slot { width: 100%; height: 120px; object-fit: cover; border-radius: 12px; display: none; border: 1px solid #e2e8f0; }
         
-        /* Animações para o chat */
         .chat-bubble { animation: fadeIn 0.3s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -42,18 +41,31 @@
         <span id="net-dot" class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span><span id="net-txt">ONLINE</span>
     </div>
 
-    <div id="config-modal" class="hidden absolute inset-0 bg-black/80 z-50 flex items-center justify-center no-print">
-        <div class="bg-[#0f172a] p-6 rounded-2xl border border-slate-700 w-full max-w-md">
-            <h2 class="font-header text-xl font-bold text-white mb-4 italic uppercase border-b border-slate-700 pb-2">Configurar Analista ⚙️</h2>
+    <div id="config-modal" class="hidden absolute inset-0 bg-black/80 z-50 flex items-center justify-center no-print overflow-y-auto py-10">
+        <div class="bg-[#0f172a] p-6 rounded-2xl border border-slate-700 w-full max-w-md m-auto">
+            <h2 class="font-header text-xl font-bold text-white mb-4 italic uppercase border-b border-slate-700 pb-2">Configurar Sistema ⚙️</h2>
             <div class="space-y-3">
                 <div><label class="label-sm">Nome do Analista</label><input type="text" id="cfg_analista" class="input-dark uppercase" value="Adriano Cabeça"></div>
                 <div><label class="label-sm">Equipe / Função</label><input type="text" id="cfg_equipe" class="input-dark uppercase" value="Tactical Intel"></div>
-                <div><label class="label-sm">Sua Logo (URL)</label><input type="text" id="cfg_logo" class="input-dark" placeholder="URL da logo do analista"></div>
+                <div><label class="label-sm">Sua Logo (URL)</label><input type="text" id="cfg_logo" class="input-dark" placeholder="URL da logo"></div>
                 <div><label class="label-sm text-purple-400">Instagram / Contato Comercial</label><input type="text" id="cfg_contato" class="input-dark" placeholder="@suamarca ou Telefone"></div>
             </div>
+            
+            <div class="mt-6 border-t border-slate-700 pt-4">
+                <h3 class="text-emerald-400 font-bold text-[10px] uppercase mb-3">Customizar Botões do Jogo Ao Vivo</h3>
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="text" id="cfg_btn_1" class="input-dark text-[10px]" value="❌ Ataque Falhou">
+                    <input type="text" id="cfg_btn_2" class="input-dark text-[10px]" value="⚠️ Furo na Zaga">
+                    <input type="text" id="cfg_btn_3" class="input-dark text-[10px]" value="⚽ Ganhou 2ª Bola">
+                    <input type="text" id="cfg_btn_4" class="input-dark text-[10px]" value="⚡ Pressão Encaixou">
+                    <input type="text" id="cfg_btn_5" class="input-dark text-[10px]" value="📉 Linha Baixou">
+                    <input type="text" id="cfg_btn_6" class="input-dark text-[10px]" value="📈 Pressão Alta">
+                </div>
+            </div>
+
             <div class="flex gap-2 mt-6">
-                <button onclick="salvarConfig()" id="btn_salvar_config" class="w-full bg-emerald-600 text-white font-bold py-2 rounded-lg uppercase">Salvar na Nuvem</button>
-                <button onclick="fecharConfig()" class="w-full bg-slate-700 text-white font-bold py-2 rounded-lg uppercase">Cancelar</button>
+                <button onclick="salvarConfig()" id="btn_salvar_config" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-lg uppercase transition">Salvar Tudo</button>
+                <button onclick="fecharConfig()" class="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 rounded-lg uppercase transition">Cancelar</button>
             </div>
         </div>
     </div>
@@ -88,7 +100,7 @@
                     </div>
                 </div>
                 <div class="flex flex-col gap-1">
-                    <button onclick="abrirConfig()" class="text-[10px] bg-slate-700 text-white px-2 py-1 rounded-md font-bold uppercase hover:bg-slate-600">⚙️ Config</button>
+                    <button onclick="abrirConfig()" class="text-[10px] bg-slate-700 hover:bg-slate-600 text-white px-2 py-1 rounded-md font-bold uppercase transition">⚙️ Config</button>
                     <button id="btn-logout" class="text-[9px] bg-red-900/50 text-red-400 px-2 py-1 rounded-md font-black hover:bg-red-600 hover:text-white uppercase transition">Sair</button>
                 </div>
             </header>
@@ -96,13 +108,14 @@
             <button onclick="toggleModoJogo()" id="btn_modo_jogo" class="w-full bg-red-600 hover:bg-red-500 text-white font-black py-4 rounded-xl uppercase text-sm mb-6 shadow-lg border border-red-800 transition flex justify-center items-center gap-2">
                 🔴 Entrar no Modo Jogo Ao Vivo
             </button>
+
             <div class="section-card border-l-4 border-l-yellow-500 bg-slate-900/50 relative">
                 <span class="badge-title text-yellow-400">Nuvem Playtatic ☁️</span>
                 <input type="text" id="search_db" onkeyup="buscarAnalise()" placeholder="Pesquisar relatório..." class="input-dark mb-3 border-yellow-500/30">
                 <div id="lista_analises" class="max-h-40 overflow-y-auto pr-2 mb-3 border border-slate-700 rounded-lg p-2 bg-[#0d1117]">
                     <p class="text-[10px] text-slate-500 text-center italic mt-2">Carregando da nuvem...</p>
                 </div>
-                <button onclick="salvarAnalise()" id="btn_salvar_analise" class="w-full bg-yellow-600 text-white font-black py-3 rounded-lg uppercase text-[11px] mb-2 shadow-lg">Sincronizar Análise Atual ☁️</button>
+                <button onclick="salvarAnalise()" id="btn_salvar_analise" class="w-full bg-yellow-600 hover:bg-yellow-500 text-white font-black py-3 rounded-lg uppercase text-[11px] mb-2 shadow-lg transition">Sincronizar Análise Atual ☁️</button>
                 <button onclick="migrarLocalNuvem()" class="w-full bg-slate-800 border border-slate-600 text-slate-300 font-bold py-2 rounded-lg uppercase text-[10px] hover:bg-slate-700 transition">Importar Antigos do PC</button>
             </div>
 
@@ -134,8 +147,20 @@
                 </div>
 
                 <div class="pt-4 border-t border-slate-700">
-                    <label class="label-sm text-red-400">⚠️ Desfalques / Suspensos</label>
-                    <input type="text" id="op_desfalques" class="input-dark" placeholder="Ex: Camisa 5 (Suspenso), Camisa 9 (Lesão)">
+                    <label class="label-sm text-red-400">⚠️ DM / Suspensos / Não Regularizados</label>
+                    <textarea id="op_desfalques" class="input-dark h-20" placeholder="Ex:&#10;DM: João (Joelho)&#10;Suspensos: Carlos (3º Amarelo)&#10;Não Regularizado: Silva"></textarea>
+                </div>
+            </div>
+
+            <div class="section-card border-l-4 border-l-indigo-500">
+                <span class="badge-title text-indigo-400">Escalação & Plantel</span>
+                <div class="mb-4">
+                    <label class="label-sm text-indigo-300">📋 Sumário - 11 Iniciais</label>
+                    <textarea id="op_iniciais" class="input-dark h-24" placeholder="Ex: 1-Alisson, 2-Danilo, 3-Marquinhos, 4-Militão..."></textarea>
+                </div>
+                <div>
+                    <label class="label-sm text-indigo-300">🔄 Modificações / Banco</label>
+                    <textarea id="op_banco" class="input-dark h-20" placeholder="Ex: Entra o Camisa 9 no 2º tempo para puxar contra-ataque."></textarea>
                 </div>
             </div>
 
@@ -328,27 +353,61 @@
 
             <div class="section-card border-l-4 border-l-pink-500">
                 <span class="badge-title text-pink-400">Destaques Individuais (Atletas)</span>
-                
                 <div class="mb-4 border-b border-slate-700 pb-4">
                     <label class="label-sm flex justify-between items-center text-pink-300">Destaque 1 <label class="cursor-pointer">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_dest_1')"></label></label>
                     <input type="text" id="img_dest_1" class="hidden">
                     <input type="text" id="op_dest_nome_1" class="input-dark mb-2 uppercase font-bold" placeholder="Nome / Número">
-                    <input type="text" id="op_dest_nota_1" class="input-dark text-[11px]" placeholder="Principal Característica (Ex: Bom chute de fora)">
+                    <input type="text" id="op_dest_nota_1" class="input-dark text-[11px]" placeholder="Principal Característica">
                 </div>
-
                 <div class="mb-4 border-b border-slate-700 pb-4">
                     <label class="label-sm flex justify-between items-center text-pink-300">Destaque 2 <label class="cursor-pointer">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_dest_2')"></label></label>
                     <input type="text" id="img_dest_2" class="hidden">
                     <input type="text" id="op_dest_nome_2" class="input-dark mb-2 uppercase font-bold" placeholder="Nome / Número">
                     <input type="text" id="op_dest_nota_2" class="input-dark text-[11px]" placeholder="Principal Característica">
                 </div>
-
                 <div>
                     <label class="label-sm flex justify-between items-center text-pink-300">Destaque 3 <label class="cursor-pointer">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_dest_3')"></label></label>
                     <input type="text" id="img_dest_3" class="hidden">
                     <input type="text" id="op_dest_nome_3" class="input-dark mb-2 uppercase font-bold" placeholder="Nome / Número">
                     <input type="text" id="op_dest_nota_3" class="input-dark text-[11px]" placeholder="Principal Característica">
                 </div>
+            </div>
+
+            <div class="section-card border-l-4 border-l-blue-500">
+                <span class="badge-title text-blue-400">Suporte Visual (Pranchetas)</span>
+                
+                <p class="text-[10px] text-emerald-400 font-bold mb-2 uppercase border-b border-slate-700 pb-1">Fase Ofensiva</p>
+                <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
+                    <div><label class="label-sm flex justify-between items-center">Tiro de Meta <label class="cursor-pointer text-blue-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_o_saida')"></label></label><input type="text" id="img_o_saida" class="input-dark text-[10px] px-2" placeholder="URL"></div>
+                    <div><label class="label-sm flex justify-between items-center">2ª Fase <label class="cursor-pointer text-blue-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_o_f2')"></label></label><input type="text" id="img_o_f2" class="input-dark text-[10px] px-2" placeholder="URL"></div>
+                    <div><label class="label-sm flex justify-between items-center text-emerald-300">Preench. Área <label class="cursor-pointer text-blue-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_o_preenchimento')"></label></label><input type="text" id="img_o_preenchimento" class="input-dark text-[10px] px-2" placeholder="URL"></div>
+                    <div><label class="label-sm flex justify-between items-center">1/3 Final <label class="cursor-pointer text-blue-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_o_f3')"></label></label><input type="text" id="img_o_f3" class="input-dark text-[10px] px-2" placeholder="URL"></div>
+                    <div><label class="label-sm flex justify-between items-center">Transição OF <label class="cursor-pointer text-blue-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_o_trans')"></label></label><input type="text" id="img_o_trans" class="input-dark text-[10px] px-2" placeholder="URL"></div>
+                </div>
+
+                <p class="text-[10px] text-red-400 font-bold mb-2 uppercase border-b border-slate-700 pb-1">Fase Defensiva</p>
+                <div class="grid grid-cols-2 gap-3 mb-6">
+                    <div><label class="label-sm flex justify-between items-center">Bloco Alto <label class="cursor-pointer text-red-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_d_alto')"></label></label><input type="text" id="img_d_alto" class="input-dark text-[10px] px-2" placeholder="URL"></div>
+                    <div><label class="label-sm flex justify-between items-center">Bloco Médio <label class="cursor-pointer text-red-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_d_medio')"></label></label><input type="text" id="img_d_medio" class="input-dark text-[10px] px-2" placeholder="URL"></div>
+                    <div><label class="label-sm flex justify-between items-center">Bloco Baixo <label class="cursor-pointer text-red-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_d_baixo')"></label></label><input type="text" id="img_d_baixo" class="input-dark text-[10px] px-2" placeholder="URL"></div>
+                    <div><label class="label-sm flex justify-between items-center">Transição DEF <label class="cursor-pointer text-red-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_d_trans')"></label></label><input type="text" id="img_d_trans" class="input-dark text-[10px] px-2" placeholder="URL"></div>
+                </div>
+
+                <p class="text-[10px] font-bold mb-2 uppercase border-b border-slate-700 pb-1 text-orange-400">Bolas Paradas Ofensivas (ABP OF)</p>
+                <div class="grid grid-cols-3 gap-2 mb-6">
+                    <div><label class="label-sm flex justify-between items-center">Escanteio <label class="cursor-pointer">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_abpo_esc')"></label></label><input type="text" id="img_abpo_esc" class="input-dark text-[10px] px-1" placeholder="URL"></div>
+                    <div><label class="label-sm flex justify-between items-center">Falta Lateral <label class="cursor-pointer">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_abpo_fal')"></label></label><input type="text" id="img_abpo_fal" class="input-dark text-[10px] px-1" placeholder="URL"></div>
+                    <div><label class="label-sm flex justify-between items-center text-orange-300">Rebote OF <label class="cursor-pointer">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_abpo_rebote')"></label></label><input type="text" id="img_abpo_rebote" class="input-dark text-[10px] px-1" placeholder="URL"></div>
+                </div>
+
+                <p class="text-[10px] font-bold mb-2 uppercase border-b border-slate-700 pb-1 text-sky-400">Bolas Paradas Defensivas (ABP DEF)</p>
+                <div class="grid grid-cols-3 gap-2 mb-4">
+                    <div><label class="label-sm flex justify-between items-center">Escanteio <label class="cursor-pointer">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_abpd_esc')"></label></label><input type="text" id="img_abpd_esc" class="input-dark text-[10px] px-1" placeholder="URL"></div>
+                    <div><label class="label-sm flex justify-between items-center">Falta Lateral <label class="cursor-pointer">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_abpd_fal')"></label></label><input type="text" id="img_abpd_fal" class="input-dark text-[10px] px-1" placeholder="URL"></div>
+                    <div><label class="label-sm flex justify-between items-center text-sky-300">Rebote DEF <label class="cursor-pointer">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_abpd_rebote')"></label></label><input type="text" id="img_abpd_rebote" class="input-dark text-[10px] px-1" placeholder="URL"></div>
+                </div>
+                
+                <div class="mt-4 border-t border-slate-700 pt-4"><label class="label-sm">Vídeo Análise (URL do QR CODE)</label><input type="text" id="op_vid" class="input-dark" placeholder="Link do YouTube/Drive/LongoMatch"></div>
             </div>
 
             <div class="section-card border-l-4 border-l-yellow-400 relative">
@@ -385,6 +444,7 @@
         <main class="w-full lg:w-3/5 bg-white text-slate-900 rounded-2xl p-6 shadow-2xl overflow-y-auto relative transition-colors duration-300" id="main-content-area">
             
             <div id="print-area" class="block">
+                
                 <div class="bg-slate-900 text-center py-2 mb-6 rounded-lg break-inside-avoid hidden shadow-lg border-b-4 border-yellow-400" id="box_mantra">
                     <span class="text-[14px] font-black text-yellow-400 uppercase tracking-widest font-header">MANTRA: <span id="r_mantra" class="text-white">---</span></span>
                 </div>
@@ -414,14 +474,24 @@
                     </div>
                 </header>
 
+                <div class="grid grid-cols-2 gap-4 mb-6 break-inside-avoid hidden" id="box_elenco">
+                    <div class="bg-indigo-50 border border-indigo-200 p-3 rounded-lg shadow-sm">
+                        <span class="text-[10px] font-black text-indigo-700 uppercase block mb-1">📋 11 Iniciais:</span>
+                        <p id="r_iniciais" class="text-[9px] font-bold text-slate-700 uppercase whitespace-pre-wrap">---</p>
+                    </div>
+                    <div class="bg-indigo-50 border border-indigo-200 p-3 rounded-lg shadow-sm">
+                        <span class="text-[10px] font-black text-indigo-700 uppercase block mb-1">🔄 Modificações / Banco:</span>
+                        <p id="r_banco" class="text-[9px] font-bold text-slate-700 uppercase whitespace-pre-wrap">---</p>
+                    </div>
+                </div>
+
                 <div class="bg-red-50 border border-red-200 rounded-lg p-3 mb-6 break-inside-avoid hidden" id="box_desfalques">
-                    <span class="text-[10px] font-black text-red-600 uppercase">⚠️ DESFALQUES E SUSPENSOS:</span>
-                    <span id="r_desfalques" class="text-[10px] font-bold text-slate-700 uppercase ml-2">---</span>
+                    <span class="text-[10px] font-black text-red-600 uppercase block mb-1">⚠️ DM / SUSPENSOS / NÃO REGULARIZADOS:</span>
+                    <span id="r_desfalques" class="text-[10px] font-bold text-slate-700 uppercase whitespace-pre-wrap">---</span>
                 </div>
 
                 <div class="bg-[#f2fdf7] rounded-xl p-5 mb-6 break-inside-avoid border border-[#a7f3d0]">
                     <h3 class="text-[#059669] font-black italic uppercase text-[14px] border-b border-[#a7f3d0] pb-2 mb-4 font-header">Fase Ofensiva & Construção</h3>
-                    
                     <div class="grid grid-cols-2 gap-x-12 gap-y-3 mb-5 text-[10px] font-bold text-slate-600 uppercase">
                         <div class="flex"><span class="w-32 text-slate-400">PÉ ZAGS:</span> <span id="r_zags_foot" class="text-slate-800">---</span></div>
                         <div class="flex"><span class="w-32 text-slate-400">LADO ATK:</span> <span id="r_atk_side" class="text-slate-800">---</span></div>
@@ -431,18 +501,17 @@
                         <div class="flex"><span class="w-32 text-slate-400">TRANSIÇÃO:</span> <span id="r_tof" class="text-slate-800">---</span></div>
                         <div class="flex col-span-2 bg-[#d1fae5] p-2 rounded"><span class="w-32 text-[#059669]">PREENCHIMENTO ÁREA:</span> <span id="r_preenchimento" class="text-[#065f46] font-black">---</span></div>
                     </div>
-
-                    <div class="grid grid-cols-4 gap-3">
-                        <div><img id="r_img_o_saida" class="img-slot"><p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">Saída T. Meta</p></div>
-                        <div><img id="r_img_o_f2" class="img-slot"><p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">2ª Fase</p></div>
-                        <div><img id="r_img_o_f3" class="img-slot"><p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">1/3 Final</p></div>
-                        <div><img id="r_img_o_trans" class="img-slot"><p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase">Trans. OF</p></div>
+                    <div class="grid grid-cols-5 gap-2">
+                        <div><img id="r_img_o_saida" class="img-slot"><p class="text-[7px] text-center mt-1 font-bold text-slate-600 uppercase">Saída Meta</p></div>
+                        <div><img id="r_img_o_f2" class="img-slot"><p class="text-[7px] text-center mt-1 font-bold text-slate-600 uppercase">2ª Fase</p></div>
+                        <div><img id="r_img_o_preenchimento" class="img-slot"><p class="text-[7px] text-center mt-1 font-bold text-emerald-600 uppercase">Preench. Área</p></div>
+                        <div><img id="r_img_o_f3" class="img-slot"><p class="text-[7px] text-center mt-1 font-bold text-slate-600 uppercase">1/3 Final</p></div>
+                        <div><img id="r_img_o_trans" class="img-slot"><p class="text-[7px] text-center mt-1 font-bold text-slate-600 uppercase">Trans. OF</p></div>
                     </div>
                 </div>
 
                 <div class="bg-[#fef2f2] rounded-xl p-5 mb-6 break-inside-avoid border border-[#fecaca]">
                     <h3 class="text-[#dc2626] font-black italic uppercase text-[14px] border-b border-[#fecaca] pb-2 mb-4 font-header">Fase Defensiva & Organização</h3>
-                    
                     <div class="grid grid-cols-2 gap-x-12 gap-y-3 mb-5 text-[10px] font-bold text-slate-600 uppercase">
                         <div class="flex"><span class="w-24 text-slate-400">POSTURA:</span> <span id="r_postura" class="text-slate-800">---</span></div>
                         <div class="flex"><span class="w-32 text-slate-400">GATILHO PRESSÃO:</span> <span id="r_gatilho" class="text-red-700 font-black">---</span></div>
@@ -450,12 +519,11 @@
                         <div class="flex"><span class="w-32 text-slate-400">TRANSIÇÃO DF:</span> <span id="r_trans_df" class="text-slate-800">---</span></div>
                         <div class="flex col-span-2 bg-[#fee2e2] p-2 rounded"><span class="w-32 text-[#dc2626]">ALVO MARCAÇÃO:</span> <span id="r_target" class="text-[#991b1b] font-black">---</span></div>
                     </div>
-                    
                     <div class="grid grid-cols-4 gap-3">
-                        <div><img id="r_img_d_alto" class="img-slot"><p class="text-[9px] text-center mt-2 font-black text-slate-800 uppercase">BLOCO ALTO <span id="r_lbl_def_h" class="block text-red-600">---</span></p></div>
-                        <div><img id="r_img_d_medio" class="img-slot"><p class="text-[9px] text-center mt-2 font-black text-slate-800 uppercase">BLOCO MÉDIO <span id="r_lbl_def_m" class="block text-red-600">---</span></p></div>
-                        <div><img id="r_img_d_baixo" class="img-slot"><p class="text-[9px] text-center mt-2 font-black text-slate-800 uppercase">BLOCO BAIXO <span id="r_lbl_def_l" class="block text-red-600">---</span></p></div>
-                        <div><img id="r_img_d_trans" class="img-slot"><p class="text-[9px] text-center mt-2 font-black text-slate-800 uppercase">TRANS. DF</p></div>
+                        <div><img id="r_img_d_alto" class="img-slot"><p class="text-[8px] text-center mt-1 font-black text-slate-800 uppercase">BLOCO ALTO <span id="r_lbl_def_h" class="block text-red-600">---</span></p></div>
+                        <div><img id="r_img_d_medio" class="img-slot"><p class="text-[8px] text-center mt-1 font-black text-slate-800 uppercase">BLOCO MÉDIO <span id="r_lbl_def_m" class="block text-red-600">---</span></p></div>
+                        <div><img id="r_img_d_baixo" class="img-slot"><p class="text-[8px] text-center mt-1 font-black text-slate-800 uppercase">BLOCO BAIXO <span id="r_lbl_def_l" class="block text-red-600">---</span></p></div>
+                        <div><img id="r_img_d_trans" class="img-slot"><p class="text-[8px] text-center mt-1 font-black text-slate-800 uppercase">TRANS. DF</p></div>
                     </div>
                 </div>
 
@@ -466,9 +534,10 @@
                             <div class="flex"><span class="w-20 text-slate-400">BATIDA:</span> <span id="r_abpo_batida" class="text-slate-800">---</span></div>
                             <div class="flex"><span class="w-20 text-slate-400">ATLETAS:</span> <span id="r_abpo_atletas" class="text-slate-800">---</span></div>
                         </div>
-                        <div class="grid grid-cols-2 gap-2">
-                            <div><img id="r_img_abpo_esc" class="img-slot" style="height: 90px;"><p id="l_abpo_esc" class="text-[7px] text-center mt-1 font-bold text-slate-500 uppercase" style="display: none;">Escanteio</p></div>
-                            <div><img id="r_img_abpo_fal" class="img-slot" style="height: 90px;"><p id="l_abpo_fal" class="text-[7px] text-center mt-1 font-bold text-slate-500 uppercase" style="display: none;">Falta Lat.</p></div>
+                        <div class="grid grid-cols-3 gap-2">
+                            <div><img id="r_img_abpo_esc" class="img-slot" style="height: 80px;"><p id="l_abpo_esc" class="text-[7px] text-center mt-1 font-bold text-slate-500 uppercase" style="display: none;">Escanteio</p></div>
+                            <div><img id="r_img_abpo_fal" class="img-slot" style="height: 80px;"><p id="l_abpo_fal" class="text-[7px] text-center mt-1 font-bold text-slate-500 uppercase" style="display: none;">Falta Lat.</p></div>
+                            <div><img id="r_img_abpo_rebote" class="img-slot" style="height: 80px;"><p id="l_abpo_rebote" class="text-[7px] text-center mt-1 font-bold text-orange-500 uppercase" style="display: none;">Rebote</p></div>
                         </div>
                     </div>
                     
@@ -476,11 +545,12 @@
                         <h3 class="text-[#0284c7] font-black italic uppercase text-[12px] mb-3 font-header">ABP Defensivo</h3>
                         <div class="mb-3 text-[9px] font-bold text-slate-600 uppercase space-y-1">
                             <div class="flex"><span class="w-24 text-slate-400">MARCAÇÃO:</span> <span id="r_abpd_marcacao" class="text-slate-800">---</span></div>
-                            <div class="flex"><span class="w-24 text-slate-400">SOBRA/REBOTE:</span> <span id="r_abpd_rebote" class="text-slate-800">---</span></div>
+                            <div class="flex"><span class="w-24 text-slate-400">SOBRA:</span> <span id="r_abpd_rebote" class="text-slate-800">---</span></div>
                         </div>
-                        <div class="grid grid-cols-2 gap-2">
-                            <div><img id="r_img_abpd_esc" class="img-slot" style="height: 90px;"><p id="l_abpd_esc" class="text-[7px] text-center mt-1 font-bold text-slate-500 uppercase" style="display: none;">Escanteio</p></div>
-                            <div><img id="r_img_abpd_fal" class="img-slot" style="height: 90px;"><p id="l_abpd_fal" class="text-[7px] text-center mt-1 font-bold text-slate-500 uppercase" style="display: none;">Falta Lat.</p></div>
+                        <div class="grid grid-cols-3 gap-2">
+                            <div><img id="r_img_abpd_esc" class="img-slot" style="height: 80px;"><p id="l_abpd_esc" class="text-[7px] text-center mt-1 font-bold text-slate-500 uppercase" style="display: none;">Escanteio</p></div>
+                            <div><img id="r_img_abpd_fal" class="img-slot" style="height: 80px;"><p id="l_abpd_fal" class="text-[7px] text-center mt-1 font-bold text-slate-500 uppercase" style="display: none;">Falta Lat.</p></div>
+                            <div><img id="r_img_abpd_rebote" class="img-slot" style="height: 80px;"><p id="l_abpd_rebote" class="text-[7px] text-center mt-1 font-bold text-sky-500 uppercase" style="display: none;">Rebote</p></div>
                         </div>
                     </div>
                 </div>
@@ -555,34 +625,34 @@
                 
                 <div class="flex gap-4 h-[calc(100vh-140px)] overflow-hidden">
                     
-                    <div class="w-[35%] flex flex-col gap-3">
-                        <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Ações Rápidas de Campo</span>
-                        
+                    <div class="w-[35%] flex flex-col gap-3 h-full">
+                        <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Ações Rápidas</span>
                         <div class="grid grid-cols-2 gap-2">
-                            <button onclick="addLiveEvent('⚠️ Ataque falhou (Nossa Equipe)')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-[10px] py-3 rounded-lg border border-slate-600 shadow transition font-bold uppercase">❌ Ataque Falhou</button>
-                            <button onclick="addLiveEvent('⚠️ Furo no nosso bloqueio defensivo')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-[10px] py-3 rounded-lg border border-slate-600 shadow transition font-bold uppercase">⚠️ Furo na Zaga</button>
-                            <button onclick="addLiveEvent('🔥 Ganhamos a 2ª Bola no meio')" class="bg-emerald-900 hover:bg-emerald-800 text-emerald-200 text-[10px] py-3 rounded-lg border border-emerald-700 shadow transition font-bold uppercase">⚽ Ganhou 2ª Bola</button>
-                            <button onclick="addLiveEvent('🔥 Encaixou a pressão na saída deles')" class="bg-emerald-900 hover:bg-emerald-800 text-emerald-200 text-[10px] py-3 rounded-lg border border-emerald-700 shadow transition font-bold uppercase">⚡ Pressão Encaixou</button>
-                            <button onclick="addLiveEvent('📉 Adversário recuou as linhas')" class="bg-blue-900 hover:bg-blue-800 text-blue-200 text-[10px] py-3 rounded-lg border border-blue-700 shadow transition font-bold uppercase">📉 Linha Baixou</button>
-                            <button onclick="addLiveEvent('📈 Adversário subiu a marcação')" class="bg-orange-900 hover:bg-orange-800 text-orange-200 text-[10px] py-3 rounded-lg border border-orange-700 shadow transition font-bold uppercase">📈 Pressão Alta</button>
+                            <button id="btn_live_1" onclick="addLiveEvent(this.innerText)" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-[9px] py-3 px-1 rounded-lg border border-slate-600 shadow transition font-bold uppercase">❌ Ataque Falhou</button>
+                            <button id="btn_live_2" onclick="addLiveEvent(this.innerText)" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-[9px] py-3 px-1 rounded-lg border border-slate-600 shadow transition font-bold uppercase">⚠️ Furo na Zaga</button>
+                            <button id="btn_live_3" onclick="addLiveEvent(this.innerText)" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-[9px] py-3 px-1 rounded-lg border border-slate-600 shadow transition font-bold uppercase">⚽ Ganhou 2ª Bola</button>
+                            <button id="btn_live_4" onclick="addLiveEvent(this.innerText)" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-[9px] py-3 px-1 rounded-lg border border-slate-600 shadow transition font-bold uppercase">⚡ Pressão Encaixou</button>
+                            <button id="btn_live_5" onclick="addLiveEvent(this.innerText)" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-[9px] py-3 px-1 rounded-lg border border-slate-600 shadow transition font-bold uppercase">📉 Linha Baixou</button>
+                            <button id="btn_live_6" onclick="addLiveEvent(this.innerText)" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-[9px] py-3 px-1 rounded-lg border border-slate-600 shadow transition font-bold uppercase">📈 Pressão Alta</button>
                         </div>
-
-                        <div class="mt-2 flex-1 bg-[#0d1117] rounded-xl p-3 overflow-y-auto border border-slate-700 relative" id="log_container">
-                            <span class="absolute top-2 right-3 text-[8px] text-slate-500 uppercase font-bold">Diário de Jogo</span>
-                            <div id="log_eventos" class="mt-4 space-y-2">
-                                <p class="text-[10px] text-slate-600 italic">Nenhum evento registrado ainda.</p>
+                        <div class="flex-1 bg-[#0d1117] rounded-xl p-3 overflow-y-auto border border-slate-700 relative flex flex-col" id="log_container">
+                            <span class="absolute top-2 right-3 text-[8px] text-slate-500 uppercase font-bold bg-[#0d1117] pl-2 pb-1">Diário de Jogo</span>
+                            <div id="log_eventos" class="mt-4 space-y-2 flex-1">
+                                <p class="text-[10px] text-slate-600 italic">Nenhum evento na nuvem.</p>
                             </div>
                         </div>
+                        <button onclick="gerarTreinoIA()" id="btn_gerar_treino" class="w-full bg-purple-700 hover:bg-purple-600 text-white text-[11px] py-4 rounded-xl font-black uppercase shadow-lg transition flex items-center justify-center gap-2 border border-purple-900 mt-2">
+                            🧠 Planejar Treino Pós-Jogo
+                        </button>
                     </div>
 
                     <div class="w-[65%] bg-[#0d1117] border border-slate-700 rounded-xl flex flex-col relative overflow-hidden shadow-inner">
                         <div id="chat_messages" class="flex-1 p-5 overflow-y-auto flex flex-col gap-4">
                             <div class="chat-bubble self-start bg-slate-800 border border-slate-700 text-slate-200 p-3 rounded-2xl rounded-tl-none max-w-[85%] shadow-sm">
                                 <p class="text-[11px] font-bold text-emerald-400 mb-1 uppercase">🧠 TaticAI System</p>
-                                <p class="text-sm">Olá, Professor! Estou conectado ao banco de dados pré-jogo desta partida. Me avise sobre qualquer mudança no comportamento deles que eu calculo o ajuste tático na hora.</p>
+                                <p class="text-sm">Fala, Professor! Estou monitorando os botões rápidos. Fale no rádio (microfone) para ajustes ao vivo, ou clique em "Planejar Treino" quando o jogo acabar para montarmos a semana.</p>
                             </div>
                         </div>
-
                         <div class="p-4 border-t border-slate-800 flex gap-2 items-center bg-[#0f172a]">
                             <button onclick="iniciarVozChat()" class="bg-slate-700 hover:bg-slate-600 text-white w-12 h-12 rounded-full flex items-center justify-center transition shadow-lg" title="Falar no Microfone">🎙️</button>
                             <input type="text" id="input_chat_live" class="bg-slate-800 border border-slate-700 text-white p-3 rounded-xl flex-1 text-sm focus:outline-none focus:border-emerald-500 transition" placeholder="Descreva o que está acontecendo..." onkeypress="if(event.key==='Enter') enviarChatLive()">
@@ -612,7 +682,6 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // -- Autenticação e Config --
         document.getElementById('btn-login').onclick = async () => {
             const email = document.getElementById('auth-email').value; const pass = document.getElementById('auth-pass').value;
             try { await signInWithEmailAndPassword(auth, email, pass); } catch (e) { document.getElementById('auth-error').innerText = "ACESSO NEGADO."; }
@@ -627,23 +696,28 @@
             if (user) {
                 document.getElementById('auth-screen').classList.add('hidden');
                 document.getElementById('main-panel').classList.remove('hidden');
-                carregarConfigServer(); 
-                carregarBibliotecaNuvem(); 
+                carregarConfigServer(); carregarBibliotecaNuvem(); 
             } else {
                 document.getElementById('auth-screen').classList.remove('hidden');
                 document.getElementById('main-panel').classList.add('hidden');
             }
         });
 
-        // Configuração do Analista
+        // Configurações
         window.abrirConfig = () => document.getElementById('config-modal').classList.remove('hidden');
         window.fecharConfig = () => document.getElementById('config-modal').classList.add('hidden');
+        
         window.salvarConfig = async () => {
             const user = auth.currentUser; if(!user) return;
-            const cfg = { nome: document.getElementById('cfg_analista').value, equipe: document.getElementById('cfg_equipe').value, logo: document.getElementById('cfg_logo').value, contato: document.getElementById('cfg_contato').value };
+            const btn = document.getElementById('btn_salvar_config'); btn.innerText = "Salvando...";
+            const cfg = { 
+                nome: document.getElementById('cfg_analista').value, equipe: document.getElementById('cfg_equipe').value, logo: document.getElementById('cfg_logo').value, contato: document.getElementById('cfg_contato').value,
+                btn1: document.getElementById('cfg_btn_1').value, btn2: document.getElementById('cfg_btn_2').value, btn3: document.getElementById('cfg_btn_3').value, btn4: document.getElementById('cfg_btn_4').value, btn5: document.getElementById('cfg_btn_5').value, btn6: document.getElementById('cfg_btn_6').value
+            };
             await setDoc(doc(db, "usuarios", user.uid, "config", "perfil"), cfg);
-            aplicarConfigUI(cfg); fecharConfig();
+            aplicarConfigUI(cfg); fecharConfig(); btn.innerText = "Salvar Tudo";
         };
+
         window.carregarConfigServer = async () => {
             const user = auth.currentUser; if(!user) return;
             try {
@@ -651,22 +725,24 @@
                 if (docSnap.exists()) {
                     const cfg = docSnap.data();
                     document.getElementById('cfg_analista').value = cfg.nome || ""; document.getElementById('cfg_equipe').value = cfg.equipe || ""; document.getElementById('cfg_logo').value = cfg.logo || ""; document.getElementById('cfg_contato').value = cfg.contato || "";
+                    document.getElementById('cfg_btn_1').value = cfg.btn1 || "❌ Ataque Falhou"; document.getElementById('cfg_btn_2').value = cfg.btn2 || "⚠️ Furo na Zaga"; document.getElementById('cfg_btn_3').value = cfg.btn3 || "⚽ Ganhou 2ª Bola"; document.getElementById('cfg_btn_4').value = cfg.btn4 || "⚡ Pressão Encaixou"; document.getElementById('cfg_btn_5').value = cfg.btn5 || "📉 Linha Baixou"; document.getElementById('cfg_btn_6').value = cfg.btn6 || "📈 Pressão Alta";
                     aplicarConfigUI(cfg);
                 }
             } catch(e) {}
         };
+
         const aplicarConfigUI = (cfg) => {
-            document.getElementById('side_nome_analista').innerText = cfg.nome || "Adriano Cabeça";
-            document.getElementById('side_equipe_analista').innerText = cfg.equipe || "Tactical Intel";
+            document.getElementById('side_nome_analista').innerText = cfg.nome || "Adriano Cabeça"; document.getElementById('side_equipe_analista').innerText = cfg.equipe || "Tactical Intel";
             if(cfg.logo) { document.getElementById('side_logo_analista').src = cfg.logo; document.getElementById('side_logo_analista').style.display = 'block'; }
-            document.getElementById('print_nome_analista').innerText = cfg.nome || "Analista";
-            document.getElementById('print_equipe_analista').innerText = cfg.equipe || "Equipe";
+            document.getElementById('print_nome_analista').innerText = cfg.nome || "Analista"; document.getElementById('print_equipe_analista').innerText = cfg.equipe || "Equipe";
             if(cfg.logo) { document.getElementById('print_logo_analista').src = cfg.logo; document.getElementById('print_logo_analista').style.display = 'block'; }
             document.getElementById('print_contato_analista').innerText = cfg.contato || "";
+            document.getElementById('btn_live_1').innerText = cfg.btn1 || "❌ Ataque Falhou"; document.getElementById('btn_live_2').innerText = cfg.btn2 || "⚠️ Furo na Zaga"; document.getElementById('btn_live_3').innerText = cfg.btn3 || "⚽ Ganhou 2ª Bola"; document.getElementById('btn_live_4').innerText = cfg.btn4 || "⚡ Pressão Encaixou"; document.getElementById('btn_live_5').innerText = cfg.btn5 || "📉 Linha Baixou"; document.getElementById('btn_live_6').innerText = cfg.btn6 || "📈 Pressão Alta";
         };
 
-        // Firebase Cloud Save
-        let bibliotecaCache = {}; 
+        // Firebase Cloud
+        let bibliotecaCache = {}; let eventosAoVivo = []; 
+
         window.salvarAnalise = async () => {
             const user = auth.currentUser; if(!user) return;
             const btn = document.getElementById('btn_salvar_analise'); btn.innerText = "Enviando... ⏳";
@@ -674,15 +750,15 @@
                 let nomeEquipe = document.getElementById('op_name').value.trim() || ("NOVA_EQUIPE_" + Math.floor(Math.random() * 1000));
                 const idSeguro = nomeEquipe.replace(/\//g, '-').replace(/\\/g, '-'); 
                 let data = {}; 
-                document.querySelectorAll('input, select, textarea').forEach(el => { if(el.id && !el.id.startsWith('auth-') && !el.id.startsWith('cfg_') && el.id !== 'search_db' && el.id !== 'input_chat_live') data[el.id] = el.value; });
+                document.querySelectorAll('input, select, textarea').forEach(el => { 
+                    if(el.id && !el.id.startsWith('auth-') && !el.id.startsWith('cfg_') && el.id !== 'search_db' && el.id !== 'input_chat_live') { data[el.id] = el.value; }
+                });
+                data.eventosLive = JSON.stringify(eventosAoVivo);
                 await setDoc(doc(db, "usuarios", user.uid, "analises", idSeguro), data);
-                alert(`✅ Relatório de ${nomeEquipe} salvo na Nuvem!`); carregarBibliotecaNuvem(); 
+                alert(`✅ Relatório e Diário salvos!`); carregarBibliotecaNuvem(); 
             } catch(e) { alert("❌ ERRO AO SALVAR."); } finally { btn.innerText = "Sincronizar Análise Atual ☁️"; }
         };
-        window.deletarAnalise = async (id) => {
-            const user = auth.currentUser; if(!user) return;
-            if(confirm(`Apagar ${id}?`)) { await deleteDoc(doc(db, "usuarios", user.uid, "analises", id)); carregarBibliotecaNuvem(); }
-        };
+
         window.carregarBibliotecaNuvem = async () => {
             const user = auth.currentUser; if(!user) return;
             const lista = document.getElementById('lista_analises');
@@ -700,8 +776,18 @@
                 });
             } catch(e) {}
         };
+
         window.carregarDaBiblioteca = (id) => {
-            if(bibliotecaCache[id]) { Object.keys(bibliotecaCache[id]).forEach(k => { if(document.getElementById(k)) document.getElementById(k).value = bibliotecaCache[id][k]; }); gerarPlano(); }
+            if(bibliotecaCache[id]) { 
+                Object.keys(bibliotecaCache[id]).forEach(k => { if(document.getElementById(k)) document.getElementById(k).value = bibliotecaCache[id][k]; }); 
+                if(bibliotecaCache[id].eventosLive) { eventosAoVivo = JSON.parse(bibliotecaCache[id].eventosLive); } else { eventosAoVivo = []; }
+                atualizarTelaLog(); gerarPlano(); 
+            }
+        };
+
+        window.deletarAnalise = async (id) => {
+            const user = auth.currentUser; if(!user) return;
+            if(confirm(`Apagar ${id}?`)) { await deleteDoc(doc(db, "usuarios", user.uid, "analises", id)); carregarBibliotecaNuvem(); }
         };
         window.buscarAnalise = () => {
             let term = document.getElementById('search_db').value.toLowerCase();
@@ -711,7 +797,7 @@
             const user = auth.currentUser; if(!user) return;
             let ldb = JSON.parse(localStorage.getItem('scout_v14_db') || '{}'); const chaves = Object.keys(ldb);
             if(chaves.length === 0) return;
-            if(confirm(`Migrar relatórios antigos para a Nuvem?`)) {
+            if(confirm(`Migrar relatórios para Nuvem?`)) {
                 for(let id of chaves) { const idSeguro = id.replace(/\//g, '-').replace(/\\/g, '-'); try { await setDoc(doc(db, "usuarios", user.uid, "analises", idSeguro), ldb[id]); } catch(e) {} }
                 carregarBibliotecaNuvem();
             }
@@ -733,8 +819,6 @@
             };
             reader.readAsDataURL(file);
         };
-
-        // Network
         window.checkNet = () => {
             const dot = document.getElementById('net-dot'); const txt = document.getElementById('net-txt');
             if(navigator.onLine) { dot.className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"; txt.innerText="ONLINE"; }
@@ -742,342 +826,186 @@
         };
         window.addEventListener('online', checkNet); window.addEventListener('offline', checkNet);
 
-        // Ditado Voz
         let recognition;
         if ('webkitSpeechRecognition' in window) {
             recognition = new webkitSpeechRecognition(); recognition.continuous = false; recognition.lang = 'pt-BR'; recognition.interimResults = false;
             recognition.onresult = function(event) {
-                const texto = event.results[0][0].transcript;
-                const textArea = document.getElementById('op_notes');
+                const texto = event.results[0][0].transcript; const textArea = document.getElementById('op_notes');
                 if(textArea.value === "SEM OBSERVAÇÕES ADICIONAIS") textArea.value = "";
                 textArea.value += (textArea.value ? " " : "") + texto + "."; gerarPlano();
             };
         }
         window.iniciarDitado = () => { if(recognition) { recognition.start(); alert("🎙️ Microfone ativado."); } };
-
-        // Compartilhar WhatsApp
         window.compartilharZap = () => {
             const rival = document.getElementById('op_name').value || "Adversário"; const competicao = document.getElementById('op_comp').value || "Jogo";
             window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(`Fala, comissão! Mapeamento tático do ${rival} (${competicao}) finalizado na Playtatic.`)}`, '_blank');
         };
 
-        // ==============================================================
-        // MODO JOGO AO VIVO & CHAT DA IA
-        // ==============================================================
-        
+        // MODO JOGO AO VIVO & IA DE TREINO
         let isLiveMode = false;
-        let eventosAoVivo = []; // Array que guarda o diário do jogo
-        
-        // Relógio simples do Live
-        setInterval(() => {
-            if(isLiveMode) document.getElementById('relogio_live').innerText = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit', second:'2-digit'});
-        }, 1000);
+        setInterval(() => { if(isLiveMode) document.getElementById('relogio_live').innerText = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit', second:'2-digit'}); }, 1000);
 
         window.toggleModoJogo = () => {
             isLiveMode = !isLiveMode;
-            const mainContent = document.getElementById('main-content-area');
-            const printArea = document.getElementById('print-area');
-            const liveArea = document.getElementById('live-area');
-            const btn = document.getElementById('btn_modo_jogo');
-
+            const mainContent = document.getElementById('main-content-area'); const printArea = document.getElementById('print-area'); const liveArea = document.getElementById('live-area'); const btn = document.getElementById('btn_modo_jogo');
             if(isLiveMode) {
-                // Entrando no Live
-                printArea.classList.replace('block', 'hidden');
-                liveArea.classList.replace('hidden', 'flex');
-                mainContent.classList.replace('bg-white', 'bg-[#0f172a]'); // Fundo escuro
-                btn.innerHTML = '📝 Sair do Modo Jogo e Voltar ao Scout';
-                btn.classList.replace('bg-red-600', 'bg-slate-600');
-                btn.classList.replace('hover:bg-red-500', 'hover:bg-slate-500');
-                btn.classList.replace('border-red-800', 'border-slate-800');
+                printArea.classList.replace('block', 'hidden'); liveArea.classList.replace('hidden', 'flex'); mainContent.classList.replace('bg-white', 'bg-[#0f172a]'); 
+                btn.innerHTML = '📝 Sair do Modo Jogo e Voltar ao Scout'; btn.classList.replace('bg-red-600', 'bg-slate-600'); btn.classList.replace('hover:bg-red-500', 'hover:bg-slate-500'); btn.classList.replace('border-red-800', 'border-slate-800');
             } else {
-                // Saindo do Live
-                printArea.classList.replace('hidden', 'block');
-                liveArea.classList.replace('flex', 'hidden');
-                mainContent.classList.replace('bg-[#0f172a]', 'bg-white'); // Fundo branco
-                btn.innerHTML = '🔴 Entrar no Modo Jogo Ao Vivo';
-                btn.classList.replace('bg-slate-600', 'bg-red-600');
-                btn.classList.replace('hover:bg-slate-500', 'hover:bg-red-500');
-                btn.classList.replace('border-slate-800', 'border-red-800');
+                printArea.classList.replace('hidden', 'block'); liveArea.classList.replace('flex', 'hidden'); mainContent.classList.replace('bg-[#0f172a]', 'bg-white'); 
+                btn.innerHTML = '🔴 Entrar no Modo Jogo Ao Vivo'; btn.classList.replace('bg-slate-600', 'bg-red-600'); btn.classList.replace('hover:bg-slate-500', 'hover:bg-red-500'); btn.classList.replace('border-slate-800', 'border-red-800');
             }
         };
 
-        window.addLiveEvent = (texto) => {
-            const min = document.getElementById('relogio_live').innerText.substring(0,5);
-            eventosAoVivo.push(`[${min}] ${texto}`);
-            
-            // Atualiza a tela de log na esquerda
+        window.addLiveEvent = (texto) => { const min = document.getElementById('relogio_live').innerText.substring(0,5); eventosAoVivo.push(`[${min}] ${texto}`); atualizarTelaLog(); };
+
+        const atualizarTelaLog = () => {
             const logBox = document.getElementById('log_eventos');
-            logBox.innerHTML = eventosAoVivo.map(e => `<div class="text-[10px] text-slate-300 border-b border-slate-800 py-2">${e}</div>`).join('');
-            
-            // Rola pro final
-            const container = document.getElementById('log_container');
-            container.scrollTop = container.scrollHeight;
+            if(eventosAoVivo.length === 0) { logBox.innerHTML = '<p class="text-[10px] text-slate-600 italic">Nenhum evento registrado.</p>'; } 
+            else { logBox.innerHTML = eventosAoVivo.map(e => `<div class="text-[10px] text-slate-300 border-b border-slate-800 py-2">${e}</div>`).join(''); }
+            const container = document.getElementById('log_container'); container.scrollTop = container.scrollHeight;
         };
 
-        // IA Chat Live
         const renderBubble = (text, type) => {
-            const chat = document.getElementById('chat_messages');
-            const div = document.createElement('div');
+            const chat = document.getElementById('chat_messages'); const div = document.createElement('div');
             if(type === 'user') {
-                div.className = 'chat-bubble self-end bg-emerald-700 text-white p-3 rounded-2xl rounded-tr-none max-w-[85%] shadow-sm text-sm';
-                div.innerHTML = text;
+                div.className = 'chat-bubble self-end bg-emerald-700 text-white p-3 rounded-2xl rounded-tr-none max-w-[85%] shadow-sm text-sm'; div.innerHTML = text;
             } else {
                 div.className = 'chat-bubble self-start bg-slate-800 border border-slate-700 text-slate-200 p-3 rounded-2xl rounded-tl-none max-w-[85%] shadow-sm text-sm';
-                div.innerHTML = `<p class="text-[11px] font-bold text-emerald-400 mb-1 uppercase">🧠 TaticAI System</p>${text}`;
+                let htmlText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+                div.innerHTML = `<p class="text-[11px] font-bold text-emerald-400 mb-1 uppercase">🧠 TaticAI System</p>${htmlText}`;
             }
-            chat.appendChild(div);
-            chat.scrollTop = chat.scrollHeight;
-            return div;
+            chat.appendChild(div); chat.scrollTop = chat.scrollHeight; return div;
         };
 
         window.enviarChatLive = async () => {
-            const input = document.getElementById('input_chat_live');
-            const msg = input.value.trim();
-            if(!msg) return;
+            const input = document.getElementById('input_chat_live'); const msg = input.value.trim(); if(!msg) return;
+            renderBubble(msg, 'user'); input.value = ''; const loadBubble = renderBubble("Analisando tática em tempo real... ⏳", 'ai');
 
-            renderBubble(msg, 'user');
-            input.value = '';
-            const loadBubble = renderBubble("Analisando o jogo... ⏳", 'ai');
-
-            // Chave mascarada em Base64
-            const chaveMascarada = 'QUl6YVN5Q2xBa3phS1g0ZUszQlBYNGdyM2JIZkNoYjJjYUtlVkhN';
-            const GEMINI_API_KEY = atob(chaveMascarada);
-            
-            // Pegar os dados importantes do Dossiê
-            const postura = document.getElementById('op_postura').value || '';
-            const bloco = document.getElementById('op_def_l').value || '';
-            const desgaste = document.getElementById('op_desgaste').value || '';
-            
-            // Pegar os últimos 6 eventos do Diário
+            const chaveMascarada = 'QUl6YVN5Q2xBa3phS1g0ZUszQlBYNGdyM2JIZkNoYjJjYUtlVkhN'; const GEMINI_API_KEY = atob(chaveMascarada);
+            const postura = document.getElementById('op_postura').value || ''; const bloco = document.getElementById('op_def_l').value || ''; const desgaste = document.getElementById('op_desgaste').value || '';
             const ultimosEventos = eventosAoVivo.slice(-6).join('\n');
 
-            const prompt = `Atue como Analista Tático Assistente ao vivo no banco de reservas. 
-            Informações do Dossiê Pré-Jogo sobre o Adversário:
-            - Postura Defensiva: ${postura}
-            - Bloco Baixo: ${bloco}
-            - Termômetro Físico (Desgaste): ${desgaste}
-
-            Anotações do Jogo até agora:
-            ${ultimosEventos || 'Nenhum evento grave registrado ainda.'}
-            
+            const prompt = `Atue como Assistente Técnico de Futebol no banco de reservas. 
+            Adversário (Pré-Jogo): Postura: ${postura}, Bloco Baixo: ${bloco}, Desgaste: ${desgaste}. Nossas ações recentes: ${ultimosEventos || 'Nenhum.'}
             Mensagem do Treinador AGORA: "${msg}"
-            
-            Me responda em 1 parágrafo curto, como se estivesse no rádio com o treinador. Dê uma instrução tática clara para resolver o problema relatado, cruzando com os dados que sabemos deles. Sem saudações.`;
+            Responda em 1 parágrafo curto. Dê uma instrução tática clara para o treinador gritar no campo, cruzando os dados. Sem saudações.`;
 
             try {
                 const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
-                const resposta = await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-                });
-                const dados = await resposta.json();
-                
-                loadBubble.remove();
-                if(dados.candidates && dados.candidates.length > 0) {
-                    renderBubble(dados.candidates[0].content.parts[0].text.trim(), 'ai');
-                } else if (dados.error) {
-                    renderBubble("ERRO: " + dados.error.message, 'ai');
-                }
-            } catch (erro) {
-                loadBubble.remove();
-                renderBubble("Erro de conexão.", 'ai');
-            }
+                const resposta = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }) });
+                const dados = await resposta.json(); loadBubble.remove();
+                if(dados.candidates && dados.candidates.length > 0) renderBubble(dados.candidates[0].content.parts[0].text.trim(), 'ai');
+            } catch (erro) { loadBubble.remove(); renderBubble("Erro de conexão.", 'ai'); }
         };
 
-        // Voz para o chat ao vivo
-        let liveRecognition;
-        if ('webkitSpeechRecognition' in window) {
-            liveRecognition = new webkitSpeechRecognition(); 
-            liveRecognition.continuous = false; liveRecognition.lang = 'pt-BR'; liveRecognition.interimResults = false;
-            liveRecognition.onresult = function(event) {
-                document.getElementById('input_chat_live').value = event.results[0][0].transcript;
-                enviarChatLive(); // Envia direto após falar
-            };
-        }
-        window.iniciarVozChat = () => { if(liveRecognition) { liveRecognition.start(); } else { alert("Navegador não suporta voz."); } };
+        window.gerarTreinoIA = async () => {
+            const btn = document.getElementById('btn_gerar_treino'); btn.innerHTML = "🧠 Estruturando Sessão... ⏳";
+            const loadBubble = renderBubble("Professor, estou estruturando a sessão de treino de amanhã com base nos erros deste jogo e na sua metodologia. Aguarde... 📋", 'ai');
+            const chaveMascarada = 'QUl6YVN5Q2xBa3phS1g0ZUszQlBYNGdyM2JIZkNoYjJjYUtlVkhN'; const GEMINI_API_KEY = atob(chaveMascarada);
+            const opNome = document.getElementById('op_name').value || 'Adversário'; const eventos = eventosAoVivo.join('\n') || 'Nenhum evento registrado nos botões rápidos.';
 
-
-        // ==============================================================
-        // IA PRÉ-JOGO (Gerar Estratégia PDF)
-        // ==============================================================
-        document.getElementById('btnGerarIA').addEventListener('click', async () => {
-            const campoExplorar = document.getElementById('op_explorar');
-            campoExplorar.value = "🧠 Analisando padrões do adversário... Aguarde ⏳";
-
-            const chaveMascarada = 'QUl6YVN5Q2xBa3phS1g0ZUszQlBYNGdyM2JIZkNoYjJjYUtlVkhN';
-            const GEMINI_API_KEY = atob(chaveMascarada);
-            
-            const postura = document.getElementById('op_postura').value || 'Não informado';
-            const blocoBaixo = document.getElementById('op_def_l').value || 'Não informado';
-            const blocoMedio = document.getElementById('op_def_m').value || 'Não informado';
-            const gatilho = document.getElementById('op_gatilho').value || 'Não informado';
-            const saida = document.getElementById('op_meta').value || 'Não informado';
-            const transicao = document.getElementById('op_tof').value || 'Não informado';
-            const desgaste = document.getElementById('op_desgaste').value || 'Não informado';
-            const pontoForte = document.getElementById('op_ponto_forte').value || 'Não informado';
-
-            const abpdMarcacao = document.getElementById('op_abpd_marcacao').value || 'Não informado';
-            const abpdRebote = document.getElementById('op_abpd_rebote').value || 'Não informado';
-            const abpoBatida = document.getElementById('op_abpo_batida').value || 'Não informado';
-
-            const destNome1 = document.getElementById('op_dest_nome_1').value || '';
-            const destNota1 = document.getElementById('op_dest_nota_1').value || '';
-            const destNome2 = document.getElementById('op_dest_nome_2').value || '';
-            const destNota2 = document.getElementById('op_dest_nota_2').value || '';
-            const destNome3 = document.getElementById('op_dest_nome_3').value || '';
-            const destNota3 = document.getElementById('op_dest_nota_3').value || '';
-
-            let destaquesTexto = "";
-            if (destNome1) destaquesTexto += `- ${destNome1}: ${destNota1}\n            `;
-            if (destNome2) destaquesTexto += `- ${destNome2}: ${destNota2}\n            `;
-            if (destNome3) destaquesTexto += `- ${destNome3}: ${destNota3}\n            `;
-            if (!destaquesTexto) destaquesTexto = "Nenhum destaque específico mapeado.";
-
-            const prompt = `Atue como um Analista de Desempenho de Futebol de elite. 
-            Estou montando o scout do nosso próximo adversário. Aqui estão os dados deles:
-            
-            Fase Defensiva:
-            - Postura: ${postura}
-            - Formação Bloco Médio: ${blocoMedio}
-            - Formação Bloco Baixo: ${blocoBaixo}
-            - Gatilho de Pressão: ${gatilho}
-            
-            Fase Ofensiva:
-            - Saída de bola: ${saida}
-            - Transição Ofensiva: ${transicao}
-
-            Bolas Paradas (ABP):
-            - Defesa: Marcação ${abpdMarcacao}, ${abpdRebote}
-            - Ataque: Batida ${abpoBatida}
-            
-            Físico:
-            - Desgaste: ${desgaste}
-
-            Destaques Individuais deles:
-            ${destaquesTexto}
-
-            Ponto Forte deles (Atenção): ${pontoForte}
-            
-            Crie um texto direto (máximo de 2 parágrafos) focado em "Onde Explorar e Nossa Vantagem". 
-            Entregue soluções táticas de alto nível: Como furar esse bloqueio usando as fraquezas mapeadas? Como tirar proveito do sistema de bola parada defensiva deles? Se houver destaques individuais cite como anulá-los. 
-            Vá direto ao ponto, sem saudações.`;
+            const prompt = `Atue como um Assistente Técnico e Preparador Físico de elite (Padrão Licença A CBF). 
+            Contexto da Nossa Equipe: Modelo: 4-3-3 (OF) e 4-4-2 (DEF). Filosofia: "Trabalho, Sacrifício e Renúncia".
+            Treinamento: Especialidade em perda de gordura, ganho de massa, e uso de "circuito de resistência física".
+            Acabamos de finalizar o jogo contra: ${opNome}.
+            Diário de Bordo do jogo (eventos/erros): ${eventos}
+            Tarefa: Monte um planejamento prático de 1 sessão de treinamento para corrigir os erros do jogo. Formate direto e profissional:
+            1. Aquecimento/Físico: circuito de resistência física.
+            2. Trabalho Tático Principal: Exercício para corrigir padrões de erro, mantendo 4-3-3/4-4-2.
+            3. PDI: O que cobrar dos atletas que falharam. Vá direto ao planejamento, sem saudações.`;
 
             try {
                 const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
-                const resposta = await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-                });
+                const resposta = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }) });
+                const dados = await resposta.json(); loadBubble.remove();
+                if(dados.candidates && dados.candidates.length > 0) { renderBubble(dados.candidates[0].content.parts[0].text.trim(), 'ai'); } 
+                else { renderBubble("ERRO: Não foi possível gerar o treino.", 'ai'); }
+            } catch (erro) { loadBubble.remove(); renderBubble("Erro de conexão.", 'ai'); } finally { btn.innerHTML = "🧠 Planejar Treino Pós-Jogo"; }
+        };
 
+        let liveRecognition;
+        if ('webkitSpeechRecognition' in window) {
+            liveRecognition = new webkitSpeechRecognition(); liveRecognition.continuous = false; liveRecognition.lang = 'pt-BR'; liveRecognition.interimResults = false;
+            liveRecognition.onresult = function(event) { document.getElementById('input_chat_live').value = event.results[0][0].transcript; enviarChatLive(); };
+        }
+        window.iniciarVozChat = () => { if(liveRecognition) liveRecognition.start(); };
+
+        // IA PRÉ-JOGO (PDF)
+        document.getElementById('btnGerarIA').addEventListener('click', async () => {
+            const campoExplorar = document.getElementById('op_explorar'); campoExplorar.value = "🧠 Analisando padrões do adversário... Aguarde ⏳";
+            const chaveMascarada = 'QUl6YVN5Q2xBa3phS1g0ZUszQlBYNGdyM2JIZkNoYjJjYUtlVkhN'; const GEMINI_API_KEY = atob(chaveMascarada);
+            
+            const postura = document.getElementById('op_postura').value || 'Não informado'; const blocoBaixo = document.getElementById('op_def_l').value || 'Não informado'; const blocoMedio = document.getElementById('op_def_m').value || 'Não informado'; const gatilho = document.getElementById('op_gatilho').value || 'Não informado'; const saida = document.getElementById('op_meta').value || 'Não informado'; const transicao = document.getElementById('op_tof').value || 'Não informado'; const desgaste = document.getElementById('op_desgaste').value || 'Não informado'; const pontoForte = document.getElementById('op_ponto_forte').value || 'Não informado'; const abpdMarcacao = document.getElementById('op_abpd_marcacao').value || 'Não informado'; const abpdRebote = document.getElementById('op_abpd_rebote').value || 'Não informado'; const abpoBatida = document.getElementById('op_abpo_batida').value || 'Não informado';
+            const dest1 = document.getElementById('op_dest_nome_1').value; const nota1 = document.getElementById('op_dest_nota_1').value; const dest2 = document.getElementById('op_dest_nome_2').value; const nota2 = document.getElementById('op_dest_nota_2').value; const dest3 = document.getElementById('op_dest_nome_3').value; const nota3 = document.getElementById('op_dest_nota_3').value;
+            let destText = ""; if (dest1) destText += `- ${dest1}: ${nota1}\n`; if (dest2) destText += `- ${dest2}: ${nota2}\n`; if (dest3) destText += `- ${dest3}: ${nota3}\n`;
+
+            const prompt = `Atue como um Analista de Desempenho de Futebol de elite. 
+            Adversário: Postura: ${postura}, Bloco: ${blocoBaixo}, Pressão: ${gatilho}, Saída: ${saida}, Transição OF: ${transicao}.
+            ABP: Marcação ${abpdMarcacao}, ${abpdRebote} / Batida ${abpoBatida}. Físico: ${desgaste}. Ponto Forte: ${pontoForte}. Destaques: ${destText || 'Nenhum.'}
+            Crie um texto direto (máximo 2 parágrafos) focado em "Onde Explorar e Nossa Vantagem". Soluções táticas para furar o bloqueio, explorar bolas paradas e anular destaques. Sem saudações.`;
+
+            try {
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+                const resposta = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }) });
                 const dados = await resposta.json();
-                
-                if(dados.candidates && dados.candidates.length > 0) {
-                    campoExplorar.value = dados.candidates[0].content.parts[0].text.trim();
-                    window.gerarPlano(); 
-                } else if (dados.error) {
-                    campoExplorar.value = "ERRO DO GOOGLE: " + dados.error.message;
-                }
-            } catch (erro) {
-                campoExplorar.value = "Erro de conexão com o servidor da IA: " + erro.message;
-            }
+                if(dados.candidates && dados.candidates.length > 0) { campoExplorar.value = dados.candidates[0].content.parts[0].text.trim(); window.gerarPlano(); } 
+                else if (dados.error) campoExplorar.value = "ERRO DO GOOGLE: " + dados.error.message;
+            } catch (erro) { campoExplorar.value = "Erro de conexão com o servidor da IA."; }
         });
 
-        // ==============================================================
-        // DESENHAR O PDF (Manteve Igual)
-        // ==============================================================
+        // DESENHAR O PDF
         window.gerarPlano = () => {
-            document.getElementById('r_comp').innerText = document.getElementById('op_comp').value || "---";
-            document.getElementById('r_local').innerText = document.getElementById('op_local').value || "---";
-            document.getElementById('r_score').innerText = document.getElementById('op_score').value || "0 x 0";
-            document.getElementById('r_name').innerText = document.getElementById('op_name').value || "---";
-            document.getElementById('r_coach').innerText = "TREINADOR: " + (document.getElementById('op_coach').value || "---");
+            document.getElementById('r_comp').innerText = document.getElementById('op_comp').value || "---"; document.getElementById('r_local').innerText = document.getElementById('op_local').value || "---"; document.getElementById('r_score').innerText = document.getElementById('op_score').value || "0 x 0"; document.getElementById('r_name').innerText = document.getElementById('op_name').value || "---"; document.getElementById('r_coach').innerText = "TREINADOR: " + (document.getElementById('op_coach').value || "---");
+            const mantra = document.getElementById('op_mantra').value; document.getElementById('r_mantra').innerText = mantra || "---"; document.getElementById('box_mantra').style.display = mantra ? 'block' : 'none';
+            
+            // Novos Blocos Escalação e DM
+            document.getElementById('r_iniciais').innerText = document.getElementById('op_iniciais').value || "---";
+            document.getElementById('r_banco').innerText = document.getElementById('op_banco').value || "---";
+            if(document.getElementById('op_iniciais').value || document.getElementById('op_banco').value) { document.getElementById('box_elenco').style.display = 'grid'; } else { document.getElementById('box_elenco').style.display = 'none'; }
+            
+            const desfalques = document.getElementById('op_desfalques').value; document.getElementById('r_desfalques').innerText = desfalques || "---"; document.getElementById('box_desfalques').style.display = desfalques ? 'block' : 'none';
 
-            const mantra = document.getElementById('op_mantra').value;
-            document.getElementById('r_mantra').innerText = mantra || "---";
-            document.getElementById('box_mantra').style.display = mantra ? 'block' : 'none';
-
-            const desfalques = document.getElementById('op_desfalques').value;
-            document.getElementById('r_desfalques').innerText = desfalques || "---";
-            document.getElementById('box_desfalques').style.display = desfalques ? 'block' : 'none';
-
-            document.getElementById('r_desgaste').innerText = document.getElementById('op_desgaste').value || "---";
-            document.getElementById('r_perigo').innerText = document.getElementById('op_perigo').value || "---";
-            document.getElementById('r_ponto_forte').innerText = document.getElementById('op_ponto_forte').value || "---";
-            document.getElementById('r_explorar').innerText = document.getElementById('op_explorar').value || "---";
+            document.getElementById('r_desgaste').innerText = document.getElementById('op_desgaste').value || "---"; document.getElementById('r_perigo').innerText = document.getElementById('op_perigo').value || "---"; document.getElementById('r_ponto_forte').innerText = document.getElementById('op_ponto_forte').value || "---"; document.getElementById('r_explorar').innerText = document.getElementById('op_explorar').value || "---";
 
             let temDestaque = false;
             for(let i=1; i<=3; i++){
-                const nome = document.getElementById(`op_dest_nome_${i}`).value;
-                const nota = document.getElementById(`op_dest_nota_${i}`).value;
-                const imgVal = document.getElementById(`img_dest_${i}`).value;
-                const card = document.getElementById(`card_dest_${i}`);
-
+                const nome = document.getElementById(`op_dest_nome_${i}`).value; const nota = document.getElementById(`op_dest_nota_${i}`).value; const imgVal = document.getElementById(`img_dest_${i}`).value; const card = document.getElementById(`card_dest_${i}`);
                 if(nome || nota || imgVal) {
-                    card.style.display = 'flex'; temDestaque = true;
-                    document.getElementById(`r_dest_nome_${i}`).innerText = nome || "---";
-                    document.getElementById(`r_dest_nota_${i}`).innerText = nota || "---";
-                    const r_img = document.getElementById(`r_img_dest_${i}`);
-                    if(imgVal) { r_img.src = imgVal; r_img.style.display = 'block'; } else { r_img.style.display = 'none'; }
+                    card.style.display = 'flex'; temDestaque = true; document.getElementById(`r_dest_nome_${i}`).innerText = nome || "---"; document.getElementById(`r_dest_nota_${i}`).innerText = nota || "---";
+                    const r_img = document.getElementById(`r_img_dest_${i}`); if(imgVal) { r_img.src = imgVal; r_img.style.display = 'block'; } else { r_img.style.display = 'none'; }
                 } else { card.style.display = 'none'; }
             }
             document.getElementById('box_destaques').style.display = temDestaque ? 'block' : 'none';
 
-            const l_home = document.getElementById('op_logo_home').value;
-            if(l_home) { document.getElementById('r_logo_home').src = l_home; document.getElementById('r_logo_home').style.display = 'block'; } else { document.getElementById('r_logo_home').style.display = 'none'; }
-            const l_away = document.getElementById('op_logo_away').value;
-            if(l_away) { document.getElementById('r_logo_away').src = l_away; document.getElementById('r_logo_away').style.display = 'block'; } else { document.getElementById('r_logo_away').style.display = 'none'; }
+            const l_home = document.getElementById('op_logo_home').value; if(l_home) { document.getElementById('r_logo_home').src = l_home; document.getElementById('r_logo_home').style.display = 'block'; } else { document.getElementById('r_logo_home').style.display = 'none'; }
+            const l_away = document.getElementById('op_logo_away').value; if(l_away) { document.getElementById('r_logo_away').src = l_away; document.getElementById('r_logo_away').style.display = 'block'; } else { document.getElementById('r_logo_away').style.display = 'none'; }
 
-            document.getElementById('r_zags_foot').innerText = document.getElementById('op_zags_foot').value || "---";
-            document.getElementById('r_atk_side').innerText = document.getElementById('op_atk_side').value || "---";
-            document.getElementById('r_gk').innerText = document.getElementById('op_gk').value || "---";
-            document.getElementById('r_meta').innerText = document.getElementById('op_meta').value || "---";
-            document.getElementById('r_f2').innerText = document.getElementById('op_f2').value || "---";
-            document.getElementById('r_tof').innerText = document.getElementById('op_tof').value || "---";
-            document.getElementById('r_preenchimento').innerText = document.getElementById('op_preenchimento').value || "---";
-
-            document.getElementById('r_lbl_def_h').innerText = document.getElementById('op_def_h').value || "---";
-            document.getElementById('r_lbl_def_m').innerText = document.getElementById('op_def_m').value || "---";
-            document.getElementById('r_lbl_def_l').innerText = document.getElementById('op_def_l').value || "---";
-            
-            document.getElementById('r_postura').innerText = document.getElementById('op_postura').value || "---";
-            document.getElementById('r_gatilho').innerText = document.getElementById('op_gatilho').value || "---";
-            document.getElementById('r_target').innerText = document.getElementById('op_target').value || "---";
-            document.getElementById('r_encaixe').innerText = document.getElementById('op_encaixe').value || "---";
-            document.getElementById('r_trans_df').innerText = document.getElementById('op_trans_df').value || "---";
-
-            document.getElementById('r_abpo_batida').innerText = document.getElementById('op_abpo_batida').value || "---";
-            document.getElementById('r_abpo_atletas').innerText = document.getElementById('op_abpo_atletas').value || "---";
-            document.getElementById('r_abpd_marcacao').innerText = document.getElementById('op_abpd_marcacao').value || "---";
-            document.getElementById('r_abpd_rebote').innerText = document.getElementById('op_abpd_rebote').value || "---";
-
+            document.getElementById('r_zags_foot').innerText = document.getElementById('op_zags_foot').value || "---"; document.getElementById('r_atk_side').innerText = document.getElementById('op_atk_side').value || "---"; document.getElementById('r_gk').innerText = document.getElementById('op_gk').value || "---"; document.getElementById('r_meta').innerText = document.getElementById('op_meta').value || "---"; document.getElementById('r_f2').innerText = document.getElementById('op_f2').value || "---"; document.getElementById('r_tof').innerText = document.getElementById('op_tof').value || "---"; document.getElementById('r_preenchimento').innerText = document.getElementById('op_preenchimento').value || "---";
+            document.getElementById('r_lbl_def_h').innerText = document.getElementById('op_def_h').value || "---"; document.getElementById('r_lbl_def_m').innerText = document.getElementById('op_def_m').value || "---"; document.getElementById('r_lbl_def_l').innerText = document.getElementById('op_def_l').value || "---"; document.getElementById('r_postura').innerText = document.getElementById('op_postura').value || "---"; document.getElementById('r_gatilho').innerText = document.getElementById('op_gatilho').value || "---"; document.getElementById('r_target').innerText = document.getElementById('op_target').value || "---"; document.getElementById('r_encaixe').innerText = document.getElementById('op_encaixe').value || "---"; document.getElementById('r_trans_df').innerText = document.getElementById('op_trans_df').value || "---";
+            document.getElementById('r_abpo_batida').innerText = document.getElementById('op_abpo_batida').value || "---"; document.getElementById('r_abpo_atletas').innerText = document.getElementById('op_abpo_atletas').value || "---"; document.getElementById('r_abpd_marcacao').innerText = document.getElementById('op_abpd_marcacao').value || "---"; document.getElementById('r_abpd_rebote').innerText = document.getElementById('op_abpd_rebote').value || "---";
             document.getElementById('r_notes').innerText = document.getElementById('op_notes').value || "---";
 
-            ['img_o_saida', 'img_o_f2', 'img_o_f3', 'img_o_trans', 'img_d_alto', 'img_d_medio', 'img_d_baixo', 'img_d_trans', 'img_abpo_esc', 'img_abpo_fal', 'img_abpd_esc', 'img_abpd_fal'].forEach(id => {
+            // Novas imagens incluídas aqui
+            ['img_o_saida', 'img_o_f2', 'img_o_preenchimento', 'img_o_f3', 'img_o_trans', 'img_d_alto', 'img_d_medio', 'img_d_baixo', 'img_d_trans', 'img_abpo_esc', 'img_abpo_fal', 'img_abpo_rebote', 'img_abpd_esc', 'img_abpd_fal', 'img_abpd_rebote'].forEach(id => {
                 const val = document.getElementById(id).value; const img = document.getElementById('r_' + id);
                 if(val) { img.src = val; img.style.display = 'block'; } else { img.style.display = 'none'; }
             });
 
-            document.getElementById('l_abpo_esc').style.display = document.getElementById('img_abpo_esc').value ? 'block' : 'none';
-            document.getElementById('l_abpo_fal').style.display = document.getElementById('img_abpo_fal').value ? 'block' : 'none';
-            document.getElementById('l_abpd_esc').style.display = document.getElementById('img_abpd_esc').value ? 'block' : 'none';
+            document.getElementById('l_abpo_esc').style.display = document.getElementById('img_abpo_esc').value ? 'block' : 'none'; 
+            document.getElementById('l_abpo_fal').style.display = document.getElementById('img_abpo_fal').value ? 'block' : 'none'; 
+            document.getElementById('l_abpo_rebote').style.display = document.getElementById('img_abpo_rebote').value ? 'block' : 'none'; 
+            document.getElementById('l_abpd_esc').style.display = document.getElementById('img_abpd_esc').value ? 'block' : 'none'; 
             document.getElementById('l_abpd_fal').style.display = document.getElementById('img_abpd_fal').value ? 'block' : 'none';
+            document.getElementById('l_abpd_rebote').style.display = document.getElementById('img_abpd_rebote').value ? 'block' : 'none';
 
-            document.getElementById('qrcode').innerHTML = "";
-            const vid = document.getElementById('op_vid').value;
-            if(vid) { 
-                new QRCode(document.getElementById("qrcode"), { text: vid, width: 64, height: 64 }); 
-                document.getElementById('l_qr_code').style.display = 'block';
-            } else { document.getElementById('l_qr_code').style.display = 'none'; }
+            document.getElementById('qrcode').innerHTML = ""; const vid = document.getElementById('op_vid').value;
+            if(vid) { new QRCode(document.getElementById("qrcode"), { text: vid, width: 64, height: 64 }); document.getElementById('l_qr_code').style.display = 'block'; } 
+            else { document.getElementById('l_qr_code').style.display = 'none'; }
         };
 
         window.onload = () => { checkNet(); };
-        
-        document.querySelector('button.bg-gradient-to-r').onclick = () => {
-            gerarPlano();
-            setTimeout(() => { window.print(); }, 300);
-        };
+        document.querySelector('button.bg-gradient-to-r').onclick = () => { gerarPlano(); setTimeout(() => { window.print(); }, 300); };
     </script>
 </body>
 </html>
