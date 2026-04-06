@@ -8,7 +8,7 @@
     <meta name="theme-color" content="#0d1117">
     <link rel="manifest" href='data:application/manifest+json,%7B%22name%22%3A%22Scout%20Master%20Pro%22%2C%22short_name%22%3A%22Scout%20Master%22%2C%22start_url%22%3A%22.%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230d1117%22%2C%22theme_color%22%3A%22%230d1117%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22https%3A%2F%2Fcdn-icons-png.flaticon.com%2F512%2F53%2F53283.png%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fpng%22%7D%5D%7D'>
     
-    <title>Scout Master Platinum - Playtatic (Cloud Pro)</title>
+    <title>Scout Master Platinum - Playtatic</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
@@ -21,9 +21,6 @@
         .badge-title { font-size: 0.9rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 18px; display: block; text-decoration: underline; font-style: italic; }
         .img-slot { width: 100%; height: 120px; object-fit: cover; border-radius: 12px; display: none; border: 1px solid #e2e8f0; }
         
-        .chat-bubble { animation: fadeIn 0.3s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
         @media print { 
             * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             .no-print { display: none !important; } 
@@ -32,40 +29,28 @@
             main { box-shadow: none !important; width: 100% !important; padding: 0 !important; border: none !important; height: auto !important; overflow: visible !important; }
             .img-slot { display: block !important; } 
             .break-inside-avoid { break-inside: avoid; page-break-inside: avoid; }
+            a { text-decoration: none !important; }
         }
     </style>
 </head>
 <body class="h-screen relative">
 
-    <div id="net-box" class="net-status absolute top-2 right-2 flex items-center gap-1 text-[9px] font-bold px-2 py-1 rounded bg-slate-800 border border-slate-700 text-emerald-500 z-50 no-print">
-        <span id="net-dot" class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span><span id="net-txt">ONLINE</span>
+    <div id="net-box" class="net-status absolute top-2 right-2 flex items-center gap-1 text-[9px] font-bold px-2 py-1 rounded bg-slate-800 border border-slate-700 text-emerald-500 z-50 no-print transition-colors duration-300">
+        <span id="net-dot" class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span><span id="net-txt">ONLINE (NUVEM ATIVA)</span>
     </div>
 
-    <div id="config-modal" class="hidden absolute inset-0 bg-black/80 z-50 flex items-center justify-center no-print overflow-y-auto py-10">
-        <div class="bg-[#0f172a] p-6 rounded-2xl border border-slate-700 w-full max-w-md m-auto">
-            <h2 class="font-header text-xl font-bold text-white mb-4 italic uppercase border-b border-slate-700 pb-2">Configurar Sistema ⚙️</h2>
+    <div id="config-modal" class="hidden absolute inset-0 bg-black/80 z-50 flex items-center justify-center no-print">
+        <div class="bg-[#0f172a] p-6 rounded-2xl border border-slate-700 w-full max-w-md">
+            <h2 class="font-header text-xl font-bold text-white mb-4 italic uppercase border-b border-slate-700 pb-2">Configurar Analista ⚙️</h2>
             <div class="space-y-3">
                 <div><label class="label-sm">Nome do Analista</label><input type="text" id="cfg_analista" class="input-dark uppercase" value="Adriano Cabeça"></div>
                 <div><label class="label-sm">Equipe / Função</label><input type="text" id="cfg_equipe" class="input-dark uppercase" value="Tactical Intel"></div>
                 <div><label class="label-sm">Sua Logo (URL)</label><input type="text" id="cfg_logo" class="input-dark" placeholder="URL da logo"></div>
-                <div><label class="label-sm text-purple-400">Instagram / Contato Comercial</label><input type="text" id="cfg_contato" class="input-dark" placeholder="@suamarca ou Telefone"></div>
+                <div><label class="label-sm text-purple-400">Instagram / Contato</label><input type="text" id="cfg_contato" class="input-dark" placeholder="@suamarca ou Telefone"></div>
             </div>
-            
-            <div class="mt-6 border-t border-slate-700 pt-4">
-                <h3 class="text-emerald-400 font-bold text-[10px] uppercase mb-3">Customizar Botões do Jogo Ao Vivo</h3>
-                <div class="grid grid-cols-2 gap-2">
-                    <input type="text" id="cfg_btn_1" class="input-dark text-[10px]" value="❌ Ataque Falhou">
-                    <input type="text" id="cfg_btn_2" class="input-dark text-[10px]" value="⚠️ Furo na Zaga">
-                    <input type="text" id="cfg_btn_3" class="input-dark text-[10px]" value="⚽ Ganhou 2ª Bola">
-                    <input type="text" id="cfg_btn_4" class="input-dark text-[10px]" value="⚡ Pressão Encaixou">
-                    <input type="text" id="cfg_btn_5" class="input-dark text-[10px]" value="📉 Linha Baixou">
-                    <input type="text" id="cfg_btn_6" class="input-dark text-[10px]" value="📈 Pressão Alta">
-                </div>
-            </div>
-
             <div class="flex gap-2 mt-6">
-                <button onclick="salvarConfig()" id="btn_salvar_config" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-lg uppercase transition">Salvar Tudo</button>
-                <button onclick="fecharConfig()" class="w-full bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 rounded-lg uppercase transition">Cancelar</button>
+                <button onclick="salvarConfig()" id="btn_salvar_config" class="w-full bg-emerald-600 text-white font-bold py-2 rounded-lg uppercase">Salvar Config</button>
+                <button onclick="fecharConfig()" class="w-full bg-slate-700 text-white font-bold py-2 rounded-lg uppercase">Cancelar</button>
             </div>
         </div>
     </div>
@@ -74,7 +59,7 @@
         <div class="w-full max-w-md p-8 section-card border-t-4 border-t-purple-600 shadow-2xl">
             <header class="text-center mb-8">
                 <h1 class="font-header text-3xl font-black text-purple-500 italic uppercase">Scout Rival</h1>
-                <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Acesso Playtatic Cloud</p>
+                <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Acesso Playtatic Elite</p>
             </header>
             <div class="space-y-4">
                 <div><label class="label-sm">E-mail</label><input type="email" id="auth-email" class="input-dark" placeholder="seu@email.com"></div>
@@ -100,36 +85,25 @@
                     </div>
                 </div>
                 <div class="flex flex-col gap-1">
-                    <button onclick="abrirConfig()" class="text-[10px] bg-slate-700 hover:bg-slate-600 text-white px-2 py-1 rounded-md font-bold uppercase transition">⚙️ Config</button>
+                    <button onclick="abrirConfig()" class="text-[10px] bg-slate-700 text-white px-2 py-1 rounded-md font-bold uppercase hover:bg-slate-600">⚙️ Config</button>
                     <button id="btn-logout" class="text-[9px] bg-red-900/50 text-red-400 px-2 py-1 rounded-md font-black hover:bg-red-600 hover:text-white uppercase transition">Sair</button>
                 </div>
             </header>
 
-            <button onclick="toggleModoJogo()" id="btn_modo_jogo" class="w-full bg-red-600 hover:bg-red-500 text-white font-black py-4 rounded-xl uppercase text-sm mb-6 shadow-lg border border-red-800 transition flex justify-center items-center gap-2">
-                🔴 Entrar no Modo Jogo Ao Vivo
-            </button>
-
-            <div class="section-card border-l-4 border-l-yellow-500 bg-slate-900/50 relative">
+            <div class="section-card border-l-4 border-l-yellow-500 bg-slate-900/50">
                 <span class="badge-title text-yellow-400">Nuvem Playtatic ☁️</span>
                 <input type="text" id="search_db" onkeyup="buscarAnalise()" placeholder="Pesquisar relatório..." class="input-dark mb-3 border-yellow-500/30">
-                <div id="lista_analises" class="max-h-40 overflow-y-auto pr-2 mb-3 border border-slate-700 rounded-lg p-2 bg-[#0d1117]">
+                <div id="lista_analises" class="max-h-32 overflow-y-auto pr-2 mb-3 border border-slate-700 rounded-lg p-2 bg-[#0d1117]">
                     <p class="text-[10px] text-slate-500 text-center italic mt-2">Carregando da nuvem...</p>
                 </div>
-                <button onclick="salvarAnalise()" id="btn_salvar_analise" class="w-full bg-yellow-600 hover:bg-yellow-500 text-white font-black py-3 rounded-lg uppercase text-[11px] mb-2 shadow-lg transition">Sincronizar Análise Atual ☁️</button>
-                <button onclick="migrarLocalNuvem()" class="w-full bg-slate-800 border border-slate-600 text-slate-300 font-bold py-2 rounded-lg uppercase text-[10px] hover:bg-slate-700 transition">Importar Antigos do PC</button>
+                <button onclick="salvarAnalise()" id="btn_salvar_analise" class="w-full bg-yellow-600 text-white font-black py-3 rounded-lg uppercase text-[11px] mb-2 shadow-lg">Sincronizar Análise Atual ☁️</button>
             </div>
 
             <div class="section-card border-l-4 border-l-purple-600">
                 <span class="badge-title text-purple-400">Identificação & Baixas</span>
                 <div class="grid grid-cols-2 gap-4 mb-4">
                     <div><label class="label-sm">Competição</label><input type="text" id="op_comp" class="input-dark uppercase" placeholder="Ex: Série B"></div>
-                    <div><label class="label-sm">Mando de Campo</label>
-                        <select id="op_local" class="input-dark">
-                            <option value="CASA">Casa (Mandante)</option>
-                            <option value="VISITANTE">Visitante</option>
-                            <option value="NEUTRO">Campo Neutro</option>
-                        </select>
-                    </div>
+                    <div><label class="label-sm">Mando</label><select id="op_local" class="input-dark"><option value="CASA">Casa</option><option value="VISITANTE">Visitante</option></select></div>
                 </div>
                 <div class="grid grid-cols-3 gap-2 mb-4">
                     <div><label class="label-sm text-[10px]">Logo Mandante</label><input type="text" id="op_logo_home" class="input-dark px-2 text-center" placeholder="URL"></div>
@@ -137,30 +111,42 @@
                     <div><label class="label-sm text-[10px]">Logo Visitante</label><input type="text" id="op_logo_away" class="input-dark px-2 text-center" placeholder="URL"></div>
                 </div>
                 <div class="grid grid-cols-2 gap-4 mb-4">
-                    <div><label class="label-sm">Equipe Adversária</label><input type="text" id="op_name" class="input-dark uppercase font-bold" placeholder="Nome do Rival"></div>
-                    <div><label class="label-sm">Treinador Rival</label><input type="text" id="op_coach" class="input-dark uppercase" placeholder="Nome do Técnico"></div>
+                    <div><label class="label-sm">Rival</label><input type="text" id="op_name" class="input-dark uppercase font-bold" placeholder="Nome"></div>
+                    <div><label class="label-sm">Treinador</label><input type="text" id="op_coach" class="input-dark uppercase" placeholder="Nome"></div>
                 </div>
-                
                 <div class="pt-4 border-t border-slate-700 mb-4">
-                    <label class="label-sm text-yellow-400">🔥 A Palavra de Ordem (Mindset)</label>
-                    <input type="text" id="op_mantra" class="input-dark font-bold text-yellow-400" placeholder="Ex: Trabalho, Sacrifício, Renúncia!">
+                    <label class="label-sm text-yellow-400">🔥 A Palavra de Ordem (Mantra)</label>
+                    <input type="text" id="op_mantra" class="input-dark font-bold text-yellow-400" placeholder="Ex: Intensidade máxima!">
                 </div>
-
                 <div class="pt-4 border-t border-slate-700">
-                    <label class="label-sm text-red-400">⚠️ DM / Suspensos / Não Regularizados</label>
-                    <textarea id="op_desfalques" class="input-dark h-20" placeholder="Ex:&#10;DM: João (Joelho)&#10;Suspensos: Carlos (3º Amarelo)&#10;Não Regularizado: Silva"></textarea>
+                    <label class="label-sm text-red-400">⚠️ Desfalques / Suspensos</label>
+                    <input type="text" id="op_desfalques" class="input-dark" placeholder="Ex: Camisa 5, Camisa 9">
                 </div>
             </div>
 
-            <div class="section-card border-l-4 border-l-indigo-500">
-                <span class="badge-title text-indigo-400">Escalação & Plantel</span>
+            <div class="section-card border-l-4 border-l-indigo-500 bg-indigo-900/10">
+                <span class="badge-title text-indigo-400">Plantel & Escalação (Grid)</span>
                 <div class="mb-4">
-                    <label class="label-sm text-indigo-300">📋 Sumário - 11 Iniciais</label>
-                    <textarea id="op_iniciais" class="input-dark h-24" placeholder="Ex: 1-Alisson, 2-Danilo, 3-Marquinhos, 4-Militão..."></textarea>
+                    <label class="label-sm">Formação Base</label>
+                    <select id="op_formacao_campo" class="input-dark font-bold text-indigo-300">
+                        <option value="4-3-3">4-3-3</option>
+                        <option value="4-4-2">4-4-2</option>
+                        <option value="4-2-3-1">4-2-3-1</option>
+                        <option value="3-5-2">3-5-2</option>
+                        <option value="5-4-1">5-4-1</option>
+                        <option value="3-4-3">3-4-3</option>
+                    </select>
                 </div>
-                <div>
-                    <label class="label-sm text-indigo-300">🔄 Modificações / Banco</label>
-                    <textarea id="op_banco" class="input-dark h-20" placeholder="Ex: Entra o Camisa 9 no 2º tempo para puxar contra-ataque."></textarea>
+
+                <details class="bg-[#0f172a] border border-slate-700 rounded-lg p-3 cursor-pointer">
+                    <summary class="font-bold text-[11px] text-white uppercase outline-none">📋 Preencher os 11 Titulares (Clique aqui)</summary>
+                    <div class="mt-4 space-y-4 max-h-80 overflow-y-auto pr-2 custom-scrollbar" id="container_jogadores">
+                        </div>
+                </details>
+                
+                <div class="mt-4 pt-4 border-t border-slate-700">
+                    <label class="label-sm">Opções de Banco de Reservas</label>
+                    <textarea id="op_banco" class="input-dark h-16 text-[11px]" placeholder="Ex: Camisa 19 (Velocidade), Camisa 22 (Bola Aérea)..."></textarea>
                 </div>
             </div>
 
@@ -168,131 +154,35 @@
                 <span class="badge-title text-emerald-400">Fase Ofensiva & Construção</span>
                 <div class="space-y-4">
                     <div class="grid grid-cols-2 gap-4">
-                        <div><label class="label-sm">Pé Zagueiros</label>
-                            <select id="op_zags_foot" class="input-dark">
-                                <option value="ZAGUEIRO DESTRO">Zagueiro Destro</option>
-                                <option value="DOIS DESTROS">Dois Destros</option>
-                                <option value="DESTRO/CANHOTO">Destro/Canhoto</option>
-                                <option value="DIFICULDADE CONSTRUÇÃO">Dificuldade Construção</option>
-                            </select>
-                        </div>
-                        <div><label class="label-sm">Lado Ataque</label>
-                            <select id="op_atk_side" class="input-dark">
-                                <option value="EQUILIBRADO">Equilibrado</option>
-                                <option value="ESQUERDO">Esquerdo</option>
-                                <option value="DIREITO">Direito</option>
-                                <option value="JOGO INTERIOR">Jogo Interior</option>
-                            </select>
-                        </div>
+                        <div><label class="label-sm">Pé Zagueiros</label><select id="op_zags_foot" class="input-dark"><option value="ZAGUEIRO DESTRO">Zagueiro Destro</option><option value="DOIS DESTROS">Dois Destros</option><option value="DESTRO/CANHOTO">Destro/Canhoto</option><option value="DIFICULDADE CONSTRUÇÃO">Dificuldade Construção</option></select></div>
+                        <div><label class="label-sm">Lado Ataque</label><select id="op_atk_side" class="input-dark"><option value="EQUILIBRADO">Equilibrado</option><option value="ESQUERDO">Esquerdo</option><option value="DIREITO">Direito</option><option value="JOGO INTERIOR">Jogo Interior</option></select></div>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
-                        <div><label class="label-sm">Perfil Goleiro</label>
-                            <select id="op_gk" class="input-dark">
-                                <option value="LÍBERO">Líbero</option>
-                                <option value="TRADICIONAL">Tradicional</option>
-                                <option value="DIFICULDADE PÉS">Dificuldade Pés</option>
-                            </select>
-                        </div>
-                        <div><label class="label-sm">Saída/Meta</label>
-                            <select id="op_meta" class="input-dark text-[11px] px-1">
-                                <option value="CURTA (3+1) VOLANTE">Curta (3+1) Volante</option>
-                                <option value="LONGA (3+1) VOLANTE">Longa (3+1) Volante</option>
-                                <option value="GOLEIRO CURTA">Goleiro Curta</option>
-                                <option value="GOLEIRO LONGA">Goleiro Longa</option>
-                            </select>
-                        </div>
+                        <div><label class="label-sm">Perfil Goleiro</label><select id="op_gk" class="input-dark"><option value="LÍBERO">Líbero</option><option value="TRADICIONAL">Tradicional</option><option value="DIFICULDADE PÉS">Dificuldade Pés</option></select></div>
+                        <div><label class="label-sm">Saída/Meta</label><select id="op_meta" class="input-dark text-[11px] px-1"><option value="CURTA (3+1) VOLANTE">Curta (3+1) Volante</option><option value="LONGA (3+1) VOLANTE">Longa (3+1) Volante</option><option value="GOLEIRO CURTA">Goleiro Curta</option><option value="GOLEIRO LONGA">Goleiro Longa</option></select></div>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
-                        <div><label class="label-sm">2ª Fase</label>
-                            <select id="op_f2" class="input-dark text-[11px] px-1">
-                                <option value="SISTEMA 4-3-3">Sistema 4-3-3</option>
-                                <option value="2x2 QUADRADO">2x2 Quadrado</option>
-                                <option value="2x1 QUADRADO">2x1 Quadrado</option>
-                                <option value="3x1 VOLANTE">3x1 Volante</option>
-                                <option value="3x1 LATERAL">3x1 Lateral</option>
-                                <option value="3x2 LATERAL">3x2 Lateral</option>
-                                <option value="3x2 VOLANTE">3x2 Volante</option>
-                            </select>
-                        </div>
-                        <div><label class="label-sm">Transição OF</label>
-                            <select id="op_tof" class="input-dark text-[11px]">
-                                <option value="ATAQUE RÁPIDO">Ataque Rápido</option>
-                                <option value="BUSCA POSSE">Busca Posse</option>
-                                <option value="CONTRA-ATAQUE">Contra-Ataque</option>
-                            </select>
-                        </div>
+                        <div><label class="label-sm">2ª Fase</label><select id="op_f2" class="input-dark text-[11px] px-1"><option value="SISTEMA 4-3-3">Sistema 4-3-3</option><option value="2x2 QUADRADO">2x2 Quadrado</option><option value="2x1 QUADRADO">2x1 Quadrado</option><option value="3x1 VOLANTE">3x1 Volante</option><option value="3x1 LATERAL">3x1 Lateral</option><option value="3x2 LATERAL">3x2 Lateral</option><option value="3x2 VOLANTE">3x2 Volante</option></select></div>
+                        <div><label class="label-sm">Transição OF</label><select id="op_tof" class="input-dark text-[11px]"><option value="ATAQUE RÁPIDO">Ataque Rápido</option><option value="BUSCA POSSE">Busca Posse</option><option value="CONTRA-ATAQUE">Contra-Ataque</option></select></div>
                     </div>
-                    <div><label class="label-sm text-emerald-300">Preenchimento de Área</label>
-                        <select id="op_preenchimento" class="input-dark">
-                            <option value="3 (CE, MEI, EXT OPOSTO)">3 (Centroavante, Meia, Ext. Oposto)</option>
-                            <option value="2 (CE, MEI)">2 (Centroavante, Meia)</option>
-                            <option value="1 (CENTROAVANTE)">1 (Centroavante isolado)</option>
-                        </select>
-                    </div>
+                    <div><label class="label-sm text-emerald-300">Preenchimento de Área</label><select id="op_preenchimento" class="input-dark"><option value="3 (CE, MEI, EXT OPOSTO)">3 (Centroavante, Meia, Ext. Oposto)</option><option value="2 (CE, MEI)">2 (Centroavante, Meia)</option><option value="1 (CENTROAVANTE)">1 (Centroavante isolado)</option></select></div>
                 </div>
             </div>
 
             <div class="section-card border-l-4 border-l-red-500">
                 <span class="badge-title text-red-400">Fase Defensiva & Organização</span>
                 <div class="grid grid-cols-3 gap-2 mb-4">
-                    <div><label class="label-sm text-[9px]">Bloco Alto</label>
-                        <select id="op_def_h" class="input-dark text-[10px] px-1">
-                            <option value="4-4-2">4-4-2</option>
-                            <option value="4-3-3">4-3-3</option>
-                            <option value="4-1-4-1">4-1-4-1</option>
-                            <option value="4-1-3-2">4-1-3-2</option>
-                            <option value="3-4-3">3-4-3</option>
-                        </select>
-                    </div>
-                    <div><label class="label-sm text-[9px]">Bloco Médio</label>
-                        <select id="op_def_m" class="input-dark text-[10px] px-1">
-                            <option value="4-4-2">4-4-2</option>
-                            <option value="4-2-3-1">4-2-3-1</option>
-                            <option value="4-1-4-1">4-1-4-1</option>
-                            <option value="3-5-2">3-5-2</option>
-                        </select>
-                    </div>
-                    <div><label class="label-sm text-[9px]">Bloco Baixo</label>
-                        <select id="op_def_l" class="input-dark text-[10px] px-1">
-                            <option value="4-4-2">4-4-2</option>
-                            <option value="5-4-1">5-4-1</option>
-                            <option value="5-3-2">5-3-2</option>
-                            <option value="4-5-1">4-5-1</option>
-                        </select>
-                    </div>
+                    <div><label class="label-sm text-[9px]">Bloco Alto</label><select id="op_def_h" class="input-dark text-[10px] px-1"><option value="4-4-2">4-4-2</option><option value="4-3-3">4-3-3</option><option value="4-1-4-1">4-1-4-1</option><option value="4-1-3-2">4-1-3-2</option><option value="3-4-3">3-4-3</option></select></div>
+                    <div><label class="label-sm text-[9px]">Bloco Médio</label><select id="op_def_m" class="input-dark text-[10px] px-1"><option value="4-4-2">4-4-2</option><option value="4-2-3-1">4-2-3-1</option><option value="4-1-4-1">4-1-4-1</option><option value="3-5-2">3-5-2</option></select></div>
+                    <div><label class="label-sm text-[9px]">Bloco Baixo</label><select id="op_def_l" class="input-dark text-[10px] px-1"><option value="4-4-2">4-4-2</option><option value="5-4-1">5-4-1</option><option value="5-3-2">5-3-2</option><option value="4-5-1">4-5-1</option></select></div>
                 </div>
                 <div class="grid grid-cols-2 gap-4 mb-4">
-                    <div><label class="label-sm">Postura</label>
-                        <select id="op_postura" class="input-dark">
-                            <option value="PRESSIONAM">Pressionam</option>
-                            <option value="BAIXA AS LINHAS">Baixa as Linhas</option>
-                            <option value="ESPERA">Espera</option>
-                        </select>
-                    </div>
-                    <div><label class="label-sm">Gatilho de Pressão</label>
-                        <select id="op_gatilho" class="input-dark text-[11px]">
-                            <option value="PASSE LATERAL">Passe Lateral</option>
-                            <option value="PASSE PARA TRÁS">Passe para Trás</option>
-                            <option value="RECUO GOLEIRO">Recuo Goleiro</option>
-                        </select>
-                    </div>
+                    <div><label class="label-sm">Postura</label><select id="op_postura" class="input-dark"><option value="PRESSIONAM">Pressionam</option><option value="BAIXA AS LINHAS">Baixa as Linhas</option><option value="ESPERA">Espera</option></select></div>
+                    <div><label class="label-sm">Gatilho de Pressão</label><select id="op_gatilho" class="input-dark text-[11px]"><option value="PASSE LATERAL">Passe Lateral</option><option value="PASSE PARA TRÁS">Passe para Trás</option><option value="RECUO GOLEIRO">Recuo Goleiro</option></select></div>
                 </div>
-                
                 <div class="grid grid-cols-2 gap-4 mb-4">
-                    <div><label class="label-sm text-red-300">Encaixe de Área</label>
-                        <select id="op_encaixe" class="input-dark text-[11px]">
-                            <option value="3x1 VOLANTE">3x1 Volante</option>
-                            <option value="3x REBOTE LIVRE">3x Rebote Livre</option>
-                            <option value="3x2 VOLANTE">3x2 Volante</option>
-                        </select>
-                    </div>
-                    <div><label class="label-sm text-red-300">Transição DF</label>
-                        <select id="op_trans_df" class="input-dark text-[11px]">
-                            <option value="CONTROLA A PROFUNDIDADE">Controla a Profundidade</option>
-                            <option value="CORRER PARA FRENTE">Correr para Frente</option>
-                            <option value="TENTA LINHA IMPEDIMENTO">Tenta Linha de Impedimento</option>
-                        </select>
-                    </div>
+                    <div><label class="label-sm text-red-300">Encaixe de Área</label><select id="op_encaixe" class="input-dark text-[11px]"><option value="3x1 VOLANTE">3x1 Volante</option><option value="3x REBOTE LIVRE">3x Rebote Livre</option><option value="3x2 VOLANTE">3x2 Volante</option></select></div>
+                    <div><label class="label-sm text-red-300">Transição DF</label><select id="op_trans_df" class="input-dark text-[11px]"><option value="CONTROLA A PROFUNDIDADE">Controla a Profundidade</option><option value="CORRER PARA FRENTE">Correr para Frente</option><option value="TENTA LINHA IMPEDIMENTO">Tenta Linha de Impedimento</option></select></div>
                 </div>
                 <div><label class="label-sm text-orange-400">Alvo Marcação (Destaques)</label><input type="text" id="op_target" class="input-dark" placeholder="Ex: Camisa 10, Ponta Direita" value="NENHUM"></div>
             </div>
@@ -300,54 +190,20 @@
             <div class="section-card border-l-4 border-l-red-600">
                 <span class="badge-title text-red-500">Termômetro Físico ⏱️</span>
                 <div class="grid grid-cols-2 gap-4">
-                    <div><label class="label-sm">Nível de Desgaste</label>
-                        <select id="op_desgaste" class="input-dark">
-                            <option value="INTENSO (90 MIN)">Intenso (90 Min)</option>
-                            <option value="QUEDA NO 2º TEMPO">Queda no 2º Tempo</option>
-                            <option value="LENTO / DESGASTADO">Lento / Desgastado</option>
-                            <option value="MUITO FORTE NO INÍCIO">Muito Forte no Início</option>
-                        </select>
-                    </div>
-                    <div><label class="label-sm text-red-400">Minutos de Perigo</label>
-                        <input type="text" id="op_perigo" class="input-dark" placeholder="Ex: 70' aos 90'">
-                    </div>
+                    <div><label class="label-sm">Nível de Desgaste</label><select id="op_desgaste" class="input-dark"><option value="INTENSO (90 MIN)">Intenso (90 Min)</option><option value="QUEDA NO 2º TEMPO">Queda no 2º Tempo</option><option value="LENTO / DESGASTADO">Lento / Desgastado</option><option value="MUITO FORTE NO INÍCIO">Muito Forte no Início</option></select></div>
+                    <div><label class="label-sm text-red-400">Minutos de Perigo</label><input type="text" id="op_perigo" class="input-dark" placeholder="Ex: 70' aos 90'"></div>
                 </div>
             </div>
 
             <div class="section-card border-l-4 border-l-orange-500">
                 <span class="badge-title text-orange-400">Dados Técnicos ABP</span>
                 <div class="grid grid-cols-2 gap-4 mb-4">
-                    <div><label class="label-sm text-orange-400">Batida (Ofensiva)</label>
-                        <select id="op_abpo_batida" class="input-dark text-[10px]">
-                            <option value="CURTO 2 NA BOLA">Curto 2 na Bola</option>
-                            <option value="ABERTO (2º PAU)">Aberto (2º Pau)</option>
-                            <option value="FECHADO">Fechado</option>
-                            <option value="DIRETA 1 NA BOLA">Direta 1 na Bola</option>
-                            <option value="DIRETA 2 NA BOLA">Direta 2 na Bola</option>
-                        </select>
-                    </div>
-                    <div><label class="label-sm text-orange-400">Atletas na Bola</label>
-                        <select id="op_abpo_atletas" class="input-dark">
-                            <option value="1 NA BOLA">1 na Bola</option>
-                            <option value="2 NA BOLA">2 na Bola</option>
-                        </select>
-                    </div>
+                    <div><label class="label-sm text-orange-400">Batida (Ofensiva)</label><select id="op_abpo_batida" class="input-dark text-[10px]"><option value="CURTO 2 NA BOLA">Curto 2 na Bola</option><option value="ABERTO (2º PAU)">Aberto (2º Pau)</option><option value="FECHADO">Fechado</option><option value="DIRETA 1 NA BOLA">Direta 1 na Bola</option><option value="DIRETA 2 NA BOLA">Direta 2 na Bola</option></select></div>
+                    <div><label class="label-sm text-orange-400">Atletas na Bola</label><select id="op_abpo_atletas" class="input-dark"><option value="1 NA BOLA">1 na Bola</option><option value="2 NA BOLA">2 na Bola</option></select></div>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
-                    <div><label class="label-sm text-sky-400">Marcação (Defensiva)</label>
-                        <select id="op_abpd_marcacao" class="input-dark">
-                            <option value="MISTA">Mista</option>
-                            <option value="ZONA">Zona</option>
-                            <option value="INDIVIDUAL">Individual</option>
-                        </select>
-                    </div>
-                    <div><label class="label-sm text-sky-400">Sobra/Rebote (DF)</label>
-                        <select id="op_abpd_rebote" class="input-dark text-[10px] px-1">
-                            <option value="REBOTE 2 - SOBRA 1">Rebote 2 Atletas - Sobra 1</option>
-                            <option value="REBOTE 1 - SOBRA 2">Rebote 1 Atleta - Sobra 2</option>
-                            <option value="REBOTE LIVRE - SOBRA 2">Rebote Livre - Sobra 2</option>
-                        </select>
-                    </div>
+                    <div><label class="label-sm text-sky-400">Marcação (Defensiva)</label><select id="op_abpd_marcacao" class="input-dark"><option value="MISTA">Mista</option><option value="ZONA">Zona</option><option value="INDIVIDUAL">Individual</option></select></div>
+                    <div><label class="label-sm text-sky-400">Sobra/Rebote (DF)</label><select id="op_abpd_rebote" class="input-dark text-[10px] px-1"><option value="REBOTE 2 - SOBRA 1">Rebote 2 Atletas - Sobra 1</option><option value="REBOTE 1 - SOBRA 2">Rebote 1 Atleta - Sobra 2</option><option value="REBOTE LIVRE - SOBRA 2">Rebote Livre - Sobra 2</option></select></div>
                 </div>
             </div>
 
@@ -355,656 +211,393 @@
                 <span class="badge-title text-pink-400">Destaques Individuais (Atletas)</span>
                 <div class="mb-4 border-b border-slate-700 pb-4">
                     <label class="label-sm flex justify-between items-center text-pink-300">Destaque 1 <label class="cursor-pointer">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_dest_1')"></label></label>
-                    <input type="text" id="img_dest_1" class="hidden">
+                    <input type="text" id="img_dest_1" class="input-dark text-[10px] mb-2 border-pink-500/30" placeholder="URL da Imagem ou 📸">
                     <input type="text" id="op_dest_nome_1" class="input-dark mb-2 uppercase font-bold" placeholder="Nome / Número">
-                    <input type="text" id="op_dest_nota_1" class="input-dark text-[11px]" placeholder="Principal Característica">
+                    <input type="text" id="op_dest_nota_1" class="input-dark text-[11px] mb-2" placeholder="Principal Característica">
+                    <input type="text" id="op_dest_vid_1" class="input-dark text-[10px] border-pink-500/50" placeholder="URL do Vídeo (Opcional)">
                 </div>
                 <div class="mb-4 border-b border-slate-700 pb-4">
                     <label class="label-sm flex justify-between items-center text-pink-300">Destaque 2 <label class="cursor-pointer">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_dest_2')"></label></label>
-                    <input type="text" id="img_dest_2" class="hidden">
+                    <input type="text" id="img_dest_2" class="input-dark text-[10px] mb-2 border-pink-500/30" placeholder="URL da Imagem ou 📸">
                     <input type="text" id="op_dest_nome_2" class="input-dark mb-2 uppercase font-bold" placeholder="Nome / Número">
-                    <input type="text" id="op_dest_nota_2" class="input-dark text-[11px]" placeholder="Principal Característica">
+                    <input type="text" id="op_dest_nota_2" class="input-dark text-[11px] mb-2" placeholder="Principal Característica">
+                    <input type="text" id="op_dest_vid_2" class="input-dark text-[10px] border-pink-500/50" placeholder="URL do Vídeo (Opcional)">
                 </div>
                 <div>
                     <label class="label-sm flex justify-between items-center text-pink-300">Destaque 3 <label class="cursor-pointer">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_dest_3')"></label></label>
-                    <input type="text" id="img_dest_3" class="hidden">
+                    <input type="text" id="img_dest_3" class="input-dark text-[10px] mb-2 border-pink-500/30" placeholder="URL da Imagem ou 📸">
                     <input type="text" id="op_dest_nome_3" class="input-dark mb-2 uppercase font-bold" placeholder="Nome / Número">
-                    <input type="text" id="op_dest_nota_3" class="input-dark text-[11px]" placeholder="Principal Característica">
+                    <input type="text" id="op_dest_nota_3" class="input-dark text-[11px] mb-2" placeholder="Principal Característica">
+                    <input type="text" id="op_dest_vid_3" class="input-dark text-[10px] border-pink-500/50" placeholder="URL do Vídeo (Opcional)">
                 </div>
             </div>
 
             <div class="section-card border-l-4 border-l-blue-500">
-                <span class="badge-title text-blue-400">Suporte Visual (Pranchetas)</span>
-                
-                <p class="text-[10px] text-emerald-400 font-bold mb-2 uppercase border-b border-slate-700 pb-1">Fase Ofensiva</p>
-                <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
-                    <div><label class="label-sm flex justify-between items-center">Tiro de Meta <label class="cursor-pointer text-blue-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_o_saida')"></label></label><input type="text" id="img_o_saida" class="input-dark text-[10px] px-2" placeholder="URL"></div>
-                    <div><label class="label-sm flex justify-between items-center">2ª Fase <label class="cursor-pointer text-blue-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_o_f2')"></label></label><input type="text" id="img_o_f2" class="input-dark text-[10px] px-2" placeholder="URL"></div>
-                    <div><label class="label-sm flex justify-between items-center text-emerald-300">Preench. Área <label class="cursor-pointer text-blue-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_o_preenchimento')"></label></label><input type="text" id="img_o_preenchimento" class="input-dark text-[10px] px-2" placeholder="URL"></div>
-                    <div><label class="label-sm flex justify-between items-center">1/3 Final <label class="cursor-pointer text-blue-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_o_f3')"></label></label><input type="text" id="img_o_f3" class="input-dark text-[10px] px-2" placeholder="URL"></div>
-                    <div><label class="label-sm flex justify-between items-center">Transição OF <label class="cursor-pointer text-blue-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_o_trans')"></label></label><input type="text" id="img_o_trans" class="input-dark text-[10px] px-2" placeholder="URL"></div>
+                <span class="badge-title text-blue-400">Suporte Visual Adicional</span>
+                <p class="text-[10px] text-emerald-400 font-bold mb-2 uppercase">Fase Ofensiva</p>
+                <div class="grid grid-cols-2 gap-4 mb-4 border-b border-slate-700 pb-4">
+                    <div><label class="label-sm flex justify-between items-center">Saída <label class="cursor-pointer text-blue-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_o_saida')"></label></label><input type="text" id="img_o_saida" class="input-dark" placeholder="URL ou 📸"></div>
+                    <div><label class="label-sm flex justify-between items-center">2ª Fase <label class="cursor-pointer text-blue-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_o_f2')"></label></label><input type="text" id="img_o_f2" class="input-dark" placeholder="URL ou 📸"></div>
+                    <div><label class="label-sm flex justify-between items-center">1/3 Final <label class="cursor-pointer text-blue-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_o_f3')"></label></label><input type="text" id="img_o_f3" class="input-dark" placeholder="URL ou 📸"></div>
+                    <div><label class="label-sm flex justify-between items-center">Trans. OF <label class="cursor-pointer text-blue-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_o_trans')"></label></label><input type="text" id="img_o_trans" class="input-dark" placeholder="URL ou 📸"></div>
                 </div>
-
-                <p class="text-[10px] text-red-400 font-bold mb-2 uppercase border-b border-slate-700 pb-1">Fase Defensiva</p>
-                <div class="grid grid-cols-2 gap-3 mb-6">
-                    <div><label class="label-sm flex justify-between items-center">Bloco Alto <label class="cursor-pointer text-red-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_d_alto')"></label></label><input type="text" id="img_d_alto" class="input-dark text-[10px] px-2" placeholder="URL"></div>
-                    <div><label class="label-sm flex justify-between items-center">Bloco Médio <label class="cursor-pointer text-red-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_d_medio')"></label></label><input type="text" id="img_d_medio" class="input-dark text-[10px] px-2" placeholder="URL"></div>
-                    <div><label class="label-sm flex justify-between items-center">Bloco Baixo <label class="cursor-pointer text-red-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_d_baixo')"></label></label><input type="text" id="img_d_baixo" class="input-dark text-[10px] px-2" placeholder="URL"></div>
-                    <div><label class="label-sm flex justify-between items-center">Transição DEF <label class="cursor-pointer text-red-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_d_trans')"></label></label><input type="text" id="img_d_trans" class="input-dark text-[10px] px-2" placeholder="URL"></div>
+                <p class="text-[10px] text-red-400 font-bold mb-2 uppercase">Fase Defensiva</p>
+                <div class="grid grid-cols-2 gap-4 mb-4 border-b border-slate-700 pb-4">
+                    <div><label class="label-sm flex justify-between items-center">Bloco Alto <label class="cursor-pointer text-red-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_d_alto')"></label></label><input type="text" id="img_d_alto" class="input-dark" placeholder="URL ou 📸"></div>
+                    <div><label class="label-sm flex justify-between items-center">Bloco Médio <label class="cursor-pointer text-red-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_d_medio')"></label></label><input type="text" id="img_d_medio" class="input-dark" placeholder="URL ou 📸"></div>
+                    <div><label class="label-sm flex justify-between items-center">Bloco Baixo <label class="cursor-pointer text-red-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_d_baixo')"></label></label><input type="text" id="img_d_baixo" class="input-dark" placeholder="URL ou 📸"></div>
+                    <div><label class="label-sm flex justify-between items-center">Trans. DEF <label class="cursor-pointer text-red-400">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_d_trans')"></label></label><input type="text" id="img_d_trans" class="input-dark" placeholder="URL ou 📸"></div>
                 </div>
-
-                <p class="text-[10px] font-bold mb-2 uppercase border-b border-slate-700 pb-1 text-orange-400">Bolas Paradas Ofensivas (ABP OF)</p>
-                <div class="grid grid-cols-3 gap-2 mb-6">
-                    <div><label class="label-sm flex justify-between items-center">Escanteio <label class="cursor-pointer">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_abpo_esc')"></label></label><input type="text" id="img_abpo_esc" class="input-dark text-[10px] px-1" placeholder="URL"></div>
-                    <div><label class="label-sm flex justify-between items-center">Falta Lateral <label class="cursor-pointer">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_abpo_fal')"></label></label><input type="text" id="img_abpo_fal" class="input-dark text-[10px] px-1" placeholder="URL"></div>
-                    <div><label class="label-sm flex justify-between items-center text-orange-300">Rebote OF <label class="cursor-pointer">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_abpo_rebote')"></label></label><input type="text" id="img_abpo_rebote" class="input-dark text-[10px] px-1" placeholder="URL"></div>
+                <p class="text-[10px] font-bold mb-2 uppercase"><span class="text-orange-400">ABP OF</span> & <span class="text-sky-400">ABP DEF</span></p>
+                <div class="grid grid-cols-2 gap-4">
+                    <div><label class="label-sm flex justify-between items-center text-orange-400">Escanteio OF <label class="cursor-pointer">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_abpo_esc')"></label></label><input type="text" id="img_abpo_esc" class="input-dark" placeholder="URL"></div>
+                    <div><label class="label-sm flex justify-between items-center text-orange-400">Falta Lat. OF <label class="cursor-pointer">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_abpo_fal')"></label></label><input type="text" id="img_abpo_fal" class="input-dark" placeholder="URL"></div>
+                    <div><label class="label-sm flex justify-between items-center text-sky-400">Escanteio DEF <label class="cursor-pointer">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_abpd_esc')"></label></label><input type="text" id="img_abpd_esc" class="input-dark" placeholder="URL"></div>
+                    <div><label class="label-sm flex justify-between items-center text-sky-400">Falta Lat. DEF <label class="cursor-pointer">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_abpd_fal')"></label></label><input type="text" id="img_abpd_fal" class="input-dark" placeholder="URL"></div>
                 </div>
-
-                <p class="text-[10px] font-bold mb-2 uppercase border-b border-slate-700 pb-1 text-sky-400">Bolas Paradas Defensivas (ABP DEF)</p>
-                <div class="grid grid-cols-3 gap-2 mb-4">
-                    <div><label class="label-sm flex justify-between items-center">Escanteio <label class="cursor-pointer">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_abpd_esc')"></label></label><input type="text" id="img_abpd_esc" class="input-dark text-[10px] px-1" placeholder="URL"></div>
-                    <div><label class="label-sm flex justify-between items-center">Falta Lateral <label class="cursor-pointer">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_abpd_fal')"></label></label><input type="text" id="img_abpd_fal" class="input-dark text-[10px] px-1" placeholder="URL"></div>
-                    <div><label class="label-sm flex justify-between items-center text-sky-300">Rebote DEF <label class="cursor-pointer">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_abpd_rebote')"></label></label><input type="text" id="img_abpd_rebote" class="input-dark text-[10px] px-1" placeholder="URL"></div>
-                </div>
-                
-                <div class="mt-4 border-t border-slate-700 pt-4"><label class="label-sm">Vídeo Análise (URL do QR CODE)</label><input type="text" id="op_vid" class="input-dark" placeholder="Link do YouTube/Drive/LongoMatch"></div>
             </div>
 
-            <div class="section-card border-l-4 border-l-yellow-400 relative">
+            <div class="section-card border-l-4 border-l-yellow-400">
                 <span class="badge-title text-yellow-400">Mapa da Mina (Estratégia)</span>
-                <div class="mb-4">
-                    <label class="label-sm text-yellow-500">⚠️ Ponto Forte (Onde ter Cuidado)</label>
-                    <textarea id="op_ponto_forte" class="input-dark h-20" placeholder="Ex: Lado direito muito forte com apoio do lateral."></textarea>
-                </div>
-                <div>
-                    <div class="flex justify-between items-center mb-2">
-                        <label class="label-sm text-emerald-400 mb-0">🎯 Onde Explorar (Nossa Vantagem)</label>
-                        <button id="btnGerarIA" type="button" class="bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-bold px-3 py-1 rounded-lg flex items-center gap-1 transition shadow-lg" title="Gerar com IA">🧠 IA: Sugerir Estratégia</button>
-                    </div>
-                    <textarea id="op_explorar" class="input-dark h-32" placeholder="Ex: Lançamentos nas costas do volante 5."></textarea>
-                </div>
+                <div class="mb-4"><label class="label-sm text-yellow-500">⚠️ Ponto Forte (Cuidado)</label><textarea id="op_ponto_forte" class="input-dark h-16" placeholder="Lado direito forte..."></textarea></div>
+                <div><label class="label-sm text-emerald-400">🎯 Onde Explorar</label><textarea id="op_explorar" class="input-dark h-16" placeholder="Costas do lateral..."></textarea></div>
             </div>
 
             <div class="section-card border-l-4 border-l-slate-400">
                 <div class="flex justify-between items-center mb-4">
-                    <span class="badge-title text-slate-400 mb-0">Notas Estratégicas Finais</span>
-                    <button onclick="iniciarDitado()" class="bg-slate-700 hover:bg-slate-600 text-white text-[10px] font-bold px-3 py-1 rounded-lg flex items-center gap-1 transition" title="Falar">🎙️ Áudio p/ Texto</button>
+                    <span class="badge-title text-slate-400 mb-0">Notas Finais</span>
+                    <button onclick="iniciarDitado()" class="bg-slate-700 hover:bg-slate-600 text-white text-[10px] font-bold px-3 py-1 rounded-lg flex items-center gap-1 transition">🎙️ Falar</button>
                 </div>
-                <textarea id="op_notes" class="input-dark h-32 w-full" placeholder="Aperte o botão de áudio e fale os detalhes adicionais...">SEM OBSERVAÇÕES ADICIONAIS</textarea>
+                <textarea id="op_notes" class="input-dark h-24 w-full" placeholder="Aperte o microfone...">SEM OBSERVAÇÕES ADICIONAIS</textarea>
             </div>
 
             <div class="flex gap-2 mb-10">
-                <button onclick="gerarPlano()" class="w-3/4 bg-gradient-to-r from-slate-900 to-slate-800 text-white font-black py-4 rounded-xl uppercase shadow-2xl font-header italic border border-slate-700 hover:from-slate-800 hover:to-slate-700 transition text-sm">Gerar Scout PDF</button>
+                <button onclick="gerarPlano()" class="w-3/4 bg-gradient-to-r from-slate-900 to-slate-800 text-white font-black py-4 rounded-xl uppercase shadow-2xl font-header italic border border-slate-700 hover:from-slate-800 transition text-sm">Gerar Scout PDF</button>
                 <button onclick="compartilharZap()" class="w-1/4 bg-[#25D366] hover:bg-[#1ebd57] text-white font-black py-4 rounded-xl uppercase shadow-2xl flex items-center justify-center transition" title="Avisar no WhatsApp">
                     <svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.305-.88-.653-1.474-1.46-1.647-1.757-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.012c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
                 </button>
             </div>
         </aside>
 
-        <main class="w-full lg:w-3/5 bg-white text-slate-900 rounded-2xl p-6 shadow-2xl overflow-y-auto relative transition-colors duration-300" id="main-content-area">
+        <main class="w-full lg:w-3/5 bg-white text-slate-900 rounded-2xl p-6 shadow-2xl overflow-y-auto" id="print-area">
             
-            <div id="print-area" class="block">
-                
-                <div class="bg-slate-900 text-center py-2 mb-6 rounded-lg break-inside-avoid hidden shadow-lg border-b-4 border-yellow-400" id="box_mantra">
-                    <span class="text-[14px] font-black text-yellow-400 uppercase tracking-widest font-header">MANTRA: <span id="r_mantra" class="text-white">---</span></span>
-                </div>
-
-                <header class="mb-4 border-b-4 border-slate-900 pb-4 flex justify-between items-start break-inside-avoid">
-                    <div class="flex flex-col gap-2">
-                        <div class="flex items-center gap-2">
-                            <span id="r_comp" class="text-[11px] font-black text-white bg-slate-900 px-3 py-1 rounded-full uppercase tracking-widest">---</span>
-                            <span id="r_local" class="text-[10px] font-bold text-slate-500 uppercase border border-slate-300 px-2 py-1 rounded-full">---</span>
-                        </div>
-                        <div>
-                            <h2 id="r_name" class="font-header text-2xl font-black italic uppercase text-slate-800 leading-none mt-2">---</h2>
-                            <p id="r_coach" class="text-[10px] font-black text-slate-500 uppercase mt-1">TREINADOR: ---</p>
-                        </div>
-                    </div>
-                    
-                    <div class="flex justify-center items-center gap-6">
-                        <img id="r_logo_home" src="" class="w-16 h-16 object-contain" style="display: none;" alt="Mandante">
-                        <div id="r_score" class="text-4xl font-black font-header text-slate-900 italic">0 x 0</div>
-                        <img id="r_logo_away" src="" class="w-16 h-16 object-contain" style="display: none;" alt="Visitante">
-                    </div>
-                    
-                    <div class="text-right flex flex-col items-end">
-                        <img id="print_logo_analista" src="" class="w-12 h-12 object-contain mb-1 hidden border border-slate-200 p-1 rounded">
-                        <p id="print_nome_analista" class="text-[10px] font-black uppercase text-slate-800">Analista</p>
-                        <p id="print_equipe_analista" class="text-[8px] font-bold uppercase text-slate-500">Equipe</p>
-                    </div>
-                </header>
-
-                <div class="grid grid-cols-2 gap-4 mb-6 break-inside-avoid hidden" id="box_elenco">
-                    <div class="bg-indigo-50 border border-indigo-200 p-3 rounded-lg shadow-sm">
-                        <span class="text-[10px] font-black text-indigo-700 uppercase block mb-1">📋 11 Iniciais:</span>
-                        <p id="r_iniciais" class="text-[9px] font-bold text-slate-700 uppercase whitespace-pre-wrap">---</p>
-                    </div>
-                    <div class="bg-indigo-50 border border-indigo-200 p-3 rounded-lg shadow-sm">
-                        <span class="text-[10px] font-black text-indigo-700 uppercase block mb-1">🔄 Modificações / Banco:</span>
-                        <p id="r_banco" class="text-[9px] font-bold text-slate-700 uppercase whitespace-pre-wrap">---</p>
-                    </div>
-                </div>
-
-                <div class="bg-red-50 border border-red-200 rounded-lg p-3 mb-6 break-inside-avoid hidden" id="box_desfalques">
-                    <span class="text-[10px] font-black text-red-600 uppercase block mb-1">⚠️ DM / SUSPENSOS / NÃO REGULARIZADOS:</span>
-                    <span id="r_desfalques" class="text-[10px] font-bold text-slate-700 uppercase whitespace-pre-wrap">---</span>
-                </div>
-
-                <div class="bg-[#f2fdf7] rounded-xl p-5 mb-6 break-inside-avoid border border-[#a7f3d0]">
-                    <h3 class="text-[#059669] font-black italic uppercase text-[14px] border-b border-[#a7f3d0] pb-2 mb-4 font-header">Fase Ofensiva & Construção</h3>
-                    <div class="grid grid-cols-2 gap-x-12 gap-y-3 mb-5 text-[10px] font-bold text-slate-600 uppercase">
-                        <div class="flex"><span class="w-32 text-slate-400">PÉ ZAGS:</span> <span id="r_zags_foot" class="text-slate-800">---</span></div>
-                        <div class="flex"><span class="w-32 text-slate-400">LADO ATK:</span> <span id="r_atk_side" class="text-slate-800">---</span></div>
-                        <div class="flex"><span class="w-32 text-slate-400">GOLEIRO:</span> <span id="r_gk" class="text-slate-800">---</span></div>
-                        <div class="flex"><span class="w-32 text-slate-400">SAÍDA:</span> <span id="r_meta" class="text-emerald-700 font-black">---</span></div>
-                        <div class="flex"><span class="w-32 text-slate-400">2ª FASE:</span> <span id="r_f2" class="text-slate-800">---</span></div>
-                        <div class="flex"><span class="w-32 text-slate-400">TRANSIÇÃO:</span> <span id="r_tof" class="text-slate-800">---</span></div>
-                        <div class="flex col-span-2 bg-[#d1fae5] p-2 rounded"><span class="w-32 text-[#059669]">PREENCHIMENTO ÁREA:</span> <span id="r_preenchimento" class="text-[#065f46] font-black">---</span></div>
-                    </div>
-                    <div class="grid grid-cols-5 gap-2">
-                        <div><img id="r_img_o_saida" class="img-slot"><p class="text-[7px] text-center mt-1 font-bold text-slate-600 uppercase">Saída Meta</p></div>
-                        <div><img id="r_img_o_f2" class="img-slot"><p class="text-[7px] text-center mt-1 font-bold text-slate-600 uppercase">2ª Fase</p></div>
-                        <div><img id="r_img_o_preenchimento" class="img-slot"><p class="text-[7px] text-center mt-1 font-bold text-emerald-600 uppercase">Preench. Área</p></div>
-                        <div><img id="r_img_o_f3" class="img-slot"><p class="text-[7px] text-center mt-1 font-bold text-slate-600 uppercase">1/3 Final</p></div>
-                        <div><img id="r_img_o_trans" class="img-slot"><p class="text-[7px] text-center mt-1 font-bold text-slate-600 uppercase">Trans. OF</p></div>
-                    </div>
-                </div>
-
-                <div class="bg-[#fef2f2] rounded-xl p-5 mb-6 break-inside-avoid border border-[#fecaca]">
-                    <h3 class="text-[#dc2626] font-black italic uppercase text-[14px] border-b border-[#fecaca] pb-2 mb-4 font-header">Fase Defensiva & Organização</h3>
-                    <div class="grid grid-cols-2 gap-x-12 gap-y-3 mb-5 text-[10px] font-bold text-slate-600 uppercase">
-                        <div class="flex"><span class="w-24 text-slate-400">POSTURA:</span> <span id="r_postura" class="text-slate-800">---</span></div>
-                        <div class="flex"><span class="w-32 text-slate-400">GATILHO PRESSÃO:</span> <span id="r_gatilho" class="text-red-700 font-black">---</span></div>
-                        <div class="flex"><span class="w-24 text-slate-400">ENCAIXE ÁREA:</span> <span id="r_encaixe" class="text-slate-800">---</span></div>
-                        <div class="flex"><span class="w-32 text-slate-400">TRANSIÇÃO DF:</span> <span id="r_trans_df" class="text-slate-800">---</span></div>
-                        <div class="flex col-span-2 bg-[#fee2e2] p-2 rounded"><span class="w-32 text-[#dc2626]">ALVO MARCAÇÃO:</span> <span id="r_target" class="text-[#991b1b] font-black">---</span></div>
-                    </div>
-                    <div class="grid grid-cols-4 gap-3">
-                        <div><img id="r_img_d_alto" class="img-slot"><p class="text-[8px] text-center mt-1 font-black text-slate-800 uppercase">BLOCO ALTO <span id="r_lbl_def_h" class="block text-red-600">---</span></p></div>
-                        <div><img id="r_img_d_medio" class="img-slot"><p class="text-[8px] text-center mt-1 font-black text-slate-800 uppercase">BLOCO MÉDIO <span id="r_lbl_def_m" class="block text-red-600">---</span></p></div>
-                        <div><img id="r_img_d_baixo" class="img-slot"><p class="text-[8px] text-center mt-1 font-black text-slate-800 uppercase">BLOCO BAIXO <span id="r_lbl_def_l" class="block text-red-600">---</span></p></div>
-                        <div><img id="r_img_d_trans" class="img-slot"><p class="text-[8px] text-center mt-1 font-black text-slate-800 uppercase">TRANS. DF</p></div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-4 mb-6 break-inside-avoid">
-                    <div class="bg-[#fff7ed] border border-[#ffedd5] border-l-4 border-l-[#ea580c] rounded-xl p-4 shadow-sm">
-                        <h3 class="text-[#ea580c] font-black italic uppercase text-[12px] mb-3 font-header">ABP Ofensivo</h3>
-                        <div class="mb-3 text-[9px] font-bold text-slate-600 uppercase space-y-1">
-                            <div class="flex"><span class="w-20 text-slate-400">BATIDA:</span> <span id="r_abpo_batida" class="text-slate-800">---</span></div>
-                            <div class="flex"><span class="w-20 text-slate-400">ATLETAS:</span> <span id="r_abpo_atletas" class="text-slate-800">---</span></div>
-                        </div>
-                        <div class="grid grid-cols-3 gap-2">
-                            <div><img id="r_img_abpo_esc" class="img-slot" style="height: 80px;"><p id="l_abpo_esc" class="text-[7px] text-center mt-1 font-bold text-slate-500 uppercase" style="display: none;">Escanteio</p></div>
-                            <div><img id="r_img_abpo_fal" class="img-slot" style="height: 80px;"><p id="l_abpo_fal" class="text-[7px] text-center mt-1 font-bold text-slate-500 uppercase" style="display: none;">Falta Lat.</p></div>
-                            <div><img id="r_img_abpo_rebote" class="img-slot" style="height: 80px;"><p id="l_abpo_rebote" class="text-[7px] text-center mt-1 font-bold text-orange-500 uppercase" style="display: none;">Rebote</p></div>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-[#f0f9ff] border border-[#e0f2fe] border-l-4 border-l-[#0284c7] rounded-xl p-4 shadow-sm">
-                        <h3 class="text-[#0284c7] font-black italic uppercase text-[12px] mb-3 font-header">ABP Defensivo</h3>
-                        <div class="mb-3 text-[9px] font-bold text-slate-600 uppercase space-y-1">
-                            <div class="flex"><span class="w-24 text-slate-400">MARCAÇÃO:</span> <span id="r_abpd_marcacao" class="text-slate-800">---</span></div>
-                            <div class="flex"><span class="w-24 text-slate-400">SOBRA:</span> <span id="r_abpd_rebote" class="text-slate-800">---</span></div>
-                        </div>
-                        <div class="grid grid-cols-3 gap-2">
-                            <div><img id="r_img_abpd_esc" class="img-slot" style="height: 80px;"><p id="l_abpd_esc" class="text-[7px] text-center mt-1 font-bold text-slate-500 uppercase" style="display: none;">Escanteio</p></div>
-                            <div><img id="r_img_abpd_fal" class="img-slot" style="height: 80px;"><p id="l_abpd_fal" class="text-[7px] text-center mt-1 font-bold text-slate-500 uppercase" style="display: none;">Falta Lat.</p></div>
-                            <div><img id="r_img_abpd_rebote" class="img-slot" style="height: 80px;"><p id="l_abpd_rebote" class="text-[7px] text-center mt-1 font-bold text-sky-500 uppercase" style="display: none;">Rebote</p></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mb-6 break-inside-avoid hidden" id="box_destaques">
-                    <h3 class="text-pink-600 font-black italic uppercase text-[14px] border-b border-pink-200 pb-2 mb-4 font-header">Destaques Individuais</h3>
-                    <div class="grid grid-cols-3 gap-4">
-                        <div class="border border-slate-200 rounded-lg p-3 bg-slate-50 flex flex-col items-center text-center shadow-sm hidden" id="card_dest_1">
-                            <img id="r_img_dest_1" class="w-16 h-16 object-cover rounded-full border-2 border-pink-400 mb-2">
-                            <p id="r_dest_nome_1" class="text-[10px] font-black text-slate-800 uppercase">---</p>
-                            <p id="r_dest_nota_1" class="text-[8px] font-bold text-slate-500 uppercase mt-1 leading-tight">---</p>
-                        </div>
-                        <div class="border border-slate-200 rounded-lg p-3 bg-slate-50 flex flex-col items-center text-center shadow-sm hidden" id="card_dest_2">
-                            <img id="r_img_dest_2" class="w-16 h-16 object-cover rounded-full border-2 border-pink-400 mb-2">
-                            <p id="r_dest_nome_2" class="text-[10px] font-black text-slate-800 uppercase">---</p>
-                            <p id="r_dest_nota_2" class="text-[8px] font-bold text-slate-500 uppercase mt-1 leading-tight">---</p>
-                        </div>
-                        <div class="border border-slate-200 rounded-lg p-3 bg-slate-50 flex flex-col items-center text-center shadow-sm hidden" id="card_dest_3">
-                            <img id="r_img_dest_3" class="w-16 h-16 object-cover rounded-full border-2 border-pink-400 mb-2">
-                            <p id="r_dest_nome_3" class="text-[10px] font-black text-slate-800 uppercase">---</p>
-                            <p id="r_dest_nota_3" class="text-[8px] font-bold text-slate-500 uppercase mt-1 leading-tight">---</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-4 mb-6 break-inside-avoid">
-                    <div class="bg-yellow-50 border border-yellow-200 border-l-4 border-l-yellow-400 p-4 rounded-xl">
-                        <h4 class="text-yellow-600 text-[11px] font-black uppercase mb-2 flex items-center gap-1">⚠️ Ponto Forte (Atenção)</h4>
-                        <p id="r_ponto_forte" class="text-[10px] font-bold text-slate-700 uppercase whitespace-pre-wrap leading-relaxed">---</p>
-                    </div>
-                    <div class="bg-emerald-50 border border-emerald-200 border-l-4 border-l-emerald-500 p-4 rounded-xl">
-                        <h4 class="text-emerald-700 text-[11px] font-black uppercase mb-2 flex items-center gap-1">🎯 Onde Explorar</h4>
-                        <p id="r_explorar" class="text-[10px] font-bold text-slate-700 uppercase whitespace-pre-wrap leading-relaxed">---</p>
-                    </div>
-                    <div class="col-span-2 bg-red-50 border border-red-200 border-l-4 border-l-red-600 p-4 rounded-xl flex justify-between items-center" id="box_termometro">
-                        <div>
-                            <h4 class="text-red-700 text-[11px] font-black uppercase flex items-center gap-1">⏱️ Termômetro Físico</h4>
-                            <p class="text-[10px] font-bold text-slate-700 uppercase mt-1">DESGASTE: <span id="r_desgaste" class="text-red-600">---</span></p>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-[10px] font-bold text-slate-700 uppercase">MINUTOS DE PERIGO</p>
-                            <p id="r_perigo" class="text-[14px] font-black text-red-600 uppercase">---</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="p-6 border-2 border-dashed border-slate-300 rounded-2xl bg-slate-50 relative break-inside-avoid">
-                    <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest bg-slate-50 px-3 absolute -top-2 left-6">Notas Estratégicas Extras</span>
-                    <p id="r_notes" class="text-[12px] font-bold text-slate-700 uppercase whitespace-pre-wrap pt-2 leading-relaxed">---</p>
-                </div>
-
-                <footer class="mt-8 flex justify-between items-end border-t border-slate-200 pt-4 break-inside-avoid">
-                    <div>
-                        <div class="text-[10px] font-black text-slate-400 uppercase italic font-header text-slate-800">Powered by Playtatic Scout Platinum</div>
-                        <p class="text-[7px] text-slate-400 mt-1 uppercase">Relatório sincronizado via Firebase Cloud.</p>
-                        <p id="print_contato_analista" class="text-[8px] font-bold text-purple-600 mt-1 uppercase">---</p>
-                    </div>
-                    <div class="flex flex-col items-center">
-                        <div id="qrcode" class="w-16 h-16 bg-white p-1 border border-slate-200 shadow-sm"></div>
-                        <span class="text-[6px] text-slate-400 uppercase font-bold mt-1 tracking-widest text-center" id="l_qr_code" style="display: none;">VÍDEO ANÁLISE</span>
-                    </div>
-                </footer>
+            <div class="bg-slate-900 text-center py-2 mb-6 rounded-lg break-inside-avoid hidden shadow-lg border-b-4 border-yellow-400" id="box_mantra">
+                <span class="text-[14px] font-black text-yellow-400 uppercase tracking-widest font-header">MANTRA: <span id="r_mantra" class="text-white">---</span></span>
             </div>
-            <div id="live-area" class="hidden h-full flex flex-col gap-4 text-white">
-                <div class="flex justify-between items-end border-b border-slate-700 pb-2">
-                    <div>
-                        <h2 class="text-2xl font-black text-red-500 font-header italic uppercase">🔴 Central de Jogo</h2>
-                        <p class="text-[10px] text-slate-400 uppercase font-bold mt-1">Análise Tática em Tempo Real</p>
+
+            <header class="mb-4 border-b-4 border-slate-900 pb-4 flex justify-between items-start break-inside-avoid">
+                <div class="flex flex-col gap-2">
+                    <div class="flex items-center gap-2">
+                        <span id="r_comp" class="text-[11px] font-black text-white bg-slate-900 px-3 py-1 rounded-full uppercase tracking-widest">---</span>
+                        <span id="r_local" class="text-[10px] font-bold text-slate-500 uppercase border border-slate-300 px-2 py-1 rounded-full">---</span>
                     </div>
-                    <div id="relogio_live" class="text-2xl font-header font-black text-slate-300">00:00</div>
+                    <div>
+                        <h2 id="r_name" class="font-header text-2xl font-black italic uppercase text-slate-800 leading-none mt-2">---</h2>
+                        <p id="r_coach" class="text-[10px] font-black text-slate-500 uppercase mt-1">TREINADOR: ---</p>
+                    </div>
                 </div>
                 
-                <div class="flex gap-4 h-[calc(100vh-140px)] overflow-hidden">
-                    
-                    <div class="w-[35%] flex flex-col gap-3 h-full">
-                        <span class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Ações Rápidas</span>
-                        <div class="grid grid-cols-2 gap-2">
-                            <button id="btn_live_1" onclick="addLiveEvent(this.innerText)" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-[9px] py-3 px-1 rounded-lg border border-slate-600 shadow transition font-bold uppercase">❌ Ataque Falhou</button>
-                            <button id="btn_live_2" onclick="addLiveEvent(this.innerText)" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-[9px] py-3 px-1 rounded-lg border border-slate-600 shadow transition font-bold uppercase">⚠️ Furo na Zaga</button>
-                            <button id="btn_live_3" onclick="addLiveEvent(this.innerText)" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-[9px] py-3 px-1 rounded-lg border border-slate-600 shadow transition font-bold uppercase">⚽ Ganhou 2ª Bola</button>
-                            <button id="btn_live_4" onclick="addLiveEvent(this.innerText)" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-[9px] py-3 px-1 rounded-lg border border-slate-600 shadow transition font-bold uppercase">⚡ Pressão Encaixou</button>
-                            <button id="btn_live_5" onclick="addLiveEvent(this.innerText)" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-[9px] py-3 px-1 rounded-lg border border-slate-600 shadow transition font-bold uppercase">📉 Linha Baixou</button>
-                            <button id="btn_live_6" onclick="addLiveEvent(this.innerText)" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-[9px] py-3 px-1 rounded-lg border border-slate-600 shadow transition font-bold uppercase">📈 Pressão Alta</button>
-                        </div>
-                        <div class="flex-1 bg-[#0d1117] rounded-xl p-3 overflow-y-auto border border-slate-700 relative flex flex-col" id="log_container">
-                            <span class="absolute top-2 right-3 text-[8px] text-slate-500 uppercase font-bold bg-[#0d1117] pl-2 pb-1">Diário de Jogo</span>
-                            <div id="log_eventos" class="mt-4 space-y-2 flex-1">
-                                <p class="text-[10px] text-slate-600 italic">Nenhum evento na nuvem.</p>
-                            </div>
-                        </div>
-                        <button onclick="gerarTreinoIA()" id="btn_gerar_treino" class="w-full bg-purple-700 hover:bg-purple-600 text-white text-[11px] py-4 rounded-xl font-black uppercase shadow-lg transition flex items-center justify-center gap-2 border border-purple-900 mt-2">
-                            🧠 Planejar Treino Pós-Jogo
-                        </button>
+                <div class="flex justify-center items-center gap-6">
+                    <img id="r_logo_home" src="" class="w-16 h-16 object-contain" style="display: none;">
+                    <div id="r_score" class="text-4xl font-black font-header text-slate-900 italic">0 x 0</div>
+                    <img id="r_logo_away" src="" class="w-16 h-16 object-contain" style="display: none;">
+                </div>
+                
+                <div class="text-right flex flex-col items-end">
+                    <img id="print_logo_analista" src="" class="w-12 h-12 object-contain mb-1 hidden border border-slate-200 p-1 rounded">
+                    <p id="print_nome_analista" class="text-[10px] font-black uppercase text-slate-800">Analista</p>
+                    <p id="print_equipe_analista" class="text-[8px] font-bold uppercase text-slate-500">Equipe</p>
+                </div>
+            </header>
+
+            <div class="bg-red-50 border border-red-200 rounded-lg p-3 mb-6 break-inside-avoid hidden" id="box_desfalques">
+                <span class="text-[10px] font-black text-red-600 uppercase">⚠️ DESFALQUES E SUSPENSOS:</span>
+                <span id="r_desfalques" class="text-[10px] font-bold text-slate-700 uppercase ml-2">---</span>
+            </div>
+
+            <div class="mb-6 break-inside-avoid border-2 border-indigo-100 rounded-xl p-4 bg-indigo-50/30">
+                <h3 class="text-indigo-800 font-black italic uppercase text-[14px] border-b border-indigo-200 pb-2 mb-4 font-header flex justify-between items-end">
+                    <span>11 Inicial - <span id="r_formacao_texto">4-3-3</span></span>
+                    <span class="text-[9px] text-blue-500 font-bold tracking-widest bg-blue-100 px-2 py-1 rounded">Tocar na foto abre o vídeo ▶️</span>
+                </h3>
+                
+                <div id="nodes_jogadores" class="grid grid-cols-4 gap-3 mb-4">
                     </div>
 
-                    <div class="w-[65%] bg-[#0d1117] border border-slate-700 rounded-xl flex flex-col relative overflow-hidden shadow-inner">
-                        <div id="chat_messages" class="flex-1 p-5 overflow-y-auto flex flex-col gap-4">
-                            <div class="chat-bubble self-start bg-slate-800 border border-slate-700 text-slate-200 p-3 rounded-2xl rounded-tl-none max-w-[85%] shadow-sm">
-                                <p class="text-[11px] font-bold text-emerald-400 mb-1 uppercase">🧠 TaticAI System</p>
-                                <p class="text-sm">Fala, Professor! Estou monitorando os botões rápidos. Fale no rádio (microfone) para ajustes ao vivo, ou clique em "Planejar Treino" quando o jogo acabar para montarmos a semana.</p>
-                            </div>
-                        </div>
-                        <div class="p-4 border-t border-slate-800 flex gap-2 items-center bg-[#0f172a]">
-                            <button onclick="iniciarVozChat()" class="bg-slate-700 hover:bg-slate-600 text-white w-12 h-12 rounded-full flex items-center justify-center transition shadow-lg" title="Falar no Microfone">🎙️</button>
-                            <input type="text" id="input_chat_live" class="bg-slate-800 border border-slate-700 text-white p-3 rounded-xl flex-1 text-sm focus:outline-none focus:border-emerald-500 transition" placeholder="Descreva o que está acontecendo..." onkeypress="if(event.key==='Enter') enviarChatLive()">
-                            <button onclick="enviarChatLive()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black px-6 py-3 rounded-xl uppercase text-xs shadow-lg transition">Enviar</button>
-                        </div>
+                <div class="bg-white border border-slate-200 rounded p-3 hidden shadow-sm" id="box_banco">
+                    <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest block mb-1">Principais Opções de Banco:</span>
+                    <span id="r_banco" class="text-[10px] font-bold text-slate-800 uppercase leading-relaxed">---</span>
+                </div>
+            </div>
+
+            <div class="bg-[#f2fdf7] rounded-xl p-5 mb-6 break-inside-avoid border border-[#a7f3d0]">
+                <h3 class="text-[#059669] font-black italic uppercase text-[14px] border-b border-[#a7f3d0] pb-2 mb-4 font-header">Fase Ofensiva & Construção</h3>
+                <div class="grid grid-cols-2 gap-x-12 gap-y-3 mb-5 text-[10px] font-bold text-slate-600 uppercase">
+                    <div class="flex"><span class="w-32 text-slate-400">PÉ ZAGS:</span> <span id="r_zags_foot" class="text-slate-800">---</span></div>
+                    <div class="flex"><span class="w-32 text-slate-400">LADO ATK:</span> <span id="r_atk_side" class="text-slate-800">---</span></div>
+                    <div class="flex"><span class="w-32 text-slate-400">GOLEIRO:</span> <span id="r_gk" class="text-slate-800">---</span></div>
+                    <div class="flex"><span class="w-32 text-slate-400">SAÍDA:</span> <span id="r_meta" class="text-emerald-700 font-black">---</span></div>
+                    <div class="flex"><span class="w-32 text-slate-400">2ª FASE:</span> <span id="r_f2" class="text-slate-800">---</span></div>
+                    <div class="flex"><span class="w-32 text-slate-400">TRANSIÇÃO:</span> <span id="r_tof" class="text-slate-800">---</span></div>
+                    <div class="flex col-span-2 bg-[#d1fae5] p-2 rounded"><span class="w-32 text-[#059669]">PREENCHIMENTO ÁREA:</span> <span id="r_preenchimento" class="text-[#065f46] font-black">---</span></div>
+                </div>
+            </div>
+
+            <div class="bg-[#fef2f2] rounded-xl p-5 mb-6 break-inside-avoid border border-[#fecaca]">
+                <h3 class="text-[#dc2626] font-black italic uppercase text-[14px] border-b border-[#fecaca] pb-2 mb-4 font-header">Fase Defensiva & Organização</h3>
+                <div class="grid grid-cols-2 gap-x-12 gap-y-3 mb-5 text-[10px] font-bold text-slate-600 uppercase">
+                    <div class="flex"><span class="w-24 text-slate-400">POSTURA:</span> <span id="r_postura" class="text-slate-800">---</span></div>
+                    <div class="flex"><span class="w-32 text-slate-400">GATILHO PRESSÃO:</span> <span id="r_gatilho" class="text-red-700 font-black">---</span></div>
+                    <div class="flex"><span class="w-24 text-slate-400">ENCAIXE ÁREA:</span> <span id="r_encaixe" class="text-slate-800">---</span></div>
+                    <div class="flex"><span class="w-32 text-slate-400">TRANSIÇÃO DF:</span> <span id="r_trans_df" class="text-slate-800">---</span></div>
+                    <div class="flex col-span-2 bg-[#fee2e2] p-2 rounded"><span class="w-32 text-[#dc2626]">ALVO MARCAÇÃO:</span> <span id="r_target" class="text-[#991b1b] font-black">---</span></div>
+                </div>
+            </div>
+
+            <div class="mb-6 break-inside-avoid hidden" id="box_fotos_taticas">
+                <div class="grid grid-cols-4 gap-3">
+                    <div><img id="r_img_o_saida" class="img-slot"><p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase" id="l_img_o_saida">Saída Meta</p></div>
+                    <div><img id="r_img_o_f2" class="img-slot"><p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase" id="l_img_o_f2">2ª Fase</p></div>
+                    <div><img id="r_img_o_f3" class="img-slot"><p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase" id="l_img_o_f3">1/3 Final</p></div>
+                    <div><img id="r_img_o_trans" class="img-slot"><p class="text-[8px] text-center mt-2 font-bold text-slate-600 uppercase" id="l_img_o_trans">Trans. OF</p></div>
+                    
+                    <div><img id="r_img_d_alto" class="img-slot"><p class="text-[9px] text-center mt-2 font-black text-slate-800 uppercase" id="l_img_d_alto">B. ALTO <span id="r_lbl_def_h" class="block text-red-600"></span></p></div>
+                    <div><img id="r_img_d_medio" class="img-slot"><p class="text-[9px] text-center mt-2 font-black text-slate-800 uppercase" id="l_img_d_medio">B. MÉDIO <span id="r_lbl_def_m" class="block text-red-600"></span></p></div>
+                    <div><img id="r_img_d_baixo" class="img-slot"><p class="text-[9px] text-center mt-2 font-black text-slate-800 uppercase" id="l_img_d_baixo">B. BAIXO <span id="r_lbl_def_l" class="block text-red-600"></span></p></div>
+                    <div><img id="r_img_d_trans" class="img-slot"><p class="text-[9px] text-center mt-2 font-black text-slate-800 uppercase" id="l_img_d_trans">TRANS. DF</p></div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-6 break-inside-avoid">
+                <div class="bg-[#fff7ed] border border-[#ffedd5] border-l-4 border-l-[#ea580c] rounded-xl p-4 shadow-sm">
+                    <h3 class="text-[#ea580c] font-black italic uppercase text-[12px] mb-3 font-header">ABP Ofensivo</h3>
+                    <div class="mb-3 text-[9px] font-bold text-slate-600 uppercase space-y-1">
+                        <div class="flex"><span class="w-20 text-slate-400">BATIDA:</span> <span id="r_abpo_batida" class="text-slate-800">---</span></div>
+                        <div class="flex"><span class="w-20 text-slate-400">ATLETAS:</span> <span id="r_abpo_atletas" class="text-slate-800">---</span></div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div><img id="r_img_abpo_esc" class="img-slot" style="height: 90px;"><p id="l_abpo_esc" class="text-[7px] text-center mt-1 font-bold text-slate-500 uppercase" style="display: none;">Escanteio</p></div>
+                        <div><img id="r_img_abpo_fal" class="img-slot" style="height: 90px;"><p id="l_abpo_fal" class="text-[7px] text-center mt-1 font-bold text-slate-500 uppercase" style="display: none;">Falta Lat.</p></div>
+                    </div>
+                </div>
+                <div class="bg-[#f0f9ff] border border-[#e0f2fe] border-l-4 border-l-[#0284c7] rounded-xl p-4 shadow-sm">
+                    <h3 class="text-[#0284c7] font-black italic uppercase text-[12px] mb-3 font-header">ABP Defensivo</h3>
+                    <div class="mb-3 text-[9px] font-bold text-slate-600 uppercase space-y-1">
+                        <div class="flex"><span class="w-24 text-slate-400">MARCAÇÃO:</span> <span id="r_abpd_marcacao" class="text-slate-800">---</span></div>
+                        <div class="flex"><span class="w-24 text-slate-400">SOBRA:</span> <span id="r_abpd_rebote" class="text-slate-800">---</span></div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div><img id="r_img_abpd_esc" class="img-slot" style="height: 90px;"><p id="l_abpd_esc" class="text-[7px] text-center mt-1 font-bold text-slate-500 uppercase" style="display: none;">Escanteio</p></div>
+                        <div><img id="r_img_abpd_fal" class="img-slot" style="height: 90px;"><p id="l_abpd_fal" class="text-[7px] text-center mt-1 font-bold text-slate-500 uppercase" style="display: none;">Falta Lat.</p></div>
                     </div>
                 </div>
             </div>
-            </main>
+
+            <div class="mb-6 break-inside-avoid hidden" id="box_destaques">
+                <h3 class="text-pink-600 font-black italic uppercase text-[14px] border-b border-pink-200 pb-2 mb-4 font-header flex justify-between items-end">
+                    <span>Destaques Individuais</span>
+                    <span class="text-[9px] text-blue-500 font-bold tracking-widest mt-1 bg-blue-100 px-2 py-1 rounded">Tocar na foto abre o vídeo ▶️</span>
+                </h3>
+                <div class="grid grid-cols-3 gap-4" id="r_cards_destaques"></div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-6 break-inside-avoid">
+                <div class="bg-yellow-50 border border-yellow-200 border-l-4 border-l-yellow-400 p-4 rounded-xl">
+                    <h4 class="text-yellow-600 text-[11px] font-black uppercase mb-2 flex items-center gap-1">⚠️ Ponto Forte (Atenção)</h4>
+                    <p id="r_ponto_forte" class="text-[10px] font-bold text-slate-700 uppercase whitespace-pre-wrap leading-relaxed">---</p>
+                </div>
+                <div class="bg-emerald-50 border border-emerald-200 border-l-4 border-l-emerald-500 p-4 rounded-xl">
+                    <h4 class="text-emerald-700 text-[11px] font-black uppercase mb-2 flex items-center gap-1">🎯 Onde Explorar</h4>
+                    <p id="r_explorar" class="text-[10px] font-bold text-slate-700 uppercase whitespace-pre-wrap leading-relaxed">---</p>
+                </div>
+                <div class="col-span-2 bg-red-50 border border-red-200 border-l-4 border-l-red-600 p-4 rounded-xl flex justify-between items-center" id="box_termometro">
+                    <div>
+                        <h4 class="text-red-700 text-[11px] font-black uppercase flex items-center gap-1">⏱️ Termômetro Físico</h4>
+                        <p class="text-[10px] font-bold text-slate-700 uppercase mt-1">DESGASTE: <span id="r_desgaste" class="text-red-600">---</span></p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-[10px] font-bold text-slate-700 uppercase">MINUTOS DE PERIGO</p>
+                        <p id="r_perigo" class="text-[14px] font-black text-red-600 uppercase">---</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6 border-2 border-dashed border-slate-300 rounded-2xl bg-slate-50 relative break-inside-avoid">
+                <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest bg-slate-50 px-3 absolute -top-2 left-6">Notas Estratégicas Extras</span>
+                <p id="r_notes" class="text-[12px] font-bold text-slate-700 uppercase whitespace-pre-wrap pt-2 leading-relaxed">---</p>
+            </div>
+
+            <footer class="mt-8 flex justify-between items-end border-t border-slate-200 pt-4 break-inside-avoid">
+                <div>
+                    <div class="text-[10px] font-black text-slate-400 uppercase italic font-header text-slate-800">Powered by Playtatic Scout Platinum</div>
+                    <p class="text-[7px] text-slate-400 mt-1 uppercase">Relatório sincronizado via Firebase Cloud.</p>
+                    <p id="print_contato_analista" class="text-[8px] font-bold text-purple-600 mt-1 uppercase">---</p>
+                </div>
+            </footer>
+        </main>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc, collection, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, getDocs, deleteDoc, enableIndexedDbPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyASBeLhess4TaQ53JmtS2RJUbIYav9q3Eg",
-            authDomain: "analisesteam-8cdce.firebaseapp.com",
-            projectId: "analisesteam-8cdce",
-            storageBucket: "analisesteam-8cdce.firebasestorage.app",
-            messagingSenderId: "312047492265",
-            appId: "1:312047492265:web:b677d82f481b4ae746ddb8"
-        };
+        const firebaseConfig = { apiKey: "AIzaSyASBeLhess4TaQ53JmtS2RJUbIYav9q3Eg", authDomain: "analisesteam-8cdce.firebaseapp.com", projectId: "analisesteam-8cdce", storageBucket: "analisesteam-8cdce.firebasestorage.app", messagingSenderId: "312047492265", appId: "1:312047492265:web:b677d82f481b4ae746ddb8" };
+        const app = initializeApp(firebaseConfig); const auth = getAuth(app); const db = getFirestore(app);
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+        try { await enableIndexedDbPersistence(db); } catch (err) {}
+        if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js'); }); }
 
-        document.getElementById('btn-login').onclick = async () => {
-            const email = document.getElementById('auth-email').value; const pass = document.getElementById('auth-pass').value;
-            try { await signInWithEmailAndPassword(auth, email, pass); } catch (e) { document.getElementById('auth-error').innerText = "ACESSO NEGADO."; }
+        // MÁGICA 1: SALVAMENTO AUTOMÁTICO (CONTRA O F5 DA MORTE)
+        const autoSave = () => {
+            let data = {};
+            document.querySelectorAll('input, select, textarea').forEach(el => {
+                if(el.id && !el.id.startsWith('auth-') && !el.id.startsWith('cfg_') && el.id !== 'search_db') { data[el.id] = el.value; }
+            });
+            localStorage.setItem('scout_autosave', JSON.stringify(data));
         };
-        document.getElementById('btn-signup').onclick = async () => {
-            const email = document.getElementById('auth-email').value; const pass = document.getElementById('auth-pass').value;
-            try { await createUserWithEmailAndPassword(auth, email, pass); alert("CONTA CRIADA!"); } catch (e) { document.getElementById('auth-error').innerText = "ERRO AO CRIAR CONTA."; }
-        };
+        document.querySelectorAll('input, select, textarea').forEach(el => { el.addEventListener('input', autoSave); el.addEventListener('change', autoSave); });
+
+        // MÁGICA 2: AVISO SE TENTAR FECHAR A PÁGINA
+        window.addEventListener('beforeunload', function (e) {
+            e.preventDefault(); e.returnValue = '';
+        });
+
+        // Geração dos 11 Inputs
+        const containerJogadores = document.getElementById('container_jogadores');
+        for(let i=1; i<=11; i++) {
+            containerJogadores.innerHTML += `
+                <div class="border-b border-slate-700 pb-3">
+                    <label class="label-sm flex justify-between items-center text-indigo-300">Jogador ${i} <label class="cursor-pointer">📸<input type="file" class="hidden" accept="image/*" onchange="imgLocal(event, 'img_p_${i}')"></label></label>
+                    <input type="text" id="img_p_${i}" class="input-dark text-[10px] mb-1 border-indigo-500/30" placeholder="URL da Imagem ou 📸">
+                    <div class="flex gap-2 mb-1">
+                        <input type="text" id="op_p_nome_${i}" class="input-dark text-[11px] w-3/4 uppercase font-bold" placeholder="Nome">
+                        <input type="text" id="op_p_num_${i}" class="input-dark text-[11px] w-1/4 text-center font-bold" placeholder="Nº">
+                    </div>
+                    <input type="text" id="op_p_vid_${i}" class="input-dark text-[10px] border-indigo-500/50" placeholder="URL do Vídeo (Opcional)">
+                </div>
+            `;
+            document.getElementById(`img_p_${i}`).addEventListener('input', autoSave);
+            document.getElementById(`op_p_nome_${i}`).addEventListener('input', autoSave);
+            document.getElementById(`op_p_num_${i}`).addEventListener('input', autoSave);
+            document.getElementById(`op_p_vid_${i}`).addEventListener('input', autoSave);
+        }
+
+        document.getElementById('btn-login').onclick = async () => { try { await signInWithEmailAndPassword(auth, document.getElementById('auth-email').value, document.getElementById('auth-pass').value); } catch(e){ document.getElementById('auth-error').innerText = "ACESSO NEGADO."; } };
+        document.getElementById('btn-signup').onclick = async () => { try { await createUserWithEmailAndPassword(auth, document.getElementById('auth-email').value, document.getElementById('auth-pass').value); alert("CONTA CRIADA!"); } catch(e){ document.getElementById('auth-error').innerText = "ERRO."; } };
         document.getElementById('btn-logout').onclick = () => signOut(auth);
 
         onAuthStateChanged(auth, (user) => {
-            if (user) {
-                document.getElementById('auth-screen').classList.add('hidden');
-                document.getElementById('main-panel').classList.remove('hidden');
+            if(user) { 
+                document.getElementById('auth-screen').classList.add('hidden'); document.getElementById('main-panel').classList.remove('hidden'); 
                 carregarConfigServer(); carregarBibliotecaNuvem(); 
-            } else {
-                document.getElementById('auth-screen').classList.remove('hidden');
-                document.getElementById('main-panel').classList.add('hidden');
+                
+                // Puxa o backup automático se a tela atualizou
+                const saved = localStorage.getItem('scout_autosave');
+                if(saved) {
+                    const data = JSON.parse(saved);
+                    Object.keys(data).forEach(k => { if(document.getElementById(k)) document.getElementById(k).value = data[k]; });
+                    gerarPlano();
+                }
             }
+            else { document.getElementById('auth-screen').classList.remove('hidden'); document.getElementById('main-panel').classList.add('hidden'); }
         });
 
-        // Configurações
         window.abrirConfig = () => document.getElementById('config-modal').classList.remove('hidden');
         window.fecharConfig = () => document.getElementById('config-modal').classList.add('hidden');
-        
         window.salvarConfig = async () => {
-            const user = auth.currentUser; if(!user) return;
-            const btn = document.getElementById('btn_salvar_config'); btn.innerText = "Salvando...";
-            const cfg = { 
-                nome: document.getElementById('cfg_analista').value, equipe: document.getElementById('cfg_equipe').value, logo: document.getElementById('cfg_logo').value, contato: document.getElementById('cfg_contato').value,
-                btn1: document.getElementById('cfg_btn_1').value, btn2: document.getElementById('cfg_btn_2').value, btn3: document.getElementById('cfg_btn_3').value, btn4: document.getElementById('cfg_btn_4').value, btn5: document.getElementById('cfg_btn_5').value, btn6: document.getElementById('cfg_btn_6').value
-            };
-            await setDoc(doc(db, "usuarios", user.uid, "config", "perfil"), cfg);
-            aplicarConfigUI(cfg); fecharConfig(); btn.innerText = "Salvar Tudo";
+            const cfg = { nome: document.getElementById('cfg_analista').value, equipe: document.getElementById('cfg_equipe').value, logo: document.getElementById('cfg_logo').value, contato: document.getElementById('cfg_contato').value };
+            await setDoc(doc(db, "usuarios", auth.currentUser.uid, "config", "perfil"), cfg); aplicarConfigUI(cfg); fecharConfig();
         };
-
-        window.carregarConfigServer = async () => {
-            const user = auth.currentUser; if(!user) return;
-            try {
-                const docSnap = await getDoc(doc(db, "usuarios", user.uid, "config", "perfil"));
-                if (docSnap.exists()) {
-                    const cfg = docSnap.data();
-                    document.getElementById('cfg_analista').value = cfg.nome || ""; document.getElementById('cfg_equipe').value = cfg.equipe || ""; document.getElementById('cfg_logo').value = cfg.logo || ""; document.getElementById('cfg_contato').value = cfg.contato || "";
-                    document.getElementById('cfg_btn_1').value = cfg.btn1 || "❌ Ataque Falhou"; document.getElementById('cfg_btn_2').value = cfg.btn2 || "⚠️ Furo na Zaga"; document.getElementById('cfg_btn_3').value = cfg.btn3 || "⚽ Ganhou 2ª Bola"; document.getElementById('cfg_btn_4').value = cfg.btn4 || "⚡ Pressão Encaixou"; document.getElementById('cfg_btn_5').value = cfg.btn5 || "📉 Linha Baixou"; document.getElementById('cfg_btn_6').value = cfg.btn6 || "📈 Pressão Alta";
-                    aplicarConfigUI(cfg);
-                }
-            } catch(e) {}
-        };
-
+        window.carregarConfigServer = async () => { try { const snap = await getDoc(doc(db, "usuarios", auth.currentUser.uid, "config", "perfil")); if(snap.exists()) { const cfg = snap.data(); document.getElementById('cfg_analista').value=cfg.nome; document.getElementById('cfg_equipe').value=cfg.equipe; document.getElementById('cfg_logo').value=cfg.logo; document.getElementById('cfg_contato').value=cfg.contato||""; aplicarConfigUI(cfg); } } catch(e){} };
         const aplicarConfigUI = (cfg) => {
-            document.getElementById('side_nome_analista').innerText = cfg.nome || "Adriano Cabeça"; document.getElementById('side_equipe_analista').innerText = cfg.equipe || "Tactical Intel";
-            if(cfg.logo) { document.getElementById('side_logo_analista').src = cfg.logo; document.getElementById('side_logo_analista').style.display = 'block'; }
-            document.getElementById('print_nome_analista').innerText = cfg.nome || "Analista"; document.getElementById('print_equipe_analista').innerText = cfg.equipe || "Equipe";
-            if(cfg.logo) { document.getElementById('print_logo_analista').src = cfg.logo; document.getElementById('print_logo_analista').style.display = 'block'; }
-            document.getElementById('print_contato_analista').innerText = cfg.contato || "";
-            document.getElementById('btn_live_1').innerText = cfg.btn1 || "❌ Ataque Falhou"; document.getElementById('btn_live_2').innerText = cfg.btn2 || "⚠️ Furo na Zaga"; document.getElementById('btn_live_3').innerText = cfg.btn3 || "⚽ Ganhou 2ª Bola"; document.getElementById('btn_live_4').innerText = cfg.btn4 || "⚡ Pressão Encaixou"; document.getElementById('btn_live_5').innerText = cfg.btn5 || "📉 Linha Baixou"; document.getElementById('btn_live_6').innerText = cfg.btn6 || "📈 Pressão Alta";
+            document.getElementById('side_nome_analista').innerText = cfg.nome || "Analista"; document.getElementById('side_equipe_analista').innerText = cfg.equipe || "Equipe"; document.getElementById('print_nome_analista').innerText = cfg.nome || "Analista"; document.getElementById('print_equipe_analista').innerText = cfg.equipe || "Equipe"; document.getElementById('print_contato_analista').innerText = cfg.contato || "";
+            if(cfg.logo) { document.getElementById('side_logo_analista').src = cfg.logo; document.getElementById('side_logo_analista').style.display='block'; document.getElementById('print_logo_analista').src=cfg.logo; document.getElementById('print_logo_analista').style.display='block'; }
         };
 
-        // Firebase Cloud
-        let bibliotecaCache = {}; let eventosAoVivo = []; 
-
+        let bibliotecaCache = {};
         window.salvarAnalise = async () => {
-            const user = auth.currentUser; if(!user) return;
-            const btn = document.getElementById('btn_salvar_analise'); btn.innerText = "Enviando... ⏳";
-            try {
-                let nomeEquipe = document.getElementById('op_name').value.trim() || ("NOVA_EQUIPE_" + Math.floor(Math.random() * 1000));
-                const idSeguro = nomeEquipe.replace(/\//g, '-').replace(/\\/g, '-'); 
-                let data = {}; 
-                document.querySelectorAll('input, select, textarea').forEach(el => { 
-                    if(el.id && !el.id.startsWith('auth-') && !el.id.startsWith('cfg_') && el.id !== 'search_db' && el.id !== 'input_chat_live') { data[el.id] = el.value; }
-                });
-                data.eventosLive = JSON.stringify(eventosAoVivo);
-                await setDoc(doc(db, "usuarios", user.uid, "analises", idSeguro), data);
-                alert(`✅ Relatório e Diário salvos!`); carregarBibliotecaNuvem(); 
-            } catch(e) { alert("❌ ERRO AO SALVAR."); } finally { btn.innerText = "Sincronizar Análise Atual ☁️"; }
+            let nome = document.getElementById('op_name').value.trim() || "NOVA_EQUIPE_" + Math.floor(Math.random()*1000);
+            let data = {}; document.querySelectorAll('input, select, textarea').forEach(el => { if(el.id && !el.id.startsWith('auth-') && !el.id.startsWith('cfg_') && el.id !== 'search_db') data[el.id] = el.value; });
+            try { await setDoc(doc(db, "usuarios", auth.currentUser.uid, "analises", nome.replace(/\//g, '-')), data); alert("✅ Salvo na Nuvem Playtatic!"); carregarBibliotecaNuvem(); } catch(e) { alert("❌ Arquivo pesado. Reduza fotos."); }
         };
-
+        window.deletarAnalise = async (id) => { if(confirm(`APAGAR ${id}?`)) { await deleteDoc(doc(db, "usuarios", auth.currentUser.uid, "analises", id)); carregarBibliotecaNuvem(); } };
         window.carregarBibliotecaNuvem = async () => {
-            const user = auth.currentUser; if(!user) return;
-            const lista = document.getElementById('lista_analises');
-            try {
-                const querySnapshot = await getDocs(collection(db, "usuarios", user.uid, "analises"));
-                bibliotecaCache = {}; lista.innerHTML = "";
-                if(querySnapshot.empty) { lista.innerHTML = '<p class="text-[10px] text-slate-500 text-center italic mt-2">Nenhuma análise.</p>'; return; }
-                querySnapshot.forEach((docSnap) => {
-                    const id = docSnap.id; bibliotecaCache[id] = docSnap.data(); 
-                    let div = document.createElement('div');
-                    div.className = "library-item flex justify-between items-center text-[10px] uppercase font-bold text-slate-300 p-1 mb-1 border-b border-slate-700/50 hover:bg-slate-800 rounded transition"; 
-                    div.innerHTML = `<span class="truncate w-3/4 cursor-pointer" onclick="carregarDaBiblioteca('${id}')">📂 ${id}</span>
-                        <div class="flex gap-2"><button onclick="carregarDaBiblioteca('${id}')" title="Carregar">✏️</button><button onclick="deletarAnalise('${id}')" title="Excluir">🗑️</button></div>`;
-                    lista.appendChild(div);
-                });
-            } catch(e) {}
+            try { const snaps = await getDocs(collection(db, "usuarios", auth.currentUser.uid, "analises")); bibliotecaCache = {}; const lista = document.getElementById('lista_analises'); lista.innerHTML=""; if(snaps.empty){ lista.innerHTML="<p class='text-[10px] text-slate-500 text-center mt-2'>Vazio</p>"; return; } snaps.forEach(d => { bibliotecaCache[d.id]=d.data(); lista.innerHTML += `<div class="library-item flex justify-between items-center text-[10px] uppercase font-bold text-slate-300 p-1 mb-1 border-b border-slate-700/50 hover:bg-slate-800 rounded transition"><span class="truncate w-3/4 cursor-pointer" onclick="carregarDaBiblioteca('${d.id}')">📂 ${d.id}</span><div class="flex gap-2"><button onclick="carregarDaBiblioteca('${d.id}')">✏️</button><button onclick="deletarAnalise('${d.id}')">🗑️</button></div></div>`; }); } catch(e){}
         };
+        window.carregarDaBiblioteca = (id) => { if(bibliotecaCache[id]) { Object.keys(bibliotecaCache[id]).forEach(k => { if(document.getElementById(k)) document.getElementById(k).value = bibliotecaCache[id][k]; }); gerarPlano(); } };
+        window.buscarAnalise = () => { let t = document.getElementById('search_db').value.toLowerCase(); document.querySelectorAll('.library-item').forEach(el => { el.style.display = el.innerText.toLowerCase().includes(t) ? "flex" : "none"; }); };
 
-        window.carregarDaBiblioteca = (id) => {
-            if(bibliotecaCache[id]) { 
-                Object.keys(bibliotecaCache[id]).forEach(k => { if(document.getElementById(k)) document.getElementById(k).value = bibliotecaCache[id][k]; }); 
-                if(bibliotecaCache[id].eventosLive) { eventosAoVivo = JSON.parse(bibliotecaCache[id].eventosLive); } else { eventosAoVivo = []; }
-                atualizarTelaLog(); gerarPlano(); 
-            }
-        };
-
-        window.deletarAnalise = async (id) => {
-            const user = auth.currentUser; if(!user) return;
-            if(confirm(`Apagar ${id}?`)) { await deleteDoc(doc(db, "usuarios", user.uid, "analises", id)); carregarBibliotecaNuvem(); }
-        };
-        window.buscarAnalise = () => {
-            let term = document.getElementById('search_db').value.toLowerCase();
-            document.querySelectorAll('.library-item').forEach(el => { el.style.display = el.innerText.toLowerCase().includes(term) ? "flex" : "none"; });
-        };
-        window.migrarLocalNuvem = async () => {
-            const user = auth.currentUser; if(!user) return;
-            let ldb = JSON.parse(localStorage.getItem('scout_v14_db') || '{}'); const chaves = Object.keys(ldb);
-            if(chaves.length === 0) return;
-            if(confirm(`Migrar relatórios para Nuvem?`)) {
-                for(let id of chaves) { const idSeguro = id.replace(/\//g, '-').replace(/\\/g, '-'); try { await setDoc(doc(db, "usuarios", user.uid, "analises", idSeguro), ldb[id]); } catch(e) {} }
-                carregarBibliotecaNuvem();
-            }
-        };
-
-        // Imagem Base64
         window.imgLocal = (event, id) => {
-            const file = event.target.files[0]; if(!file) return;
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const img = new Image();
-                img.onload = () => {
-                    const canvas = document.createElement('canvas'); const MAX_WIDTH = 800; let width = img.width; let height = img.height;
-                    if (width > MAX_WIDTH) { height = Math.floor(height * (MAX_WIDTH / width)); width = MAX_WIDTH; }
-                    canvas.width = width; canvas.height = height; const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
-                    document.getElementById(id).value = canvas.toDataURL('image/jpeg', 0.6); gerarPlano();
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
+            const f = event.target.files[0]; if(!f) return; const r = new FileReader(); r.onload = (e) => { const img = new Image(); img.onload = () => { const cvs = document.createElement('canvas'); const MAX = 600; let w = img.width; let h = img.height; if(w > MAX){ h = Math.floor(h*(MAX/w)); w = MAX; } cvs.width=w; cvs.height=h; cvs.getContext('2d').drawImage(img,0,0,w,h); document.getElementById(id).value = cvs.toDataURL('image/jpeg', 0.6); autoSave(); gerarPlano(); }; img.src = e.target.result; }; r.readAsDataURL(f);
         };
-        window.checkNet = () => {
-            const dot = document.getElementById('net-dot'); const txt = document.getElementById('net-txt');
-            if(navigator.onLine) { dot.className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"; txt.innerText="ONLINE"; }
-            else { dot.className="w-2 h-2 rounded-full bg-red-500"; txt.innerText="OFFLINE"; }
-        };
+
+        window.checkNet = () => { const dot=document.getElementById('net-dot'); const txt=document.getElementById('net-txt'); if(navigator.onLine){ dot.className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"; txt.innerText="ONLINE"; txt.className="text-emerald-500";}else{dot.className="w-2 h-2 rounded-full bg-yellow-500"; txt.innerText="OFFLINE"; txt.className="text-yellow-500";} };
         window.addEventListener('online', checkNet); window.addEventListener('offline', checkNet);
 
-        let recognition;
-        if ('webkitSpeechRecognition' in window) {
-            recognition = new webkitSpeechRecognition(); recognition.continuous = false; recognition.lang = 'pt-BR'; recognition.interimResults = false;
-            recognition.onresult = function(event) {
-                const texto = event.results[0][0].transcript; const textArea = document.getElementById('op_notes');
-                if(textArea.value === "SEM OBSERVAÇÕES ADICIONAIS") textArea.value = "";
-                textArea.value += (textArea.value ? " " : "") + texto + "."; gerarPlano();
-            };
-        }
-        window.iniciarDitado = () => { if(recognition) { recognition.start(); alert("🎙️ Microfone ativado."); } };
-        window.compartilharZap = () => {
-            const rival = document.getElementById('op_name').value || "Adversário"; const competicao = document.getElementById('op_comp').value || "Jogo";
-            window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(`Fala, comissão! Mapeamento tático do ${rival} (${competicao}) finalizado na Playtatic.`)}`, '_blank');
-        };
+        let rec; if('webkitSpeechRecognition' in window) { rec = new webkitSpeechRecognition(); rec.lang='pt-BR'; rec.onresult = (e) => { const ta=document.getElementById('op_notes'); if(ta.value==="SEM OBSERVAÇÕES ADICIONAIS")ta.value=""; ta.value+= " "+e.results[0][0].transcript+"."; autoSave(); gerarPlano(); }; }
+        window.iniciarDitado = () => { if(rec){rec.start(); alert("🎙️ Pode falar!");}else{alert("Navegador não suporta");} };
+        window.compartilharZap = () => { window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent('Fala, comissão! Mapeamento tático do '+ (document.getElementById('op_name').value||'Rival') +' finalizado na Playtatic.')}`, '_blank'); };
 
-        // MODO JOGO AO VIVO & IA DE TREINO
-        let isLiveMode = false;
-        setInterval(() => { if(isLiveMode) document.getElementById('relogio_live').innerText = new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute:'2-digit', second:'2-digit'}); }, 1000);
-
-        window.toggleModoJogo = () => {
-            isLiveMode = !isLiveMode;
-            const mainContent = document.getElementById('main-content-area'); const printArea = document.getElementById('print-area'); const liveArea = document.getElementById('live-area'); const btn = document.getElementById('btn_modo_jogo');
-            if(isLiveMode) {
-                printArea.classList.replace('block', 'hidden'); liveArea.classList.replace('hidden', 'flex'); mainContent.classList.replace('bg-white', 'bg-[#0f172a]'); 
-                btn.innerHTML = '📝 Sair do Modo Jogo e Voltar ao Scout'; btn.classList.replace('bg-red-600', 'bg-slate-600'); btn.classList.replace('hover:bg-red-500', 'hover:bg-slate-500'); btn.classList.replace('border-red-800', 'border-slate-800');
-            } else {
-                printArea.classList.replace('hidden', 'block'); liveArea.classList.replace('flex', 'hidden'); mainContent.classList.replace('bg-[#0f172a]', 'bg-white'); 
-                btn.innerHTML = '🔴 Entrar no Modo Jogo Ao Vivo'; btn.classList.replace('bg-slate-600', 'bg-red-600'); btn.classList.replace('hover:bg-slate-500', 'hover:bg-red-500'); btn.classList.replace('border-slate-800', 'border-red-800');
-            }
-        };
-
-        window.addLiveEvent = (texto) => { const min = document.getElementById('relogio_live').innerText.substring(0,5); eventosAoVivo.push(`[${min}] ${texto}`); atualizarTelaLog(); };
-
-        const atualizarTelaLog = () => {
-            const logBox = document.getElementById('log_eventos');
-            if(eventosAoVivo.length === 0) { logBox.innerHTML = '<p class="text-[10px] text-slate-600 italic">Nenhum evento registrado.</p>'; } 
-            else { logBox.innerHTML = eventosAoVivo.map(e => `<div class="text-[10px] text-slate-300 border-b border-slate-800 py-2">${e}</div>`).join(''); }
-            const container = document.getElementById('log_container'); container.scrollTop = container.scrollHeight;
-        };
-
-        const renderBubble = (text, type) => {
-            const chat = document.getElementById('chat_messages'); const div = document.createElement('div');
-            if(type === 'user') {
-                div.className = 'chat-bubble self-end bg-emerald-700 text-white p-3 rounded-2xl rounded-tr-none max-w-[85%] shadow-sm text-sm'; div.innerHTML = text;
-            } else {
-                div.className = 'chat-bubble self-start bg-slate-800 border border-slate-700 text-slate-200 p-3 rounded-2xl rounded-tl-none max-w-[85%] shadow-sm text-sm';
-                let htmlText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
-                div.innerHTML = `<p class="text-[11px] font-bold text-emerald-400 mb-1 uppercase">🧠 TaticAI System</p>${htmlText}`;
-            }
-            chat.appendChild(div); chat.scrollTop = chat.scrollHeight; return div;
-        };
-
-        window.enviarChatLive = async () => {
-            const input = document.getElementById('input_chat_live'); const msg = input.value.trim(); if(!msg) return;
-            renderBubble(msg, 'user'); input.value = ''; const loadBubble = renderBubble("Analisando tática em tempo real... ⏳", 'ai');
-
-            const chaveMascarada = 'QUl6YVN5Q2xBa3phS1g0ZUszQlBYNGdyM2JIZkNoYjJjYUtlVkhN'; const GEMINI_API_KEY = atob(chaveMascarada);
-            const postura = document.getElementById('op_postura').value || ''; const bloco = document.getElementById('op_def_l').value || ''; const desgaste = document.getElementById('op_desgaste').value || '';
-            const ultimosEventos = eventosAoVivo.slice(-6).join('\n');
-
-            const prompt = `Atue como Assistente Técnico de Futebol no banco de reservas. 
-            Adversário (Pré-Jogo): Postura: ${postura}, Bloco Baixo: ${bloco}, Desgaste: ${desgaste}. Nossas ações recentes: ${ultimosEventos || 'Nenhum.'}
-            Mensagem do Treinador AGORA: "${msg}"
-            Responda em 1 parágrafo curto. Dê uma instrução tática clara para o treinador gritar no campo, cruzando os dados. Sem saudações.`;
-
-            try {
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
-                const resposta = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }) });
-                const dados = await resposta.json(); loadBubble.remove();
-                if(dados.candidates && dados.candidates.length > 0) renderBubble(dados.candidates[0].content.parts[0].text.trim(), 'ai');
-            } catch (erro) { loadBubble.remove(); renderBubble("Erro de conexão.", 'ai'); }
-        };
-
-        window.gerarTreinoIA = async () => {
-            const btn = document.getElementById('btn_gerar_treino'); btn.innerHTML = "🧠 Estruturando Sessão... ⏳";
-            const loadBubble = renderBubble("Professor, estou estruturando a sessão de treino de amanhã com base nos erros deste jogo e na sua metodologia. Aguarde... 📋", 'ai');
-            const chaveMascarada = 'QUl6YVN5Q2xBa3phS1g0ZUszQlBYNGdyM2JIZkNoYjJjYUtlVkhN'; const GEMINI_API_KEY = atob(chaveMascarada);
-            const opNome = document.getElementById('op_name').value || 'Adversário'; const eventos = eventosAoVivo.join('\n') || 'Nenhum evento registrado nos botões rápidos.';
-
-            const prompt = `Atue como um Assistente Técnico e Preparador Físico de elite (Padrão Licença A CBF). 
-            Contexto da Nossa Equipe: Modelo: 4-3-3 (OF) e 4-4-2 (DEF). Filosofia: "Trabalho, Sacrifício e Renúncia".
-            Treinamento: Especialidade em perda de gordura, ganho de massa, e uso de "circuito de resistência física".
-            Acabamos de finalizar o jogo contra: ${opNome}.
-            Diário de Bordo do jogo (eventos/erros): ${eventos}
-            Tarefa: Monte um planejamento prático de 1 sessão de treinamento para corrigir os erros do jogo. Formate direto e profissional:
-            1. Aquecimento/Físico: circuito de resistência física.
-            2. Trabalho Tático Principal: Exercício para corrigir padrões de erro, mantendo 4-3-3/4-4-2.
-            3. PDI: O que cobrar dos atletas que falharam. Vá direto ao planejamento, sem saudações.`;
-
-            try {
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
-                const resposta = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }) });
-                const dados = await resposta.json(); loadBubble.remove();
-                if(dados.candidates && dados.candidates.length > 0) { renderBubble(dados.candidates[0].content.parts[0].text.trim(), 'ai'); } 
-                else { renderBubble("ERRO: Não foi possível gerar o treino.", 'ai'); }
-            } catch (erro) { loadBubble.remove(); renderBubble("Erro de conexão.", 'ai'); } finally { btn.innerHTML = "🧠 Planejar Treino Pós-Jogo"; }
-        };
-
-        let liveRecognition;
-        if ('webkitSpeechRecognition' in window) {
-            liveRecognition = new webkitSpeechRecognition(); liveRecognition.continuous = false; liveRecognition.lang = 'pt-BR'; liveRecognition.interimResults = false;
-            liveRecognition.onresult = function(event) { document.getElementById('input_chat_live').value = event.results[0][0].transcript; enviarChatLive(); };
-        }
-        window.iniciarVozChat = () => { if(liveRecognition) liveRecognition.start(); };
-
-        // IA PRÉ-JOGO (PDF)
-        document.getElementById('btnGerarIA').addEventListener('click', async () => {
-            const campoExplorar = document.getElementById('op_explorar'); campoExplorar.value = "🧠 Analisando padrões do adversário... Aguarde ⏳";
-            const chaveMascarada = 'QUl6YVN5Q2xBa3phS1g0ZUszQlBYNGdyM2JIZkNoYjJjYUtlVkhN'; const GEMINI_API_KEY = atob(chaveMascarada);
-            
-            const postura = document.getElementById('op_postura').value || 'Não informado'; const blocoBaixo = document.getElementById('op_def_l').value || 'Não informado'; const blocoMedio = document.getElementById('op_def_m').value || 'Não informado'; const gatilho = document.getElementById('op_gatilho').value || 'Não informado'; const saida = document.getElementById('op_meta').value || 'Não informado'; const transicao = document.getElementById('op_tof').value || 'Não informado'; const desgaste = document.getElementById('op_desgaste').value || 'Não informado'; const pontoForte = document.getElementById('op_ponto_forte').value || 'Não informado'; const abpdMarcacao = document.getElementById('op_abpd_marcacao').value || 'Não informado'; const abpdRebote = document.getElementById('op_abpd_rebote').value || 'Não informado'; const abpoBatida = document.getElementById('op_abpo_batida').value || 'Não informado';
-            const dest1 = document.getElementById('op_dest_nome_1').value; const nota1 = document.getElementById('op_dest_nota_1').value; const dest2 = document.getElementById('op_dest_nome_2').value; const nota2 = document.getElementById('op_dest_nota_2').value; const dest3 = document.getElementById('op_dest_nome_3').value; const nota3 = document.getElementById('op_dest_nota_3').value;
-            let destText = ""; if (dest1) destText += `- ${dest1}: ${nota1}\n`; if (dest2) destText += `- ${dest2}: ${nota2}\n`; if (dest3) destText += `- ${dest3}: ${nota3}\n`;
-
-            const prompt = `Atue como um Analista de Desempenho de Futebol de elite. 
-            Adversário: Postura: ${postura}, Bloco: ${blocoBaixo}, Pressão: ${gatilho}, Saída: ${saida}, Transição OF: ${transicao}.
-            ABP: Marcação ${abpdMarcacao}, ${abpdRebote} / Batida ${abpoBatida}. Físico: ${desgaste}. Ponto Forte: ${pontoForte}. Destaques: ${destText || 'Nenhum.'}
-            Crie um texto direto (máximo 2 parágrafos) focado em "Onde Explorar e Nossa Vantagem". Soluções táticas para furar o bloqueio, explorar bolas paradas e anular destaques. Sem saudações.`;
-
-            try {
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
-                const resposta = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }) });
-                const dados = await resposta.json();
-                if(dados.candidates && dados.candidates.length > 0) { campoExplorar.value = dados.candidates[0].content.parts[0].text.trim(); window.gerarPlano(); } 
-                else if (dados.error) campoExplorar.value = "ERRO DO GOOGLE: " + dados.error.message;
-            } catch (erro) { campoExplorar.value = "Erro de conexão com o servidor da IA."; }
-        });
-
-        // DESENHAR O PDF
         window.gerarPlano = () => {
             document.getElementById('r_comp').innerText = document.getElementById('op_comp').value || "---"; document.getElementById('r_local').innerText = document.getElementById('op_local').value || "---"; document.getElementById('r_score').innerText = document.getElementById('op_score').value || "0 x 0"; document.getElementById('r_name').innerText = document.getElementById('op_name').value || "---"; document.getElementById('r_coach').innerText = "TREINADOR: " + (document.getElementById('op_coach').value || "---");
-            const mantra = document.getElementById('op_mantra').value; document.getElementById('r_mantra').innerText = mantra || "---"; document.getElementById('box_mantra').style.display = mantra ? 'block' : 'none';
+            document.getElementById('r_mantra').innerText = document.getElementById('op_mantra').value; document.getElementById('box_mantra').style.display = document.getElementById('op_mantra').value ? 'block' : 'none';
+            document.getElementById('r_desfalques').innerText = document.getElementById('op_desfalques').value; document.getElementById('box_desfalques').style.display = document.getElementById('op_desfalques').value ? 'block' : 'none';
             
-            // Novos Blocos Escalação e DM
-            document.getElementById('r_iniciais').innerText = document.getElementById('op_iniciais').value || "---";
-            document.getElementById('r_banco').innerText = document.getElementById('op_banco').value || "---";
-            if(document.getElementById('op_iniciais').value || document.getElementById('op_banco').value) { document.getElementById('box_elenco').style.display = 'grid'; } else { document.getElementById('box_elenco').style.display = 'none'; }
-            
-            const desfalques = document.getElementById('op_desfalques').value; document.getElementById('r_desfalques').innerText = desfalques || "---"; document.getElementById('box_desfalques').style.display = desfalques ? 'block' : 'none';
+            const lh=document.getElementById('op_logo_home').value; if(lh){document.getElementById('r_logo_home').src=lh; document.getElementById('r_logo_home').style.display='block';}else{document.getElementById('r_logo_home').style.display='none';}
+            const la=document.getElementById('op_logo_away').value; if(la){document.getElementById('r_logo_away').src=la; document.getElementById('r_logo_away').style.display='block';}else{document.getElementById('r_logo_away').style.display='none';}
 
-            document.getElementById('r_desgaste').innerText = document.getElementById('op_desgaste').value || "---"; document.getElementById('r_perigo').innerText = document.getElementById('op_perigo').value || "---"; document.getElementById('r_ponto_forte').innerText = document.getElementById('op_ponto_forte').value || "---"; document.getElementById('r_explorar').innerText = document.getElementById('op_explorar').value || "---";
+            const dId = ['op_zags_foot','op_atk_side','op_gk','op_meta','op_f2','op_tof','op_preenchimento','op_postura','op_gatilho','op_target','op_encaixe','op_trans_df','op_desgaste','op_perigo','op_ponto_forte','op_explorar','op_abpo_batida','op_abpo_atletas','op_abpd_marcacao','op_abpd_rebote','op_notes'];
+            dId.forEach(id => { if(document.getElementById('r_'+id.replace('op_',''))) document.getElementById('r_'+id.replace('op_','')).innerText = document.getElementById(id).value || "---"; });
+            document.getElementById('r_lbl_def_h').innerText=document.getElementById('op_def_h').value||""; document.getElementById('r_lbl_def_m').innerText=document.getElementById('op_def_m').value||""; document.getElementById('r_lbl_def_l').innerText=document.getElementById('op_def_l').value||"";
 
-            let temDestaque = false;
-            for(let i=1; i<=3; i++){
-                const nome = document.getElementById(`op_dest_nome_${i}`).value; const nota = document.getElementById(`op_dest_nota_${i}`).value; const imgVal = document.getElementById(`img_dest_${i}`).value; const card = document.getElementById(`card_dest_${i}`);
-                if(nome || nota || imgVal) {
-                    card.style.display = 'flex'; temDestaque = true; document.getElementById(`r_dest_nome_${i}`).innerText = nome || "---"; document.getElementById(`r_dest_nota_${i}`).innerText = nota || "---";
-                    const r_img = document.getElementById(`r_img_dest_${i}`); if(imgVal) { r_img.src = imgVal; r_img.style.display = 'block'; } else { r_img.style.display = 'none'; }
-                } else { card.style.display = 'none'; }
+            // GERAR ESCALAÇÃO (GRID DE CARDS)
+            const formacao = document.getElementById('op_formacao_campo').value;
+            document.getElementById('r_formacao_texto').innerText = formacao.split(' ')[0]; 
+            const nodes = document.getElementById('nodes_jogadores');
+            nodes.innerHTML = "";
+            for(let i=1; i<=11; i++){
+                const nome = document.getElementById(`op_p_nome_${i}`).value || `JOGADOR ${i}`;
+                const num = document.getElementById(`op_p_num_${i}`).value || "-";
+                const img = document.getElementById(`img_p_${i}`).value || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+                const vid = document.getElementById(`op_p_vid_${i}`).value;
+
+                const imgHtml = `<img src="${img}" class="w-full h-16 object-cover rounded border border-indigo-200 mb-1 shadow-sm">`;
+                const linkWrap = vid ? `<a href="${vid}" target="_blank">${imgHtml}</a>` : imgHtml;
+
+                nodes.innerHTML += `
+                    <div class="bg-white border ${vid ? 'border-blue-400' : 'border-indigo-100'} rounded-lg p-2 flex flex-col items-center text-center shadow-sm relative transition-all">
+                        <span class="absolute top-1 left-1 bg-indigo-600 text-white text-[8px] font-black px-1.5 py-0.5 rounded shadow">${num}</span>
+                        ${linkWrap}
+                        <p class="text-[8px] font-black text-indigo-900 uppercase leading-tight w-full truncate" title="${nome}">${nome}</p>
+                    </div>
+                `;
             }
-            document.getElementById('box_destaques').style.display = temDestaque ? 'block' : 'none';
+            
+            const banco = document.getElementById('op_banco').value;
+            document.getElementById('r_banco').innerText = banco;
+            document.getElementById('box_banco').style.display = banco ? 'block' : 'none';
 
-            const l_home = document.getElementById('op_logo_home').value; if(l_home) { document.getElementById('r_logo_home').src = l_home; document.getElementById('r_logo_home').style.display = 'block'; } else { document.getElementById('r_logo_home').style.display = 'none'; }
-            const l_away = document.getElementById('op_logo_away').value; if(l_away) { document.getElementById('r_logo_away').src = l_away; document.getElementById('r_logo_away').style.display = 'block'; } else { document.getElementById('r_logo_away').style.display = 'none'; }
+            let temDest = false; document.getElementById('r_cards_destaques').innerHTML = "";
+            for(let i=1; i<=3; i++){
+                const nm=document.getElementById(`op_dest_nome_${i}`).value; const nt=document.getElementById(`op_dest_nota_${i}`).value; const im=document.getElementById(`img_dest_${i}`).value; const vd=document.getElementById(`op_dest_vid_${i}`).value;
+                if(nm||nt||im){
+                    temDest=true;
+                    const c_img = im ? `<img src="${im}" class="w-16 h-16 object-cover rounded-md border border-slate-200 shadow-sm mb-2">` : '';
+                    const c_link = vd ? `<a href="${vd}" target="_blank">${c_img}</a>` : c_img;
+                    document.getElementById('r_cards_destaques').innerHTML += `<div class="bg-white border ${vd ? 'border-blue-400' : 'border-slate-200'} rounded-lg p-3 flex flex-col items-center text-center shadow-sm">${c_link}<p class="text-[10px] font-black text-slate-800 uppercase">${nm||"---"}</p><p class="text-[8px] font-bold text-slate-500 uppercase mt-1 leading-tight">${nt||"---"}</p></div>`;
+                }
+            }
+            document.getElementById('box_destaques').style.display = temDest ? 'block' : 'none';
 
-            document.getElementById('r_zags_foot').innerText = document.getElementById('op_zags_foot').value || "---"; document.getElementById('r_atk_side').innerText = document.getElementById('op_atk_side').value || "---"; document.getElementById('r_gk').innerText = document.getElementById('op_gk').value || "---"; document.getElementById('r_meta').innerText = document.getElementById('op_meta').value || "---"; document.getElementById('r_f2').innerText = document.getElementById('op_f2').value || "---"; document.getElementById('r_tof').innerText = document.getElementById('op_tof').value || "---"; document.getElementById('r_preenchimento').innerText = document.getElementById('op_preenchimento').value || "---";
-            document.getElementById('r_lbl_def_h').innerText = document.getElementById('op_def_h').value || "---"; document.getElementById('r_lbl_def_m').innerText = document.getElementById('op_def_m').value || "---"; document.getElementById('r_lbl_def_l').innerText = document.getElementById('op_def_l').value || "---"; document.getElementById('r_postura').innerText = document.getElementById('op_postura').value || "---"; document.getElementById('r_gatilho').innerText = document.getElementById('op_gatilho').value || "---"; document.getElementById('r_target').innerText = document.getElementById('op_target').value || "---"; document.getElementById('r_encaixe').innerText = document.getElementById('op_encaixe').value || "---"; document.getElementById('r_trans_df').innerText = document.getElementById('op_trans_df').value || "---";
-            document.getElementById('r_abpo_batida').innerText = document.getElementById('op_abpo_batida').value || "---"; document.getElementById('r_abpo_atletas').innerText = document.getElementById('op_abpo_atletas').value || "---"; document.getElementById('r_abpd_marcacao').innerText = document.getElementById('op_abpd_marcacao').value || "---"; document.getElementById('r_abpd_rebote').innerText = document.getElementById('op_abpd_rebote').value || "---";
-            document.getElementById('r_notes').innerText = document.getElementById('op_notes').value || "---";
+            const imgPr = ['img_o_saida','img_o_f2','img_o_f3','img_o_trans','img_d_alto','img_d_medio','img_d_baixo','img_d_trans']; let temPr = false;
+            imgPr.forEach(id => { const val=document.getElementById(id).value; const el=document.getElementById('r_'+id); if(val){el.src=val; el.style.display='block'; temPr=true; document.getElementById('l_'+id).style.display='block';}else{el.style.display='none'; document.getElementById('l_'+id).style.display='none';} });
+            document.getElementById('box_fotos_taticas').style.display = temPr ? 'block' : 'none';
 
-            // Novas imagens incluídas aqui
-            ['img_o_saida', 'img_o_f2', 'img_o_preenchimento', 'img_o_f3', 'img_o_trans', 'img_d_alto', 'img_d_medio', 'img_d_baixo', 'img_d_trans', 'img_abpo_esc', 'img_abpo_fal', 'img_abpo_rebote', 'img_abpd_esc', 'img_abpd_fal', 'img_abpd_rebote'].forEach(id => {
-                const val = document.getElementById(id).value; const img = document.getElementById('r_' + id);
-                if(val) { img.src = val; img.style.display = 'block'; } else { img.style.display = 'none'; }
-            });
-
-            document.getElementById('l_abpo_esc').style.display = document.getElementById('img_abpo_esc').value ? 'block' : 'none'; 
-            document.getElementById('l_abpo_fal').style.display = document.getElementById('img_abpo_fal').value ? 'block' : 'none'; 
-            document.getElementById('l_abpo_rebote').style.display = document.getElementById('img_abpo_rebote').value ? 'block' : 'none'; 
-            document.getElementById('l_abpd_esc').style.display = document.getElementById('img_abpd_esc').value ? 'block' : 'none'; 
-            document.getElementById('l_abpd_fal').style.display = document.getElementById('img_abpd_fal').value ? 'block' : 'none';
-            document.getElementById('l_abpd_rebote').style.display = document.getElementById('img_abpd_rebote').value ? 'block' : 'none';
-
-            document.getElementById('qrcode').innerHTML = ""; const vid = document.getElementById('op_vid').value;
-            if(vid) { new QRCode(document.getElementById("qrcode"), { text: vid, width: 64, height: 64 }); document.getElementById('l_qr_code').style.display = 'block'; } 
-            else { document.getElementById('l_qr_code').style.display = 'none'; }
+            ['img_abpo_esc','img_abpo_fal','img_abpd_esc','img_abpd_fal'].forEach(id => { const val=document.getElementById(id).value; const el=document.getElementById('r_'+id); if(val){el.src=val; el.style.display='block'; document.getElementById('l_'+id).style.display='block';}else{el.style.display='none'; document.getElementById('l_'+id).style.display='none';} });
         };
 
-        window.onload = () => { checkNet(); };
+        window.onload = checkNet;
         document.querySelector('button.bg-gradient-to-r').onclick = () => { gerarPlano(); setTimeout(() => { window.print(); }, 300); };
     </script>
 </body>
